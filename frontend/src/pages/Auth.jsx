@@ -84,28 +84,31 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
         zIndex: 10
       }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
-            <svg width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 8L16 26L26 8" stroke="url(#voyaGradientAuth)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="16" cy="12" r="5" stroke="var(--coral)" strokeWidth="3" />
-              <path d="M16 2L16 6" stroke="var(--coral)" strokeWidth="2.5" strokeLinecap="round" />
-              <defs>
-                <linearGradient id="voyaGradientAuth" x1="6" y1="8" x2="26" y2="26" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="var(--cyan)" />
-                  <stop offset="1" stopColor="var(--violet)" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '2.2rem',
-              fontWeight: 800,
-              letterSpacing: '-0.04em',
-              background: 'linear-gradient(135deg, var(--text-primary) 30%, var(--cyan) 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '12px',
+              background: 'var(--terracotta)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
             }}>
-              voya
+              <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '22px', height: '22px' }}>
+                <path d="M3 4L9 14L15 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="9" cy="7" r="2.8" stroke="white" strokeWidth="1.8"/>
+              </svg>
+            </div>
+            <span style={{
+              fontFamily: 'Playfair Display, serif',
+              fontSize: '2.5rem',
+              fontWeight: 900,
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.03em',
+              lineHeight: 1
+            }}>
+              vo<span style={{ color: 'var(--terracotta)' }}>ya</span>
             </span>
           </div>
           <h2 style={{ fontSize: '1.75rem', marginBottom: '8px', fontWeight: 700, color: 'var(--text-primary)' }}>

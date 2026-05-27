@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
@@ -7,6 +7,9 @@ const TRAVEL_STYLE_OPTIONS = [
 ];
 
 const HINGE_QUESTIONS = [
+  'My absolute worst travel habit is...',
+  'The weirdest food I\'ve eaten just to be polite...',
+  'My ultimate travel red flag in a partner is...',
   'Most adventurous thing I\'ve done...',
   'My perfect travel day looks like...',
   'I\'m looking for a travel partner who...',
@@ -32,32 +35,35 @@ const ProfileSetup = ({ token, onLogout }) => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
 
-  // Form States
+  // Form States (Earthy Organic prefilled templates for frictionless 15-second setup)
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('men');
-  const [occupation, setOccupation] = useState('');
-  const [bio, setBio] = useState('');
-  const [location, setLocation] = useState('');
-  const [nativity, setNativity] = useState('');
+  const [occupation, setOccupation] = useState('World Nomad & Taco Enthusiast');
+  const [bio, setBio] = useState('On a mission to discover the world\'s most breathtaking sunrise hike and the ultimate street taco. I spend 80% of my time exploring hidden mountain ridges or sipping specialty coffee. Let\'s get lost together!');
+  const [location, setLocation] = useState('San Francisco, USA');
+  const [nativity, setNativity] = useState('Global Citizen');
   const [pictures, setPictures] = useState(['', '', '']);
-  const [destinations, setDestinations] = useState('');
+  const [destinations, setDestinations] = useState('Kyoto Japan, Rome Italy, Oaxaca Mexico');
   const [travelDuration, setTravelDuration] = useState('1-2 weeks');
-  const [travelStyles, setTravelStyles] = useState([]);
+  const [travelStyles, setTravelStyles] = useState(['Foodie', 'Adventure', 'Nature']);
   const [travelCalendar, setTravelCalendar] = useState('Summer 2026');
 
-  // Hinge Prompts (Maximum 3)
+  // Hinge Prompts (Maximum 3) with prefilled travel-journal templates
   const [prompts, setPrompts] = useState([
-    { question: HINGE_QUESTIONS[0], answer: 'Bungee jumped off the Macau Tower!' },
-    { question: HINGE_QUESTIONS[1], answer: 'Waking up early for a sunrise hike, finding a local cafe, and wandering aimlessly.' },
-    { question: HINGE_QUESTIONS[2], answer: 'Open-minded, willing to try street food, and shares navigation duties!' }
+    { question: HINGE_QUESTIONS[0], answer: 'Packing enough socks for a 6-month polar expedition even though I\'m only traveling for a weekend.' },
+    { question: HINGE_QUESTIONS[1], answer: 'Deep-fried grasshoppers in Mexico. Honestly? Tasted exactly like crunchy potato chips with lime!' },
+    { question: HINGE_QUESTIONS[2], answer: 'Someone who insists on a rigid hourly itinerary. Let\'s get lost in the back alleys instead!' }
   ]);
 
-  // Voice Prompt Simulation State
+  // Voice Prompt State & Native Refs
   const [voiceQuestion, setVoiceQuestion] = useState(VOICE_QUESTIONS[0]);
   const [isRecording, setIsRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
   const [recordedBase64, setRecordedBase64] = useState('');
+
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
   // Fetch current user details
   useEffect(() => {
@@ -147,20 +153,50 @@ const ProfileSetup = ({ token, onLogout }) => {
     setPrompts(updated);
   };
 
-  // Simulated Voice Recorder: to ensure fully functional voice memos in browser testing environment
-  const startRecording = () => {
-    setIsRecording(true);
+  // Real Native Voice Recorder using MediaRecorder API
+  const startRecording = async () => {
     setError('');
+    setMessage('');
+    audioChunksRef.current = [];
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const reader = new FileReader();
+        reader.readAsDataURL(audioBlob);
+        reader.onloadend = () => {
+          const base64Audio = reader.result;
+          setRecordedBase64(base64Audio);
+          setAudioUrl(URL.createObjectURL(audioBlob));
+          setMessage('Voice greeting recorded successfully! Listen to it below.');
+        };
+        
+        // Stop all tracks on the stream to release the mic
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Error starting voice recording:', err);
+      setError('Could not access microphone. Please allow microphone access in your browser.');
+    }
   };
 
   const stopRecording = () => {
-    setIsRecording(false);
-    // Standard mock travel audio memo (base64 string representing a brief synthesized bell/beep or quick audio track)
-    // Here, we provide a premium mock base64 sound representing a cozy high-quality greeting beep
-    const mockBase64Audio = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAAA';
-    setRecordedBase64(mockBase64Audio);
-    setAudioUrl(mockBase64Audio);
-    setMessage('Mock audio voice greeting recorded successfully!');
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -579,11 +615,16 @@ const ProfileSetup = ({ token, onLogout }) => {
                   )}
 
                   {recordedBase64 && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <div className="pulse-dot"></div>
-                      <span style={{ fontSize: '0.85rem', color: 'var(--cyan)' }}>
-                        Voice memo ready
-                      </span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', width: '100%', marginTop: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <div className="pulse-dot"></div>
+                        <span style={{ fontSize: '0.85rem', color: 'var(--cyan)', fontWeight: 500 }}>
+                          Voice memo ready!
+                        </span>
+                      </div>
+                      <div style={{ flex: 1, minWidth: '240px' }}>
+                        <audio src={recordedBase64} controls style={{ width: '100%', height: '36px', borderRadius: '8px' }} />
+                      </div>
                     </div>
                   )}
                 </div>

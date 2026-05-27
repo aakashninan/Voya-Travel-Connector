@@ -178,7 +178,7 @@ const Dashboard = ({ token, currentUser }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [feed, currentIndex, activeChatGroup]);
+  }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat]);
 
   // Show status notification
   const triggerNotification = (text, type = 'success') => {
@@ -379,7 +379,7 @@ const Dashboard = ({ token, currentUser }) => {
   const activeUserCard = feed[currentIndex];
 
   return (
-    <div className="app-layout">
+    <div className="app-layout" style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%' }}>
       {/* 1. LEFT PANEL: MATCHES & GROUP CONVERSATIONS */}
       <div className="app-layout-left glass-panel" style={{
         display: 'flex',
@@ -1218,8 +1218,97 @@ const Dashboard = ({ token, currentUser }) => {
             </form>
           </div>
         ) : (
-          /* OTHERWISE RENDER SWIPER FEED DECK */
-          <div className="deck-container">
+          <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '20px' }}>
+            {/* Sleek Top Filter Bar */}
+            <div className="glass-panel" style={{
+              display: 'grid',
+              gridTemplateColumns: '1.2fr 1.5fr 1.5fr 1.5fr auto',
+              gap: '12px',
+              padding: '16px 20px',
+              borderRadius: '16px',
+              alignItems: 'flex-end',
+              background: 'rgba(255,255,255,0.7)',
+              border: '1px solid var(--glass-border)'
+            }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Gender
+                </label>
+                <select
+                  value={genderFilter}
+                  onChange={(e) => setGenderFilter(e.target.value)}
+                  className="glass-input"
+                  style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
+                >
+                  <option value="everyone" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Everyone</option>
+                  <option value="men" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Men</option>
+                  <option value="women" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Women</option>
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Destination
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <i className="fa-solid fa-map-pin" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--terracotta)' }}></i>
+                  <input
+                    type="text"
+                    className="glass-input"
+                    placeholder="e.g. Japan, Paris"
+                    value={destinationFilter}
+                    onChange={(e) => setDestinationFilter(e.target.value)}
+                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Current Location
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <i className="fa-solid fa-house-chimney" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--sage)' }}></i>
+                  <input
+                    type="text"
+                    className="glass-input"
+                    placeholder="e.g. London, Rome"
+                    value={locationFilter}
+                    onChange={(e) => setLocationFilter(e.target.value)}
+                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Nationality
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <i className="fa-solid fa-globe" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--gold)' }}></i>
+                  <input
+                    type="text"
+                    className="glass-input"
+                    placeholder="e.g. Italian, Japanese"
+                    value={nativityFilter}
+                    onChange={(e) => setNativityFilter(e.target.value)}
+                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={fetchFeed}
+                className="btn btn-coral"
+                style={{ height: '36px', width: '38px', padding: 0, display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', borderRadius: '10px' }}
+                title="Apply Filters"
+              >
+                <i className="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+
+            {/* Swiper Deck Wrapper */}
+            <div className="deck-container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
             {currentIndex >= feed.length ? (
               <div className="glass-panel" style={{
                 padding: '40px',
@@ -1468,121 +1557,11 @@ const Dashboard = ({ token, currentUser }) => {
               </div>
             )}
           </div>
+          </div>
         )}
       </div>
 
-      {/* 3. RIGHT PANEL: SWIPE SEARCH FILTERS */}
-      <div className="app-layout-right glass-panel" style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100%',
-        padding: '24px',
-        overflowY: 'auto'
-      }}>
-        <h4 style={{ fontSize: '1.1rem', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <i className="fa-solid fa-sliders" style={{ color: 'var(--cyan)' }}></i> Search Parameters
-        </h4>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              PREFER PARTNERS
-            </label>
-            <select
-              value={genderFilter}
-              onChange={(e) => setGenderFilter(e.target.value)}
-              className="glass-input"
-            >
-              <option value="everyone" style={{ background: 'var(--bg-dark)' }}>Everyone</option>
-              <option value="men" style={{ background: 'var(--bg-dark)' }}>Men</option>
-              <option value="women" style={{ background: 'var(--bg-dark)' }}>Women</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              DESTINATION CONTAINS
-            </label>
-            <input
-              type="text"
-              className="glass-input"
-              placeholder="e.g. Japan, Paris"
-              value={destinationFilter}
-              onChange={(e) => setDestinationFilter(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              CURRENT LOCATION OR RESIDENCE
-            </label>
-            <input
-              type="text"
-              className="glass-input"
-              placeholder="e.g. London, New York"
-              value={locationFilter}
-              onChange={(e) => setLocationFilter(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              NATIVITY OR NATIONALITY
-            </label>
-            <input
-              type="text"
-              className="glass-input"
-              placeholder="e.g. Italian, Japanese"
-              value={nativityFilter}
-              onChange={(e) => setNativityFilter(e.target.value)}
-            />
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              PREFERRED TRIP DURATION
-            </label>
-            <select
-              value={durationFilter}
-              onChange={(e) => setDurationFilter(e.target.value)}
-              className="glass-input"
-            >
-              <option value="" style={{ background: 'var(--bg-dark)' }}>Flexible</option>
-              <option value="1-3 days" style={{ background: 'var(--bg-dark)' }}>1-3 days</option>
-              <option value="1-2 weeks" style={{ background: 'var(--bg-dark)' }}>1-2 weeks</option>
-              <option value="2-4 weeks" style={{ background: 'var(--bg-dark)' }}>2-4 weeks</option>
-              <option value="1 month+" style={{ background: 'var(--bg-dark)' }}>1 month+</option>
-            </select>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '8px' }}>
-              TRAVEL STYLE KEYWORD
-            </label>
-            <select
-              value={styleFilter}
-              onChange={(e) => setStyleFilter(e.target.value)}
-              className="glass-input"
-            >
-              <option value="" style={{ background: 'var(--bg-dark)' }}>Flexible</option>
-              <option value="Backpacking" style={{ background: 'var(--bg-dark)' }}>Backpacking</option>
-              <option value="Adventure" style={{ background: 'var(--bg-dark)' }}>Adventure</option>
-              <option value="Luxury" style={{ background: 'var(--bg-dark)' }}>Luxury</option>
-              <option value="Relaxing" style={{ background: 'var(--bg-dark)' }}>Relaxing</option>
-              <option value="Road-Trips" style={{ background: 'var(--bg-dark)' }}>Road-Trips</option>
-              <option value="Foodie" style={{ background: 'var(--bg-dark)' }}>Foodie</option>
-            </select>
-          </div>
-
-          <button
-            onClick={fetchFeed}
-            className="btn btn-cyan"
-            style={{ width: '100%', marginTop: '10px' }}
-          >
-            <i className="fa-solid fa-filter"></i> Apply Filters
-          </button>
-        </div>
-      </div>
 
       {/* MUTUAL MATCH FLASH SCREEN POPUP OVERLAY */}
       {matchAlert && (

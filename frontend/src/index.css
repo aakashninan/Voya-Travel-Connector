@@ -1,28 +1,39 @@
 /* WanderSync Stylesheet - Premium Twilight Glassmorphism Design System */
 
 :root {
-  --bg-dark: #f0f4f8;
-  --bg-darker: #f8fafc;
-  --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
-  --coral: #ff4d79;
-  --coral-hover: #ff2d60;
-  --coral-glow: rgba(255, 77, 121, 0.12);
-  --cyan: #0ea5e9;
-  --cyan-hover: #0284c7;
-  --cyan-glow: rgba(14, 165, 233, 0.12);
-  --violet: #8b5cf6;
-  --violet-hover: #7c3aed;
-  --violet-glow: rgba(139, 92, 246, 0.1);
-  --glass-card: rgba(255, 255, 255, 0.68);
-  --glass-card-hover: rgba(255, 255, 255, 0.85);
-  --glass-border: rgba(15, 23, 42, 0.08);
-  --glass-border-hover: rgba(15, 23, 42, 0.16);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --shadow-glow: 0 8px 32px 0 rgba(15, 23, 42, 0.05);
-  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Organic Earthy Travel Tokens */
+  --bg-sand: #F5EFE0;
+  --bg-mist: #EDE8DF;
+  --bg-ink: #1A1410;
+  --bg-dusk: #3D2B1F;
+  --clay: #C8704A;
+  --terracotta: #E8824F;
+  --sage: #7A8C6E;
+  --gold: #D4A843;
+
+  /* App Mappings */
+  --bg-dark: var(--bg-mist);
+  --bg-darker: var(--bg-sand);
+  --bg-gradient: linear-gradient(135deg, var(--bg-sand) 0%, var(--bg-mist) 100%);
+  --coral: var(--terracotta);
+  --coral-hover: var(--clay);
+  --coral-glow: rgba(232, 130, 79, 0.12);
+  --cyan: var(--sage);
+  --cyan-hover: #607253;
+  --cyan-glow: rgba(122, 140, 110, 0.12);
+  --violet: var(--bg-dusk);
+  --violet-hover: var(--bg-ink);
+  --violet-glow: rgba(61, 43, 31, 0.1);
+  --glass-card: rgba(255, 255, 255, 0.72);
+  --glass-card-hover: rgba(255, 255, 255, 0.88);
+  --glass-border: rgba(26, 20, 16, 0.08);
+  --glass-border-hover: rgba(26, 20, 16, 0.16);
+  --text-primary: var(--bg-ink);
+  --text-secondary: #4A3E36;
+  --text-muted: #7E7065;
+  --shadow-glow: 0 8px 32px 0 rgba(26, 20, 16, 0.04);
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
   --transition-elastic: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
