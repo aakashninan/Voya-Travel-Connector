@@ -1,0 +1,26 @@
+
+> wandersync-backend@1.0.0 dev
+> nodemon server.js
+
+[33m[nodemon] 3.1.14[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-01.u2zsh8o.mongodb.net
+[AI] Using fallback travel simulator engine...
+[AI] Using fallback travel simulator engine...
+[AI] Using fallback travel simulator engine...
+[AI] Using fallback travel simulator engine...
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-00.u2zsh8o.mongodb.net

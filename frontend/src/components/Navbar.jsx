@@ -283,9 +283,26 @@ const Navbar = ({ user, onLogout }) => {
             <>
               <Link
                 to="/dashboard"
-                className={`voya-nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
+                className={`voya-nav-link ${location.pathname === '/dashboard' && new URLSearchParams(location.search).get('tab') !== 'ai' ? 'active' : ''}`}
               >
-                <i className="fa-solid fa-wand-magic-sparkles"></i> Explore
+                <i className="fa-solid fa-compass"></i> Explore
+              </Link>
+              <Link
+                to="/dashboard?tab=ai"
+                className={`voya-nav-link ${location.pathname === '/dashboard' && new URLSearchParams(location.search).get('tab') === 'ai' ? 'active' : ''}`}
+                style={{
+                  color: 'var(--terracotta)',
+                  fontWeight: '600',
+                  border: '1px solid rgba(232, 130, 79, 0.35)',
+                  background: location.pathname === '/dashboard' && new URLSearchParams(location.search).get('tab') === 'ai'
+                    ? 'rgba(232, 130, 79, 0.15)'
+                    : 'rgba(232, 130, 79, 0.04)',
+                  padding: '8px 16px',
+                  borderRadius: '100px',
+                  marginRight: '6px'
+                }}
+              >
+                <i className="fa-solid fa-wand-magic-sparkles" style={{ color: 'var(--terracotta)' }}></i> AI Guide
               </Link>
               <Link
                 to="/profile"

@@ -64,206 +64,278 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
     }
   };
 
-  return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: 'calc(100vh - 120px)',
-      padding: '40px 24px',
-      position: 'relative'
-    }}>
-      <div className="welcome-gradient-bg" style={{ top: '20%' }}></div>
+  const customStyles = `
+    @media (max-width: 900px) {
+      .auth-cover {
+        display: none !important;
+      }
+      .auth-container {
+        justify-content: center !important;
+      }
+      .auth-form-panel {
+        max-width: 100% !important;
+        padding: 30px 20px !important;
+      }
+      .glass-panel-custom {
+        padding: 30px 20px !important;
+      }
+    }
+  `;
 
-      <div className="glass-panel" style={{
-        width: '100%',
-        maxWidth: '460px',
-        padding: '40px',
-        borderRadius: '24px',
-        position: 'relative',
-        zIndex: 10
+  return (
+    <>
+      <style>{customStyles}</style>
+      <div className="auth-container" style={{
+        display: 'flex',
+        minHeight: 'calc(100vh - 70px)',
+        background: 'var(--bg-sand)',
+        fontFamily: 'var(--font-body)',
+        overflow: 'hidden'
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+        {/* 1. LEFT PANEL: VISUAL ADVENTURE SLIDESHOW COVER */}
+        <div className="auth-cover" style={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '60px',
+          position: 'relative',
+          backgroundImage: `linear-gradient(to right, rgba(26, 20, 16, 0.75) 0%, rgba(26, 20, 16, 0.4) 100%), url(/voya_auth_cover.png)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          color: '#FFF'
+        }}>
+          {/* Cover logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '12px',
+              width: '28px',
+              height: '28px',
+              borderRadius: '8px',
               background: 'var(--terracotta)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
+              justifyContent: 'center'
             }}>
-              <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '22px', height: '22px' }}>
+              <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '14px', height: '14px' }}>
                 <path d="M3 4L9 14L15 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
                 <circle cx="9" cy="7" r="2.8" stroke="white" strokeWidth="1.8"/>
               </svg>
             </div>
-            <span style={{
-              fontFamily: 'Playfair Display, serif',
-              fontSize: '2.5rem',
-              fontWeight: 900,
-              color: 'var(--text-primary)',
-              letterSpacing: '-0.03em',
-              lineHeight: 1
-            }}>
-              vo<span style={{ color: 'var(--terracotta)' }}>ya</span>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--bg-sand)' }}>
+              voya
             </span>
           </div>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '8px', fontWeight: 700, color: 'var(--text-primary)' }}>
-            {isRegister ? 'Create Account' : 'Welcome Back'}
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-            {isRegister ? 'Find companion travelers around the globe' : 'Sign in to connect with matching travelers'}
-          </p>
+
+          {/* Cover slogan */}
+          <div style={{ maxWidth: '460px' }}>
+            <h1 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '2.8rem',
+              fontWeight: 900,
+              lineHeight: '1.2',
+              color: '#FFF',
+              marginBottom: '20px',
+              textShadow: '0 2px 4px rgba(0,0,0,0.2)'
+            }}>
+              Explore the world with travelers who share your <span style={{ color: 'var(--terracotta)' }}>rhythm.</span>
+            </h1>
+            <p style={{
+              fontSize: '1rem',
+              color: 'rgba(255,255,255,0.85)',
+              lineHeight: '1.6',
+              fontWeight: 400
+            }}>
+              Connect with premium companions, draft seamless itineraries using Voya AI, and embark on shared planning adventures.
+            </p>
+          </div>
+
+          {/* Cover footer info */}
+          <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', display: 'flex', gap: '16px' }}>
+            <span>📍 Munnar, Kerala</span>
+            <span>•</span>
+            <span>🌍 4.2k active nodes</span>
+          </div>
         </div>
 
-        {error && (
-          <div style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid #ef4444',
-            color: '#f87171',
-            padding: '12px 16px',
-            borderRadius: '12px',
-            fontSize: '0.85rem',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
+        {/* 2. RIGHT PANEL: SIGN IN / UP FORM */}
+        <div className="auth-form-panel" style={{
+          width: '100%',
+          maxWidth: '560px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '40px 60px',
+          background: 'var(--bg-gradient)',
+          overflowY: 'auto'
+        }}>
+          <div className="glass-panel glass-panel-custom" style={{
+            width: '100%',
+            padding: '40px',
+            borderRadius: '24px',
+            background: 'var(--glass-card)',
+            border: '1px solid var(--glass-border)',
+            boxShadow: 'var(--shadow-glow)'
           }}>
-            <i className="fa-solid fa-circle-exclamation"></i>
-            <span>{error}</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {isRegister && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-                First Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder="e.g. Aakash"
-                value={formData.name}
-                onChange={handleChange}
-                className="glass-input"
-              />
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <h2 style={{ fontSize: '1.85rem', marginBottom: '8px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
+                {isRegister ? 'Create Account' : 'Welcome Back'}
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                {isRegister ? 'Find companion travelers around the globe' : 'Sign in to connect with matching travelers'}
+              </p>
             </div>
-          )}
 
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-              Email Address
-            </label>
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="you@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              className="glass-input"
-            />
-          </div>
+            {error && (
+              <div style={{
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid #ef4444',
+                color: '#f87171',
+                padding: '12px 16px',
+                borderRadius: '12px',
+                fontSize: '0.85rem',
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <i className="fa-solid fa-circle-exclamation"></i>
+                <span>{error}</span>
+              </div>
+            )}
 
-          {isRegister && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {isRegister && (
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    placeholder="e.g. Aakash"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="glass-input"
+                    style={{ background: '#FFF', border: '1px solid var(--glass-border)', padding: '12px 16px', borderRadius: '12px', width: '100%' }}
+                  />
+                </div>
+              )}
+
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-                  Age
+                  Email Address
                 </label>
                 <input
-                  type="number"
-                  name="age"
+                  type="email"
+                  name="email"
                   required
-                  min="18"
-                  max="120"
-                  placeholder="e.g. 24"
-                  value={formData.age}
+                  placeholder="you@example.com"
+                  value={formData.email}
                   onChange={handleChange}
                   className="glass-input"
+                  style={{ background: '#FFF', border: '1px solid var(--glass-border)', padding: '12px 16px', borderRadius: '12px', width: '100%' }}
                 />
               </div>
+
+              {isRegister && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
+                      Age
+                    </label>
+                    <input
+                      type="number"
+                      name="age"
+                      required
+                      min="18"
+                      max="120"
+                      placeholder="e.g. 24"
+                      value={formData.age}
+                      onChange={handleChange}
+                      className="glass-input"
+                      style={{ background: '#FFF', border: '1px solid var(--glass-border)', padding: '12px 16px', borderRadius: '12px', width: '100%' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
+                      Gender
+                    </label>
+                    <select
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleChange}
+                      className="glass-input"
+                      style={{ cursor: 'pointer', background: '#FFF', border: '1px solid var(--glass-border)', padding: '12px 16px', borderRadius: '12px', width: '100%' }}
+                    >
+                      <option value="men">Men</option>
+                      <option value="women">Women</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-                  Gender
+                  Password
                 </label>
-                <select
-                  name="gender"
-                  value={formData.gender}
+                <input
+                  type="password"
+                  name="password"
+                  required
+                  placeholder="••••••••"
+                  value={formData.password}
                   onChange={handleChange}
                   className="glass-input"
-                  style={{ cursor: 'pointer' }}
-                >
-                  <option value="men" style={{ background: 'var(--bg-dark)' }}>Men</option>
-                  <option value="women" style={{ background: 'var(--bg-dark)' }}>Women</option>
-                  <option value="other" style={{ background: 'var(--bg-dark)' }}>Other</option>
-                </select>
+                  style={{ background: '#FFF', border: '1px solid var(--glass-border)', padding: '12px 16px', borderRadius: '12px', width: '100%' }}
+                />
               </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-coral"
+                style={{ width: '100%', marginTop: '8px', background: 'var(--terracotta)', color: '#fff', border: 'none', padding: '14px', borderRadius: '12px', fontSize: '0.95rem', fontWeight: '600', cursor: 'pointer' }}
+              >
+                {loading ? (
+                  <>
+                    <i className="fa-solid fa-circle-notch fa-spin"></i> Processing...
+                  </>
+                ) : (
+                  isRegister ? 'Create Account' : 'Sign In'
+                )}
+              </button>
+            </form>
+
+            <div style={{
+              textAlign: 'center',
+              marginTop: '24px',
+              paddingTop: '20px',
+              borderTop: '1px solid var(--glass-border)',
+              fontSize: '0.85rem',
+              color: 'var(--text-secondary)'
+            }}>
+              {isRegister ? (
+                <span>
+                  Already have an account?{' '}
+                  <Link to="/login" style={{ color: 'var(--terracotta)', textDecoration: 'none', fontWeight: 600 }}>
+                    Login here
+                  </Link>
+                </span>
+              ) : (
+                <span>
+                  Don't have an account?{' '}
+                  <Link to="/register" style={{ color: 'var(--terracotta)', textDecoration: 'none', fontWeight: 600 }}>
+                    Sign up for free
+                  </Link>
+                </span>
+              )}
             </div>
-          )}
-
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', fontWeight: 500 }}>
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              required
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={handleChange}
-              className="glass-input"
-            />
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-coral"
-            style={{ width: '100%', marginTop: '8px', position: 'relative' }}
-          >
-            {loading ? (
-              <>
-                <i className="fa-solid fa-circle-notch fa-spin"></i> Processing...
-              </>
-            ) : (
-              isRegister ? 'Create Account' : 'Sign In'
-            )}
-          </button>
-        </form>
-
-        <div style={{
-          textAlign: 'center',
-          marginTop: '24px',
-          paddingTop: '20px',
-          borderTop: '1px solid var(--glass-border)',
-          fontSize: '0.85rem',
-          color: 'var(--text-secondary)'
-        }}>
-          {isRegister ? (
-            <span>
-              Already have an account?{' '}
-              <Link to="/login" style={{ color: 'var(--cyan)', textDecoration: 'none', fontWeight: 600 }}>
-                Login here
-              </Link>
-            </span>
-          ) : (
-            <span>
-              Don't have an account?{' '}
-              <Link to="/register" style={{ color: 'var(--coral)', textDecoration: 'none', fontWeight: 600 }}>
-                Sign up for free
-              </Link>
-            </span>
-          )}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

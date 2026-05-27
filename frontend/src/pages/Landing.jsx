@@ -659,9 +659,7 @@ const Landing = () => {
             </h1>
 
             <p className="voya-hero-sub">
-              voya connects travelers like a dating app, but for shared trips.
-              Vibe-check strangers using Hinge-style voice and text prompts, swipe to match,
-              and seamlessly organize group adventures with mutual approvals.
+              Voya connects solo travelers with the perfect companions for shared adventures. Skip the impersonal travel forums—vibe-check potential trip partners through personality prompts, match with like-minded explorers, and co-create unforgettable journeys together.
             </p>
 
             <div className="voya-hero-actions">
@@ -994,7 +992,7 @@ const Landing = () => {
             <div className="voya-feat-icon-wrap voya-icon-coral">
               <i className="fa-solid fa-microphone-lines" />
             </div>
-            <div className="voya-feat-title">Hinge-Style Vibe Check</div>
+            <div className="voya-feat-title">Vibe Check</div>
             <p className="voya-feat-desc">
               Build a profile packed with personality. Upload travel pictures, answer adventurous text prompts,
               and share audio voice memos so your future travel buddies can check the vibe before connecting.

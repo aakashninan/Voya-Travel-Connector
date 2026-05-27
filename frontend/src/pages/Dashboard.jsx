@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
 const Dashboard = ({ token, currentUser }) => {
   const chatEndRef = useRef(null);
+  const aiInputRef = useRef(null);
+  const location = useLocation();
+  const navigate = useNavigate();
   // Feed & Filters States
   const [feed, setFeed] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,6 +44,17 @@ const Dashboard = ({ token, currentUser }) => {
   // Feedback notifications
   const [notify, setNotify] = useState({ text: '', type: '' }); // type: 'success' | 'error'
 
+  // AI Travel Co-Pilot States
+  const [activeAIChat, setActiveAIChat] = useState(false);
+  const [aiMessages, setAiMessages] = useState([
+    {
+      role: 'assistant',
+      content: `👋 Hello traveler! I am your **Voya AI Travel Co-Pilot**. \n\nTell me where you want to go and what your budget is (e.g., *"$500 for a 3-day trip to Tokyo"* or *"moderate budget for Paris"*), and I will compile a complete day-by-day itinerary and match you with perfect hotel suggestions!\n\nWhere are we traveling next? ✈️`
+    }
+  ]);
+  const [aiInput, setAiInput] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
+
   // Voice playback simulation
   const [playingAudioIdx, setPlayingAudioIdx] = useState(null); // indices
 
@@ -66,60 +81,32 @@ const Dashboard = ({ token, currentUser }) => {
     }
   };
 
-  // Fetch Matches, Groups, & Invites
+  // Fetch Matches, Groups, & Invites (Consolidated single fast API request)
   const fetchConnections = async () => {
     try {
-      // 1. Matches
-      const resMatches = await fetch(`${API_BASE_URL}/api/matches`, {
+      const activeChatId = activeDirectMatchChat?._id || '';
+      const res = await fetch(`${API_BASE_URL}/api/users/sync?activeDirectChatId=${activeChatId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      if (resMatches.ok) {
-        const data = await resMatches.json();
-        setMatches(data);
-      }
-
-      // 2. Groups
-      const resGroups = await fetch(`${API_BASE_URL}/api/groups`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (resGroups.ok) {
-        const data = await resGroups.json();
-        setMyGroups(data);
-        // If we have an active chat, update its content from fresh data
-        if (activeChatGroup) {
-          const freshActive = data.find(g => g._id === activeChatGroup._id);
-          if (freshActive) {
-            setActiveChatGroup(freshActive);
-          }
+      if (res.ok) {
+        const data = await res.json();
+        
+        if (data.matches) setMatches(data.matches);
+        if (data.likesReceived) setLikesReceived(data.likesReceived);
+        if (data.pendingInvites) setPendingInvites(data.pendingInvites);
+        if (data.directMessages && activeChatId) {
+          setDirectMessages(data.directMessages);
         }
-      }
-
-      // 3. Pending invites
-      const resInvites = await fetch(`${API_BASE_URL}/api/groups/invites`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (resInvites.ok) {
-        const data = await resInvites.json();
-        setPendingInvites(data);
-      }
-
-      // 4. Who Liked Me (Likes Received)
-      const resLikes = await fetch(`${API_BASE_URL}/api/matches/likes-received`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (resLikes.ok) {
-        const data = await resLikes.json();
-        setLikesReceived(data);
-      }
-
-      // 5. Direct Messages (1-on-1 chats)
-      if (activeDirectMatchChat) {
-        const resDirect = await fetch(`${API_BASE_URL}/api/matches/${activeDirectMatchChat._id}/messages`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (resDirect.ok) {
-          const data = await resDirect.json();
-          setDirectMessages(data);
+        
+        if (data.groups) {
+          setMyGroups(data.groups);
+          // If we have an active chat, update its content from fresh data
+          if (activeChatGroup) {
+            const freshActive = data.groups.find(g => g._id === activeChatGroup._id);
+            if (freshActive) {
+              setActiveChatGroup(freshActive);
+            }
+          }
         }
       }
     } catch (err) {
@@ -149,26 +136,54 @@ const Dashboard = ({ token, currentUser }) => {
     }
   }, [token]);
 
-  // Periodic polling for new chat messages & invitations (Optimized for real-time 1.5-second syncing)
+  // Listen to URL search queries to toggle AI Chat Tab dynamically (e.g. from global Header)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('tab') === 'ai') {
+      setActiveAIChat(true);
+      setActiveChatGroup(null);
+      setActiveDirectMatchChat(null);
+      setActiveLikerDetail(null);
+    } else {
+      setActiveAIChat(false);
+    }
+  }, [location.search]);
+
+  // Periodic polling for new chat messages & invitations (Adaptive Polling Engine to prevent server congestion)
   useEffect(() => {
     if (!token) return;
+    const pollInterval = (activeChatGroup || activeDirectMatchChat) ? 3000 : 8000;
     const interval = setInterval(() => {
       fetchConnections();
-    }, 1500);
+    }, pollInterval);
     return () => clearInterval(interval);
   }, [token, activeChatGroup, activeDirectMatchChat]);
 
-  // Automatically scroll chat logs to bottom when messages list updates
+  // Automatically scroll normal chat logs to bottom when messages updates
   useEffect(() => {
-    if (chatEndRef.current) {
+    if (chatEndRef.current && (activeChatGroup || activeDirectMatchChat)) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [activeChatGroup?.messages, activeChatGroup?._id, directMessages, activeDirectMatchChat?._id]);
 
+  // Automatically scroll AI chat timeline to bottom on new messages or tab load
+  useEffect(() => {
+    if (chatEndRef.current && activeAIChat) {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [aiMessages, activeAIChat]);
+
+  // Auto-focus the AI Input bar as soon as loading is complete or chat opens
+  useEffect(() => {
+    if (!aiLoading && activeAIChat && aiInputRef.current) {
+      aiInputRef.current.focus();
+    }
+  }, [aiLoading, activeAIChat]);
+
   // Keydown event listener for left/right arrows to like/skip cards
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (activeChatGroup || activeDirectMatchChat) return; // Disable keyboard swipes during chat sessions
+      if (activeChatGroup || activeDirectMatchChat || activeAIChat) return; // Disable keyboard swipes during chat sessions
       
       const activeInput = document.activeElement;
       if (
@@ -212,7 +227,7 @@ const Dashboard = ({ token, currentUser }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat, activeLikerDetail]);
+  }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat, activeLikerDetail, activeAIChat]);
 
   // Show status notification
   const triggerNotification = (text, type = 'success') => {
@@ -368,6 +383,46 @@ const Dashboard = ({ token, currentUser }) => {
     }
   };
 
+  // Send message to Voya AI Travel Co-Pilot
+  const handleSendMessageToAI = async (e) => {
+    e.preventDefault();
+    if (!aiInput.trim()) return;
+
+    const userMessage = { role: 'user', content: aiInput.trim() };
+    const updatedMessages = [...aiMessages, userMessage];
+    setAiMessages(updatedMessages);
+    setAiInput('');
+    setAiLoading(true);
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/ai/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ messages: updatedMessages })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setAiMessages([...updatedMessages, { role: 'assistant', content: data.reply }]);
+      } else {
+        setAiMessages([
+          ...updatedMessages,
+          { role: 'assistant', content: `⚠️ Sorry traveler, I hit a slight turbulence check on my flight systems. Could you try asking again?` }
+        ]);
+      }
+    } catch (err) {
+      console.error('AI chat error:', err);
+      setAiMessages([
+        ...updatedMessages,
+        { role: 'assistant', content: `⚠️ Sorry traveler, my connection to the cockpit seems slightly offline. Let's try once more!` }
+      ]);
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   // Invite match to active group
   const handleSendGroupInvite = async (e) => {
     e.preventDefault();
@@ -452,6 +507,45 @@ const Dashboard = ({ token, currentUser }) => {
             </span>
           </div>
         </div>
+
+        {/* AI Travel Co-Pilot CTA Button */}
+        <button
+          onClick={() => {
+            setActiveAIChat(true);
+            setActiveChatGroup(null);
+            setActiveDirectMatchChat(null);
+            setActiveLikerDetail(null);
+          }}
+          className={`btn ${activeAIChat ? 'btn-coral' : 'btn-glass'}`}
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            padding: '14px',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            borderRadius: '14px',
+            marginBottom: '20px',
+            border: activeAIChat ? '1px solid var(--terracotta)' : '1px solid var(--glass-border)',
+            boxShadow: activeAIChat ? '0 4px 15px rgba(200, 112, 74, 0.25)' : 'none',
+            transition: 'all 0.3s ease'
+          }}
+        >
+          <span style={{ fontSize: '1.1rem' }}>✨</span>
+          <span>voya AI Guide</span>
+          {activeAIChat && (
+            <span style={{
+              marginLeft: 'auto',
+              background: 'rgba(255, 255, 255, 0.2)',
+              padding: '2px 8px',
+              borderRadius: '20px',
+              fontSize: '0.65rem',
+              textTransform: 'uppercase'
+            }}>Active</span>
+          )}
+        </button>
 
         {/* Global Toast Alert */}
         {notify.text && (
@@ -546,6 +640,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveChatGroup(group);
                       setActiveDirectMatchChat(null);
                       setActiveLikerDetail(null);
+                      setActiveAIChat(false);
                       // Turn off swiping feed to open group chat page!
                     }}
                     style={{
@@ -643,6 +738,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveLikerDetail(liker);
                       setActiveChatGroup(null);
                       setActiveDirectMatchChat(null);
+                      setActiveAIChat(false);
                     }}
                     className="liker-card-hover"
                     style={{
@@ -700,6 +796,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveDirectMatchChat(m);
                       setActiveChatGroup(null);
                       setActiveLikerDetail(null);
+                      setActiveAIChat(false);
                     }}
                     style={{
                       display: 'flex',
@@ -741,7 +838,151 @@ const Dashboard = ({ token, currentUser }) => {
 
       {/* 2. CENTER PANEL: SWIPING CARD DECK OR GROUP CHAT OR DIRECT MATCH FORUM OR LIKER ELABORATE VIEW */}
       <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
-        {activeDirectMatchChat ? (
+        {activeAIChat ? (
+          /* ✨ VOYA AI TRAVEL CO-PILOT WORKSPACE */
+          <div className="glass-panel" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            padding: '24px',
+            position: 'relative',
+            background: 'var(--mist-card)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: '24px',
+            boxShadow: 'var(--shadow-crisp)'
+          }}>
+            {/* AI Chat Header */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid var(--glass-border)',
+              paddingBottom: '16px',
+              marginBottom: '16px'
+            }}>
+              <div>
+                <button
+                  onClick={() => {
+                    setActiveAIChat(false);
+                    navigate('/dashboard');
+                  }}
+                  className="btn btn-glass"
+                  style={{ padding: '6px 12px', fontSize: '0.8rem', marginBottom: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.4)' }}
+                >
+                  <i className="fa-solid fa-chevron-left"></i> Back to Explore
+                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{
+                    width: '42px',
+                    height: '42px',
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, var(--terracotta) 0%, var(--clay) 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '1.25rem',
+                    color: '#fff',
+                    boxShadow: '0 4px 10px rgba(200, 112, 74, 0.2)'
+                  }}>✨</div>
+                  <div>
+                    <h3 style={{ fontSize: '1.25rem', fontFamily: 'var(--font-serif)', color: 'var(--text-primary)', margin: 0, fontWeight: 750 }}>Voya AI Travel Guide</h3>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                      ⚡ Custom day-by-day itineraries and budget hotel matchmaker
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* AI Messages timeline */}
+            <div style={{
+              flex: 1,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              paddingRight: '8px',
+              marginBottom: '20px'
+            }}>
+              {aiMessages.map((msg, idx) => {
+                const isUser = msg.role === 'user';
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      alignSelf: isUser ? 'flex-end' : 'flex-start',
+                      maxWidth: '85%',
+                      background: isUser ? 'var(--terracotta)' : '#FFF',
+                      color: isUser ? '#fff' : 'var(--text-primary)',
+                      border: isUser ? 'none' : '1px solid var(--glass-border)',
+                      padding: '14px 18px',
+                      borderRadius: isUser ? '18px 18px 0 18px' : '18px 18px 18px 0',
+                      boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
+                      fontSize: '0.9rem',
+                      lineHeight: '1.6',
+                      whiteSpace: 'pre-wrap',
+                      fontFamily: 'var(--font-sans)'
+                    }}
+                  >
+                    {msg.content}
+                  </div>
+                );
+              })}
+
+              {aiLoading && (
+                <div style={{
+                  alignSelf: 'flex-start',
+                  maxWidth: '85%',
+                  background: '#FFF',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--glass-border)',
+                  padding: '14px 18px',
+                  borderRadius: '18px 18px 18px 0',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  fontSize: '0.85rem'
+                }}>
+                  <div className="spinner-border text-coral" role="status" style={{ width: '1rem', height: '1rem', borderWidth: '2px', color: 'var(--terracotta)' }}></div>
+                  <span style={{ color: 'var(--text-secondary)' }}>Voya AI is planning your route and match budgets...</span>
+                </div>
+              )}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* AI Message Input */}
+            <form
+              onSubmit={handleSendMessageToAI}
+              style={{
+                display: 'flex',
+                gap: '10px',
+                borderTop: '1px solid var(--glass-border)',
+                paddingTop: '16px'
+              }}
+            >
+              <input
+                ref={aiInputRef}
+                type="text"
+                className="glass-input"
+                placeholder="Ask e.g. 'I want to go to Tokyo for 3 days with a backpacker budget of $500'..."
+                value={aiInput}
+                onChange={(e) => setAiInput(e.target.value)}
+                style={{ flex: 1, padding: '14px 18px', fontSize: '0.9rem', borderRadius: '14px', border: '1px solid var(--glass-border)', background: '#FFF' }}
+                disabled={aiLoading}
+                required
+              />
+              <button
+                type="submit"
+                className="btn btn-coral"
+                style={{ padding: '14px 28px', borderRadius: '14px', fontSize: '0.9rem', fontWeight: '600', background: 'var(--terracotta)', color: '#fff', border: 'none' }}
+                disabled={aiLoading}
+              >
+                Plan Trip
+              </button>
+            </form>
+          </div>
+        ) : activeDirectMatchChat ? (
           /* 1-on-1 DIRECT MATCH CHAT FORUM */
           <div className="glass-panel" style={{
             display: 'flex',
@@ -1002,7 +1243,7 @@ const Dashboard = ({ token, currentUser }) => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.8rem' }}>
                       <div>
                         <span style={{ color: 'var(--text-muted)', display: 'block' }}>DESTINATIONS</span>
-                        <span style={{ color: '#fff', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                           {activeLikerDetail.destinations?.join(', ') || 'Flexible'}
                         </span>
                       </div>
@@ -1014,7 +1255,7 @@ const Dashboard = ({ token, currentUser }) => {
                       </div>
                       <div>
                         <span style={{ color: 'var(--text-muted)', display: 'block' }}>DURATION</span>
-                        <span style={{ color: '#fff', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                           {activeLikerDetail.travelDuration || 'Flexible'}
                         </span>
                       </div>
@@ -1028,7 +1269,7 @@ const Dashboard = ({ token, currentUser }) => {
                       {activeLikerDetail.nativity && (
                         <div>
                           <span style={{ color: 'var(--text-muted)', display: 'block' }}>ORIGIN (NATIVITY)</span>
-                          <span style={{ color: '#fff', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                             {activeLikerDetail.nativity}
                           </span>
                         </div>
@@ -1037,7 +1278,7 @@ const Dashboard = ({ token, currentUser }) => {
                       {activeLikerDetail.location && (
                         <div>
                           <span style={{ color: 'var(--text-muted)', display: 'block' }}>RESIDES IN</span>
-                          <span style={{ color: '#fff', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                             {activeLikerDetail.location}
                           </span>
                         </div>
@@ -1454,7 +1695,7 @@ const Dashboard = ({ token, currentUser }) => {
                 <div className={`swipe-card glass-panel ${
                   swipeDirection === 'left' ? 'swipe-left-anim' :
                   swipeDirection === 'right' ? 'swipe-right-anim' : ''
-                }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0 }}>
+                }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0, borderRadius: '24px', overflowY: 'auto' }}>
                 {/* Images Carousel */}
                 <div style={{
                   width: '100%',
@@ -1525,7 +1766,7 @@ const Dashboard = ({ token, currentUser }) => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.8rem' }}>
                       <div>
                         <span style={{ color: 'var(--text-muted)', display: 'block' }}>DESTINATIONS</span>
-                        <span style={{ color: '#fff', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                           {activeUserCard.destinations?.join(', ') || 'Flexible'}
                         </span>
                       </div>
@@ -1537,7 +1778,7 @@ const Dashboard = ({ token, currentUser }) => {
                       </div>
                       <div>
                         <span style={{ color: 'var(--text-muted)', display: 'block' }}>DURATION</span>
-                        <span style={{ color: '#fff', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                           {activeUserCard.travelDuration || 'Flexible'}
                         </span>
                       </div>
@@ -1545,7 +1786,7 @@ const Dashboard = ({ token, currentUser }) => {
                       {activeUserCard.nativity && (
                         <div>
                           <span style={{ color: 'var(--text-muted)', display: 'block' }}>ORIGIN (NATIVITY)</span>
-                          <span style={{ color: '#fff', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                             {activeUserCard.nativity}
                           </span>
                         </div>
@@ -1554,7 +1795,7 @@ const Dashboard = ({ token, currentUser }) => {
                       {activeUserCard.location && (
                         <div>
                           <span style={{ color: 'var(--text-muted)', display: 'block' }}>RESIDES IN</span>
-                          <span style={{ color: '#fff', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
                             {activeUserCard.location}
                           </span>
                         </div>

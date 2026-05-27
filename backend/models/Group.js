@@ -68,4 +68,10 @@ const groupSchema = new mongoose.Schema({
   }
 });
 
+// Index to speed up membership queries
+groupSchema.index({ members: 1 });
+
+// Index to speed up pending invitation queries
+groupSchema.index({ 'invites.user': 1, 'invites.status': 1 });
+
 module.exports = mongoose.model('Group', groupSchema);

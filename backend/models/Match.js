@@ -49,4 +49,7 @@ const matchSchema = new mongoose.Schema({
 // Compound index to speed up check and prevent duplicate entries
 matchSchema.index({ sender: 1, receiver: 1 }, { unique: true });
 
+// Index to speed up "Who Liked You" lookups
+matchSchema.index({ receiver: 1, status: 1 });
+
 module.exports = mongoose.model('Match', matchSchema);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getProfile, updateProfile, getFeed } = require('../controllers/userController');
+const { getProfile, updateProfile, getFeed, getSyncData } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 
 router.route('/profile')
@@ -8,5 +8,6 @@ router.route('/profile')
   .put(protect, updateProfile);
 
 router.get('/feed', protect, getFeed);
+router.get('/sync', protect, getSyncData);
 
 module.exports = router;

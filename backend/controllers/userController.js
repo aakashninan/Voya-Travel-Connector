@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Match = require('../models/Match');
+const Group = require('../models/Group');
 
 // @desc    Get current user profile
 // @route   GET /api/users/profile
@@ -137,8 +138,86 @@ const getFeed = async (req, res) => {
   }
 };
 
+// @desc    Get consolidated sync data for real-time dashboard updates
+// @route   GET /api/users/sync
+// @access  Private
+const getSyncData = async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const { activeDirectChatId } = req.query;
+
+    // 1. Query Matches and Groups in parallel using index-covered operations
+    const [allMatches, myGroups, pendingInvites] = await Promise.all([
+      Match.find({ $or: [{ sender: currentUserId }, { receiver: currentUserId }] }),
+      Group.find({ members: currentUserId })
+        .populate('members', 'name age pictures occupation bio')
+        .populate('creator', 'name age'),
+      Group.find({
+        'invites': {
+          $elemMatch: { user: currentUserId, status: 'pending' }
+        }
+      })
+      .populate('creator', 'name age pictures occupation')
+      .select('name description destination creator createdAt')
+    ]);
+
+    // 2. Perform in-memory separation of Likes Sent, Likes Received, and Mutual Matches
+    const likedMeIds = allMatches
+      .filter(m => m.receiver && m.receiver.toString() === currentUserId.toString() && m.status === 'like')
+      .map(m => m.sender.toString());
+
+    const ILikedIds = allMatches
+      .filter(m => m.sender && m.sender.toString() === currentUserId.toString() && m.status === 'like')
+      .map(m => m.receiver.toString());
+
+    const mySwipedUserIds = allMatches
+      .filter(m => m.sender && m.sender.toString() === currentUserId.toString())
+      .map(m => m.receiver.toString());
+
+    const mutualUserIds = ILikedIds.filter(id => likedMeIds.includes(id));
+    const cleanSenderIds = likedMeIds.filter(id => !mySwipedUserIds.includes(id));
+
+    // 3. Fetch matched and liked-by users profiles in parallel
+    const [matchedUsers, likedByUsers] = await Promise.all([
+      User.find({ _id: { $in: mutualUserIds } })
+        .select('name age gender occupation bio pictures destinations travelDuration travelStyles travelCalendar'),
+      User.find({ _id: { $in: cleanSenderIds } })
+        .select('name age gender occupation bio pictures destinations travelDuration travelStyles travelCalendar')
+    ]);
+
+    // 4. Resolve direct chat messages in-memory if requested
+    let directMessages = [];
+    if (activeDirectChatId && activeDirectChatId.trim() !== '') {
+      const sortedSender = currentUserId.toString() < activeDirectChatId.toString() ? currentUserId : activeDirectChatId;
+      const sortedReceiver = currentUserId.toString() < activeDirectChatId.toString() ? activeDirectChatId : currentUserId;
+      
+      const activeMatchDoc = allMatches.find(m => 
+        m.sender && m.receiver &&
+        m.sender.toString() === sortedSender.toString() && 
+        m.receiver.toString() === sortedReceiver.toString() && 
+        m.status === 'like'
+      );
+      if (activeMatchDoc) {
+        directMessages = activeMatchDoc.messages || [];
+      }
+    }
+
+    res.json({
+      matches: matchedUsers,
+      likesReceived: likedByUsers,
+      groups: myGroups,
+      pendingInvites,
+      directMessages
+    });
+  } catch (error) {
+    console.error('Consolidated Sync Error:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getProfile,
   updateProfile,
-  getFeed
+  getFeed,
+  getSyncData
 };

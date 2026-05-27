@@ -31,6 +31,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/matches', require('./routes/matchRoutes'));
 app.use('/api/groups', require('./routes/groupRoutes'));
+app.use('/api/ai', require('./routes/aiRoutes'));
 
 // Global Error Handler
 app.use((err, req, res, next) => {

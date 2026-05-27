@@ -106,4 +106,9 @@ userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Indexes to speed up explore feed query lookups
+userSchema.index({ gender: 1 });
+userSchema.index({ nativity: 1 });
+userSchema.index({ location: 1 });
+
 module.exports = mongoose.model('User', userSchema);
