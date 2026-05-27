@@ -130,12 +130,12 @@ const Dashboard = ({ token, currentUser }) => {
     }
   }, [token]);
 
-  // Periodic polling for new chat messages & invitations
+  // Periodic polling for new chat messages & invitations (Optimized for real-time 1.5-second syncing)
   useEffect(() => {
     if (!token) return;
     const interval = setInterval(() => {
       fetchConnections();
-    }, 5000);
+    }, 1500);
     return () => clearInterval(interval);
   }, [token, activeChatGroup, activeDirectMatchChat]);
 
@@ -1222,13 +1222,15 @@ const Dashboard = ({ token, currentUser }) => {
             {/* Sleek Top Filter Bar */}
             <div className="glass-panel" style={{
               display: 'grid',
-              gridTemplateColumns: '1.2fr 1.5fr 1.5fr 1.5fr auto',
+              gridTemplateColumns: '0.9fr 1.1fr 1.1fr 1.1fr 1.1fr auto',
               gap: '12px',
               padding: '16px 20px',
               borderRadius: '16px',
               alignItems: 'flex-end',
               background: 'rgba(255,255,255,0.7)',
-              border: '1px solid var(--glass-border)'
+              border: '1px solid var(--glass-border)',
+              width: '100%',
+              zIndex: 10
             }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -1282,7 +1284,7 @@ const Dashboard = ({ token, currentUser }) => {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Nationality
+                  Nativity
                 </label>
                 <div style={{ position: 'relative' }}>
                   <i className="fa-solid fa-globe" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--gold)' }}></i>
@@ -1295,6 +1297,24 @@ const Dashboard = ({ token, currentUser }) => {
                     style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
                   />
                 </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Trip Duration
+                </label>
+                <select
+                  value={durationFilter}
+                  onChange={(e) => setDurationFilter(e.target.value)}
+                  className="glass-input"
+                  style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
+                >
+                  <option value="" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Flexible</option>
+                  <option value="1-3 days" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-3 days</option>
+                  <option value="1-2 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-2 weeks</option>
+                  <option value="2-4 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>2-4 weeks</option>
+                  <option value="1 month+" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1 month+</option>
+                </select>
               </div>
 
               <button

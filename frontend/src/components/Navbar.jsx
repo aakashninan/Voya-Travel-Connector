@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const Navbar = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [profilePics, setProfilePics] = useState(null);
+
+  useEffect(() => {
+    if (!user) {
+      setProfilePics(null);
+      return;
+    }
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    const fetchPic = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.pictures && data.pictures.length > 0) {
+            setProfilePics(data.pictures);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching navbar profile picture:', err);
+      }
+    };
+    fetchPic();
+  }, [user]);
 
   const handleLogoutClick = () => {
     onLogout();
@@ -268,7 +298,20 @@ const Navbar = ({ user, onLogout }) => {
 
               {/* User pill */}
               <div className="voya-nav-user-pill">
-                <div className="voya-nav-avatar">{initials}</div>
+                {profilePics?.[0] ? (
+                  <div style={{
+                    width: '28px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    backgroundImage: `url(${profilePics[0]})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    border: '1.5px solid var(--terracotta)',
+                    flexShrink: 0
+                  }}></div>
+                ) : (
+                  <div className="voya-nav-avatar">{initials}</div>
+                )}
                 {user?.name && (
                   <span className="voya-nav-username">{user.name.split(' ')[0]}</span>
                 )}
