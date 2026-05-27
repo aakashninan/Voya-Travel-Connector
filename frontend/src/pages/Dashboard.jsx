@@ -33,6 +33,10 @@ const Dashboard = ({ token, currentUser }) => {
   const [newGroupDesc, setNewGroupDesc] = useState('');
   const [newGroupDest, setNewGroupDest] = useState('');
 
+  // Earthy visual sync & animations
+  const [myProfile, setMyProfile] = useState(null);
+  const [swipeDirection, setSwipeDirection] = useState(null);
+
   // Feedback notifications
   const [notify, setNotify] = useState({ text: '', type: '' }); // type: 'success' | 'error'
 
@@ -123,10 +127,25 @@ const Dashboard = ({ token, currentUser }) => {
     }
   };
 
+  const fetchMyProfile = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setMyProfile(data);
+      }
+    } catch (err) {
+      console.error('Error fetching my profile:', err);
+    }
+  };
+
   useEffect(() => {
     if (token) {
       fetchFeed();
       fetchConnections();
+      fetchMyProfile();
     }
   }, [token]);
 
@@ -162,6 +181,21 @@ const Dashboard = ({ token, currentUser }) => {
         return; // Ignore keypress while typing in comments or search bars
       }
 
+      // Case 1: Swiping on detailed Liker profile from "Who Liked You"
+      if (activeLikerDetail) {
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          handleSwipe(activeLikerDetail, 'dislike');
+          setActiveLikerDetail(null); // Return to feed
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          handleSwipe(activeLikerDetail, 'like');
+          setActiveLikerDetail(null); // Return to feed
+        }
+        return;
+      }
+
+      // Case 2: Swiping on normal explore feed deck
       if (feed && feed.length > 0 && currentIndex < feed.length) {
         const activeCard = feed[currentIndex];
         if (e.key === 'ArrowLeft') {
@@ -178,7 +212,7 @@ const Dashboard = ({ token, currentUser }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat]);
+  }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat, activeLikerDetail]);
 
   // Show status notification
   const triggerNotification = (text, type = 'success') => {
@@ -213,9 +247,13 @@ const Dashboard = ({ token, currentUser }) => {
         // Always refresh connections on any successful swipe
         fetchConnections();
 
-        // Shift card deck only if swiping the active explore feed card
+        // Shift card deck with beautiful fly-off animations
         if (feed[currentIndex] && feed[currentIndex]._id === targetUser._id) {
-          setCurrentIndex(prev => prev + 1);
+          setSwipeDirection(status === 'like' ? 'right' : 'left');
+          setTimeout(() => {
+            setCurrentIndex(prev => prev + 1);
+            setSwipeDirection(null);
+          }, 350);
         }
       }
     } catch (err) {
@@ -401,11 +439,11 @@ const Dashboard = ({ token, currentUser }) => {
             width: '45px',
             height: '45px',
             borderRadius: '50%',
-            background: 'var(--coral)',
-            backgroundImage: `url(${currentUser?.pictures?.[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'})`,
+            background: 'var(--terracotta)',
+            backgroundImage: `url(${myProfile?.pictures?.[0] || currentUser?.pictures?.[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            border: '2px solid var(--cyan)'
+            border: '2.5px solid var(--terracotta)'
           }}></div>
           <div>
             <h4 style={{ fontSize: '1rem', fontWeight: 600 }}>{currentUser?.name || 'Explorer'}</h4>
@@ -1412,8 +1450,11 @@ const Dashboard = ({ token, currentUser }) => {
                   <i className="fa-solid fa-heart"></i>
                 </button>
 
-                {/* CARD DECK CARD */}
-                <div className="swipe-card glass-panel" style={{ position: 'relative', width: '100%', height: '100%', margin: 0 }}>
+                {/* CARD DECK CARD WITH ANIMATION STATES */}
+                <div className={`swipe-card glass-panel ${
+                  swipeDirection === 'left' ? 'swipe-left-anim' :
+                  swipeDirection === 'right' ? 'swipe-right-anim' : ''
+                }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0 }}>
                 {/* Images Carousel */}
                 <div style={{
                   width: '100%',
