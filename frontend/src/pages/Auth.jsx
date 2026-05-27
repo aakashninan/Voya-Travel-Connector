@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const Auth = ({ isRegister, onLoginSuccess }) => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
       : { email: formData.email, password: formData.password };
 
     try {
-      const response = await fetch(`http://localhost:5001/api/auth/${apiPath}`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/${apiPath}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

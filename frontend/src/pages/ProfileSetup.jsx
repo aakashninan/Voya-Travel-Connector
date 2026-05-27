@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const TRAVEL_STYLE_OPTIONS = [
   'Backpacking', 'Adventure', 'Luxury', 'Relaxing', 'Road-Trips', 'Foodie', 'Cultural', 'Budget', 'Nature'
@@ -62,7 +63,7 @@ const ProfileSetup = ({ token, onLogout }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('http://localhost:5001/api/users/profile', {
+        const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -193,7 +194,7 @@ const ProfileSetup = ({ token, onLogout }) => {
     };
 
     try {
-      const res = await fetch('http://localhost:5001/api/users/profile', {
+      const res = await fetch(`${API_BASE_URL}/api/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +229,7 @@ const ProfileSetup = ({ token, onLogout }) => {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5001/api/auth/delete', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/delete`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { API_BASE_URL } from '../config';
 
 const Dashboard = ({ token, currentUser }) => {
   const chatEndRef = useRef(null);
@@ -48,7 +49,7 @@ const Dashboard = ({ token, currentUser }) => {
       if (locationFilter) query += `&location=${locationFilter}`;
       if (nativityFilter) query += `&nativity=${nativityFilter}`;
 
-      const res = await fetch(`http://localhost:5001/api/users/feed${query}`, {
+      const res = await fetch(`${API_BASE_URL}/api/users/feed${query}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -65,7 +66,7 @@ const Dashboard = ({ token, currentUser }) => {
   const fetchConnections = async () => {
     try {
       // 1. Matches
-      const resMatches = await fetch('http://localhost:5001/api/matches', {
+      const resMatches = await fetch(`${API_BASE_URL}/api/matches`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resMatches.ok) {
@@ -74,7 +75,7 @@ const Dashboard = ({ token, currentUser }) => {
       }
 
       // 2. Groups
-      const resGroups = await fetch('http://localhost:5001/api/groups', {
+      const resGroups = await fetch(`${API_BASE_URL}/api/groups`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resGroups.ok) {
@@ -90,7 +91,7 @@ const Dashboard = ({ token, currentUser }) => {
       }
 
       // 3. Pending invites
-      const resInvites = await fetch('http://localhost:5001/api/groups/invites', {
+      const resInvites = await fetch(`${API_BASE_URL}/api/groups/invites`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resInvites.ok) {
@@ -99,7 +100,7 @@ const Dashboard = ({ token, currentUser }) => {
       }
 
       // 4. Who Liked Me (Likes Received)
-      const resLikes = await fetch('http://localhost:5001/api/matches/likes-received', {
+      const resLikes = await fetch(`${API_BASE_URL}/api/matches/likes-received`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (resLikes.ok) {
@@ -109,7 +110,7 @@ const Dashboard = ({ token, currentUser }) => {
 
       // 5. Direct Messages (1-on-1 chats)
       if (activeDirectMatchChat) {
-        const resDirect = await fetch(`http://localhost:5001/api/matches/${activeDirectMatchChat._id}/messages`, {
+        const resDirect = await fetch(`${API_BASE_URL}/api/matches/${activeDirectMatchChat._id}/messages`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (resDirect.ok) {
@@ -188,7 +189,7 @@ const Dashboard = ({ token, currentUser }) => {
   // Swipe Action Handler
   const handleSwipe = async (targetUser, status) => {
     try {
-      const res = await fetch('http://localhost:5001/api/matches/swipe', {
+      const res = await fetch(`${API_BASE_URL}/api/matches/swipe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -228,7 +229,7 @@ const Dashboard = ({ token, currentUser }) => {
     if (!newGroupName) return;
 
     try {
-      const res = await fetch('http://localhost:5001/api/groups', {
+      const res = await fetch(`${API_BASE_URL}/api/groups`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -257,7 +258,7 @@ const Dashboard = ({ token, currentUser }) => {
   // Group Invite approval respond (approve / reject)
   const handleInviteResponse = async (groupId, action) => {
     try {
-      const res = await fetch(`http://localhost:5001/api/groups/${groupId}/respond`, {
+      const res = await fetch(`${API_BASE_URL}/api/groups/${groupId}/respond`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -281,7 +282,7 @@ const Dashboard = ({ token, currentUser }) => {
     if (!chatMessage.trim() || !activeChatGroup) return;
 
     try {
-      const res = await fetch(`http://localhost:5001/api/groups/${activeChatGroup._id}/messages`, {
+      const res = await fetch(`${API_BASE_URL}/api/groups/${activeChatGroup._id}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -310,7 +311,7 @@ const Dashboard = ({ token, currentUser }) => {
     if (!directChatMessage.trim() || !activeDirectMatchChat) return;
 
     try {
-      const res = await fetch(`http://localhost:5001/api/matches/${activeDirectMatchChat._id}/messages`, {
+      const res = await fetch(`${API_BASE_URL}/api/matches/${activeDirectMatchChat._id}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -335,7 +336,7 @@ const Dashboard = ({ token, currentUser }) => {
     if (!inviteeMatchId || !activeChatGroup) return;
 
     try {
-      const res = await fetch(`http://localhost:5001/api/groups/${activeChatGroup._id}/invite`, {
+      const res = await fetch(`${API_BASE_URL}/api/groups/${activeChatGroup._id}/invite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
