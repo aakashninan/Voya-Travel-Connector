@@ -48,14 +48,36 @@ const Dashboard = ({ token, currentUser }) => {
 
   // AI Travel Co-Pilot States
   const [activeAIChat, setActiveAIChat] = useState(false);
-  const [aiMessages, setAiMessages] = useState([
-    {
-      role: 'assistant',
-      content: `👋 Hello traveler! I am your **Voya AI Travel Co-Pilot**. \n\nTell me where you want to go and what your budget is (e.g., *"$500 for a 3-day trip to Tokyo"* or *"moderate budget for Paris"*), and I will compile a complete day-by-day itinerary and match you with perfect hotel suggestions!\n\nWhere are we traveling next? ✈️`
+  const [aiMessages, setAiMessages] = useState(() => {
+    const saved = sessionStorage.getItem('voya_ai_messages');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Error parsing saved AI messages:', e);
+      }
     }
-  ]);
+    return [
+      {
+        role: 'assistant',
+        content: `👋 Hello traveler! I am your **Voya AI Travel Co-Pilot**. \n\nTell me where you want to go and what your budget is (e.g., *"$500 for a 3-day trip to Tokyo"* or *"moderate budget for Paris"*), and I will compile a complete day-by-day itinerary and match you with perfect hotel suggestions!\n\nWhere are we traveling next? ✈️`
+      }
+    ];
+  });
   const [aiInput, setAiInput] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
+
+  // Sync AI Messages to Session Storage for persistence across tab changes
+  useEffect(() => {
+    sessionStorage.setItem('voya_ai_messages', JSON.stringify(aiMessages));
+  }, [aiMessages]);
+
+  // Clear AI chat history upon logout (token deletion)
+  useEffect(() => {
+    if (!token) {
+      sessionStorage.removeItem('voya_ai_messages');
+    }
+  }, [token]);
 
   // Voice playback simulation
   const [playingAudioIdx, setPlayingAudioIdx] = useState(null); // indices
