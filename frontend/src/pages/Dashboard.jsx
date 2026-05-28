@@ -439,9 +439,10 @@ const Dashboard = ({ token, currentUser }) => {
       if (res.ok) {
         setAiMessages([...updatedMessages, { role: 'assistant', content: data.reply }]);
       } else {
+        const errorMsg = data.message || `⚠️ Sorry traveler, I hit a slight turbulence check on my flight systems. Could you try asking again?`;
         setAiMessages([
           ...updatedMessages,
-          { role: 'assistant', content: `⚠️ Sorry traveler, I hit a slight turbulence check on my flight systems. Could you try asking again?` }
+          { role: 'assistant', content: errorMsg }
         ]);
       }
     } catch (err) {

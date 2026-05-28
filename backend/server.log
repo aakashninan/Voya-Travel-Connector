@@ -186,3 +186,15 @@ Node.js v25.2.1
 [32m[nodemon] starting `node server.js`[39m
 Server running in development mode on port 5001
 MongoDB Connected: ac-iuylm4y-shard-00-01.tjfsmyv.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-iuylm4y-shard-00-01.tjfsmyv.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-iuylm4y-shard-00-02.tjfsmyv.mongodb.net

@@ -83,6 +83,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '' // e.g. "Summer 2026", "June-July"
   },
+  aiQueryCount: {
+    type: Number,
+    default: 0
+  },
+  lastAIQueryDate: {
+    type: String,
+    default: '' // Format: YYYY-MM-DD
+  },
   createdAt: {
     type: Date,
     default: Date.now

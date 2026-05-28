@@ -1,3 +1,5 @@
+const User = require('../models/User');
+
 const getAIChatResponse = async (req, res) => {
   try {
     const { messages } = req.body;
@@ -8,6 +10,35 @@ const getAIChatResponse = async (req, res) => {
 
     const lastMessage = messages[messages.length - 1];
     const userText = lastMessage.content || '';
+
+    // Enforce strict limit of 6 requests per day per traveler
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    // Get fresh user record from DB to ensure count is accurate
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(401).json({ message: 'User not found.' });
+    }
+
+    // Reset daily count if date has shifted
+    if (user.lastAIQueryDate !== todayStr) {
+      user.aiQueryCount = 0;
+      user.lastAIQueryDate = todayStr;
+    }
+
+    const DAILY_LIMIT = 6;
+    if (user.aiQueryCount >= DAILY_LIMIT) {
+      return res.status(429).json({
+        message: `⚠️ **Voya Co-Pilot Daily Cap Reached** ⚠️\n\nYou have consumed your **${DAILY_LIMIT} daily AI travel requests** today.\n\nTo preserve community server bandwidth, the cap resets at midnight. Check back tomorrow to map out your next dream itinerary! ✈️`
+      });
+    }
+
+    const sendSuccessResponse = async (replyText) => {
+      user.aiQueryCount += 1;
+      await user.save();
+      return res.json({ reply: replyText });
+    };
 
     const systemPrompt = `You are Voya, the ultimate AI Travel Co-Pilot, dynamic trip planner, and premium travel concierge. Your mission is to provide outstanding, expert-level travel advice.
     
@@ -104,7 +135,7 @@ const getAIChatResponse = async (req, res) => {
         if (openaiResponse.ok) {
           const aiData = await openaiResponse.json();
           const reply = aiData.choices[0].message.content;
-          return res.json({ reply });
+          return sendSuccessResponse(reply);
         } else {
           const errData = await openaiResponse.json().catch(() => ({}));
           console.error('[AI] OpenAI error response:', errData);
@@ -114,7 +145,7 @@ const getAIChatResponse = async (req, res) => {
             console.log('[AI] OpenAI key failed (out of quota/invalid). Hot-swapping to free Gemini API...');
             try {
               const reply = await queryGemini();
-              return res.json({ reply });
+              return sendSuccessResponse(reply);
             } catch (geminiErr) {
               console.error('[AI] Hot-swap Gemini also failed:', geminiErr);
             }
@@ -139,7 +170,7 @@ const getAIChatResponse = async (req, res) => {
         if (hasGemini) {
           try {
             const reply = await queryGemini();
-            return res.json({ reply });
+            return sendSuccessResponse(reply);
           } catch (geminiErr) {
             console.error('[AI] Hot-swap Gemini failed:', geminiErr);
           }
@@ -150,7 +181,7 @@ const getAIChatResponse = async (req, res) => {
     else if (hasGemini) {
       try {
         const reply = await queryGemini();
-        return res.json({ reply });
+        return sendSuccessResponse(reply);
       } catch (err) {
         console.error('[AI] Gemini fetch failed, falling back to simulator:', err);
         return res.json({
@@ -440,7 +471,7 @@ ${itineraryList.map((item, idx) => `##### Day ${idx + 1}\n${item}`).join('\n\n')
 _Would you like me to customize any day, adjust the budget tier, or suggest gourmet dining locations in ${destination}?_
     `.trim();
 
-    res.json({ reply });
+    return sendSuccessResponse(reply);
   } catch (error) {
     console.error('AI Controller Error:', error);
     res.status(500).json({ message: error.message });
