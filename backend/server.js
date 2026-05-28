@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
@@ -12,6 +13,7 @@ connectDB();
 const app = express();
 
 // Middlewares
+app.use(compression());
 app.use(cors());
 // Boost parsing limit to support high-fidelity Base64 voice audio or images
 app.use(express.json({ limit: '15mb' }));

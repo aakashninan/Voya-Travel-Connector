@@ -110,3 +110,14 @@ MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
 [32m[nodemon] starting `node server.js`[39m
 Server running in development mode on port 5001
 MongoDB Connected: ac-cntlhtm-shard-00-00.u2zsh8o.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-00.u2zsh8o.mongodb.net
