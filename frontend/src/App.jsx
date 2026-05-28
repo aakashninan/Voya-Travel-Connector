@@ -47,6 +47,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    sessionStorage.removeItem('voya_ai_messages');
     setToken(null);
     setUser(null);
   };
