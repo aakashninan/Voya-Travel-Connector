@@ -668,8 +668,32 @@ const ProfileSetup = ({ token, onLogout }) => {
                           Voice memo ready!
                         </span>
                       </div>
-                      <div style={{ flex: 1, minWidth: '240px' }}>
-                        <audio src={recordedBase64} controls style={{ width: '100%', height: '36px', borderRadius: '8px' }} />
+                      <div style={{ flex: 1, minWidth: '240px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <audio src={recordedBase64} controls style={{ flex: 1, height: '36px', borderRadius: '8px' }} />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setRecordedBase64('');
+                            setAudioUrl('');
+                            setMessage('Voice greeting cleared! Click Save Profile below to commit changes.');
+                          }}
+                          className="btn"
+                          style={{
+                            padding: '8px 12px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            border: '1px solid #ef4444',
+                            color: '#ef4444',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            fontSize: '0.8rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px'
+                          }}
+                          title="Delete Voice Memo"
+                        >
+                          <i className="fa-solid fa-trash-can"></i> Remove
+                        </button>
                       </div>
                     </div>
                   )}
