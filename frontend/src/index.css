@@ -506,8 +506,13 @@ h1, h2, h3, h4, h5, h6 {
   /* Adjust app layout details for bottom nav */
   .app-layout {
     grid-template-columns: 1fr !important;
-    padding-bottom: 85px !important;
+    padding: 10px !important;
     gap: 0 !important;
+    height: calc(100dvh - 76px) !important;
+  }
+  
+  .app-layout.has-mobile-nav {
+    padding-bottom: 85px !important;
   }
   
   .swipe-card {
@@ -531,58 +536,177 @@ h1, h2, h3, h4, h5, h6 {
     padding: 14px !important;
     border-radius: 16px !important;
   }
-
-  /* Clean and compact chat timeline bubble widths on mobile */
-  .premium-chat-sender,
-  .premium-chat-recipient,
-  .premium-chat-ai {
-    padding: 10px 14px !important;
-    max-width: 88% !important;
-  }
-
-  /* Prevent margins overflowing on mobile */
-  .app-layout {
-    padding: 10px !important;
-    grid-template-columns: 1fr !important;
-    gap: 0 !important;
-  }
-
-  /* Toggle mobile layout bottom padding only when bottom nav is active */
-  .app-layout.has-mobile-nav {
-    padding-bottom: 85px !important;
-  }
 }
 
 .voya-mobile-nav {
   display: none;
 }
 
-/* Premium Responsive Filter Bar Grid System */
+/* Premium Collapsible Filter Bar Grid System */
 .voya-filter-bar {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  width: 100%;
+  z-index: 10;
+  padding: 14px 20px;
+  transition: var(--transition-smooth);
+}
+
+.voya-filter-header {
+  display: none; /* Hidden on desktop */
+}
+
+.voya-filter-content {
   display: grid;
   grid-template-columns: 0.9fr 1.1fr 1.1fr 1.1fr 1.1fr auto;
   gap: 12px;
-  padding: 16px 20px;
-  border-radius: 16px;
   align-items: flex-end;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--glass-border);
   width: 100%;
-  z-index: 10;
 }
 
 @media (max-width: 768px) {
   .voya-filter-bar {
+    padding: 10px 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .voya-filter-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 4px;
+  }
+
+  .voya-filter-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-primary);
+  }
+
+  .voya-filter-header-left i {
+    color: var(--coral);
+    font-size: 0.9rem;
+  }
+
+  .voya-filter-header-left span {
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+  }
+
+  .voya-filter-badge {
+    background: var(--coral);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    margin-left: 2px;
+  }
+
+  .voya-filter-chevron {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+  }
+
+  /* When collapsed, hide the content */
+  .voya-filter-bar.collapsed .voya-filter-content {
+    display: none !important;
+  }
+
+  /* When expanded, show content with a nice grid layout */
+  .voya-filter-bar.expanded .voya-filter-content {
+    display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
-    padding: 12px !important;
-    border-radius: 12px !important;
+    margin-top: 10px;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 10px;
   }
-  
-  .voya-filter-bar button {
+
+  .voya-filter-bar.expanded .voya-filter-chevron {
+    transform: rotate(180deg);
+  }
+
+  .voya-filter-bar .voya-filter-content button {
     width: 100% !important;
     grid-column: span 2 !important;
     margin-top: 4px !important;
+    height: 40px !important;
+    border-radius: 12px !important;
+    padding: 0 16px !important;
+  }
+
+  .voya-filter-btn-text {
+    display: inline !important;
+  }
+}
+
+.voya-filter-btn-text {
+  display: none;
+}
+
+/* Premium Voya Chat Bubble Styles */
+.voya-chat-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.02);
+  line-height: 1.5;
+  font-size: 0.9rem;
+  font-family: var(--font-sans);
+  transition: var(--transition-smooth);
+}
+
+.voya-chat-bubble.me {
+  background: var(--cyan);
+  color: #fff;
+  border: none;
+  border-radius: 16px 16px 0 16px;
+}
+
+.voya-chat-bubble.other {
+  background: rgba(15, 23, 42, 0.04);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px 16px 16px 0;
+}
+
+.voya-chat-bubble.ai {
+  background: #FFF;
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px 18px 18px 0;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.voya-chat-bubble.me.ai {
+  background: var(--terracotta);
+  color: #fff;
+  border: none;
+  border-radius: 18px 18px 0 18px;
+}
+
+.voya-chat-bubble.me.coral {
+  background: var(--coral);
+}
+
+@media (max-width: 768px) {
+  .voya-chat-bubble {
+    max-width: 88% !important;
+    padding: 10px 14px !important;
+    font-size: 0.85rem !important;
   }
 }
 

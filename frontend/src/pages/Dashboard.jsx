@@ -18,6 +18,7 @@ const Dashboard = ({ token, currentUser }) => {
   const [destinationFilter, setDestinationFilter] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [nativityFilter, setNativityFilter] = useState('');
+  const [mobileFiltersExpanded, setMobileFiltersExpanded] = useState(false);
 
   // Matches, Groups, & Chat States
   const [matches, setMatches] = useState([]);
@@ -650,7 +651,7 @@ const Dashboard = ({ token, currentUser }) => {
   // Get active traveler card from deck
   const activeUserCard = feed[currentIndex];
 
-  const showMobileNav = !(activeAIChat || activeChatGroup || activeDirectMatchChat || activeLikerDetail);
+  const showMobileNav = true;
 
   return (
     <div className={`app-layout ${showMobileNav ? 'has-mobile-nav' : ''}`} style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%' }}>
@@ -1097,19 +1098,9 @@ const Dashboard = ({ token, currentUser }) => {
                 return (
                   <div
                     key={idx}
+                    className={`voya-chat-bubble ${isUser ? 'me ai' : 'ai'}`}
                     style={{
-                      alignSelf: isUser ? 'flex-end' : 'flex-start',
-                      maxWidth: '85%',
-                      background: isUser ? 'var(--terracotta)' : '#FFF',
-                      color: isUser ? '#fff' : 'var(--text-primary)',
-                      border: isUser ? 'none' : '1px solid var(--glass-border)',
-                      padding: '14px 18px',
-                      borderRadius: isUser ? '18px 18px 0 18px' : '18px 18px 18px 0',
-                      boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
-                      fontSize: '0.9rem',
-                      lineHeight: '1.6',
-                      whiteSpace: 'pre-wrap',
-                      fontFamily: 'var(--font-sans)'
+                      alignSelf: isUser ? 'flex-end' : 'flex-start'
                     }}
                   >
                     {isUser ? msg.content : renderMarkdown(msg.content)}
@@ -1258,14 +1249,9 @@ const Dashboard = ({ token, currentUser }) => {
                   return (
                     <div
                       key={idx}
+                      className={`voya-chat-bubble ${isMe ? 'me' : 'other'}`}
                       style={{
-                        alignSelf: isMe ? 'flex-end' : 'flex-start',
-                        maxWidth: '75%',
-                        background: isMe ? 'var(--cyan)' : 'rgba(15, 23, 42, 0.04)',
-                        border: isMe ? 'none' : '1px solid var(--glass-border)',
-                        padding: '10px 14px',
-                        borderRadius: isMe ? '16px 16px 0 16px' : '16px 16px 16px 0',
-                        color: isMe ? '#fff' : 'var(--text-primary)'
+                        alignSelf: isMe ? 'flex-end' : 'flex-start'
                       }}
                     >
                       <span style={{
@@ -1694,14 +1680,9 @@ const Dashboard = ({ token, currentUser }) => {
                   return (
                     <div
                       key={idx}
+                      className={`voya-chat-bubble ${isMe ? 'me coral' : 'other'}`}
                       style={{
-                        alignSelf: isMe ? 'flex-end' : 'flex-start',
-                        maxWidth: '75%',
-                        background: isMe ? 'var(--coral)' : 'rgba(15, 23, 42, 0.04)',
-                        border: isMe ? 'none' : '1px solid var(--glass-border)',
-                        padding: '10px 14px',
-                        borderRadius: isMe ? '16px 16px 0 16px' : '16px 16px 16px 0',
-                        color: isMe ? '#fff' : 'var(--text-primary)'
+                        alignSelf: isMe ? 'flex-end' : 'flex-start'
                       }}
                     >
                       <span style={{
@@ -1748,100 +1729,128 @@ const Dashboard = ({ token, currentUser }) => {
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%', gap: '20px' }}>
             {/* Sleek Top Filter Bar */}
-            <div className="voya-filter-bar glass-panel">
-              <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Gender
-                </label>
-                <select
-                  value={genderFilter}
-                  onChange={(e) => setGenderFilter(e.target.value)}
-                  className="glass-input"
-                  style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
-                >
-                  <option value="everyone" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Everyone</option>
-                  <option value="men" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Men</option>
-                  <option value="women" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Women</option>
-                </select>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Destination
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <i className="fa-solid fa-map-pin" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--terracotta)' }}></i>
-                  <input
-                    type="text"
-                    className="glass-input"
-                    placeholder="e.g. Japan, Paris"
-                    value={destinationFilter}
-                    onChange={(e) => setDestinationFilter(e.target.value)}
-                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Current Location
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <i className="fa-solid fa-house-chimney" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--sage)' }}></i>
-                  <input
-                    type="text"
-                    className="glass-input"
-                    placeholder="e.g. London, Rome"
-                    value={locationFilter}
-                    onChange={(e) => setLocationFilter(e.target.value)}
-                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Nativity
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <i className="fa-solid fa-globe" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--gold)' }}></i>
-                  <input
-                    type="text"
-                    className="glass-input"
-                    placeholder="e.g. Italian, Japanese"
-                    value={nativityFilter}
-                    onChange={(e) => setNativityFilter(e.target.value)}
-                    style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Trip Duration
-                </label>
-                <select
-                  value={durationFilter}
-                  onChange={(e) => setDurationFilter(e.target.value)}
-                  className="glass-input"
-                  style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
-                >
-                  <option value="" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Flexible</option>
-                  <option value="1-3 days" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-3 days</option>
-                  <option value="1-2 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-2 weeks</option>
-                  <option value="2-4 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>2-4 weeks</option>
-                  <option value="1 month+" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1 month+</option>
-                </select>
-              </div>
-
-              <button
-                onClick={fetchFeed}
-                className="btn btn-coral"
-                style={{ height: '36px', width: '38px', padding: 0, display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', borderRadius: '10px' }}
-                title="Apply Filters"
+            <div className={`voya-filter-bar glass-panel ${mobileFiltersExpanded ? 'expanded' : 'collapsed'}`}>
+              <div 
+                className="voya-filter-header" 
+                onClick={() => setMobileFiltersExpanded(!mobileFiltersExpanded)}
               >
-                <i className="fa-solid fa-magnifying-glass"></i>
-              </button>
+                <div className="voya-filter-header-left">
+                  <i className="fa-solid fa-sliders"></i>
+                  <span>
+                    { (genderFilter !== 'everyone' || destinationFilter || locationFilter || nativityFilter || durationFilter) 
+                      ? 'Filters Active' : 'Filter Travelers' }
+                  </span>
+                  {(() => {
+                    let count = 0;
+                    if (genderFilter !== 'everyone') count++;
+                    if (destinationFilter) count++;
+                    if (locationFilter) count++;
+                    if (nativityFilter) count++;
+                    if (durationFilter) count++;
+                    return count > 0 ? (
+                      <span className="voya-filter-badge">{count}</span>
+                    ) : null;
+                  })()}
+                </div>
+                <i className="fa-solid fa-chevron-down voya-filter-chevron"></i>
+              </div>
+
+              <div className="voya-filter-content">
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Gender
+                  </label>
+                  <select
+                    value={genderFilter}
+                    onChange={(e) => setGenderFilter(e.target.value)}
+                    className="glass-input"
+                    style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
+                  >
+                    <option value="everyone" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Everyone</option>
+                    <option value="men" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Men</option>
+                    <option value="women" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Women</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Destination
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <i className="fa-solid fa-map-pin" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--terracotta)' }}></i>
+                    <input
+                      type="text"
+                      className="glass-input"
+                      placeholder="e.g. Japan, Paris"
+                      value={destinationFilter}
+                      onChange={(e) => setDestinationFilter(e.target.value)}
+                      style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Current Location
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <i className="fa-solid fa-house-chimney" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--sage)' }}></i>
+                    <input
+                      type="text"
+                      className="glass-input"
+                      placeholder="e.g. London, Rome"
+                      value={locationFilter}
+                      onChange={(e) => setLocationFilter(e.target.value)}
+                      style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Nativity
+                  </label>
+                  <div style={{ position: 'relative' }}>
+                    <i className="fa-solid fa-globe" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '0.75rem', color: 'var(--gold)' }}></i>
+                    <input
+                      type="text"
+                      className="glass-input"
+                      placeholder="e.g. Italian, Japanese"
+                      value={nativityFilter}
+                      onChange={(e) => setNativityFilter(e.target.value)}
+                      style={{ height: '36px', padding: '0 10px 0 28px', fontSize: '0.8rem' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Trip Duration
+                  </label>
+                  <select
+                    value={durationFilter}
+                    onChange={(e) => setDurationFilter(e.target.value)}
+                    className="glass-input"
+                    style={{ height: '36px', padding: '0 10px', fontSize: '0.8rem' }}
+                  >
+                    <option value="" style={{ background: 'var(--bg-ink)', color: '#fff' }}>Flexible</option>
+                    <option value="1-3 days" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-3 days</option>
+                    <option value="1-2 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1-2 weeks</option>
+                    <option value="2-4 weeks" style={{ background: 'var(--bg-ink)', color: '#fff' }}>2-4 weeks</option>
+                    <option value="1 month+" style={{ background: 'var(--bg-ink)', color: '#fff' }}>1 month+</option>
+                  </select>
+                </div>
+
+                <button
+                  onClick={fetchFeed}
+                  className="btn btn-coral"
+                  style={{ height: '36px', width: '38px', padding: 0, display: 'flex', alignItems: 'center', justifySelf: 'center', justifyContent: 'center', borderRadius: '10px' }}
+                  title="Apply Filters"
+                >
+                  <i className="fa-solid fa-magnifying-glass"></i>
+                  <span className="voya-filter-btn-text" style={{ marginLeft: '6px', fontSize: '0.85rem' }}>Apply Filters</span>
+                </button>
+              </div>
             </div>
 
             {/* Swiper Deck Wrapper */}
@@ -2178,8 +2187,11 @@ const Dashboard = ({ token, currentUser }) => {
             onClick={() => {
               setMobileView('explore');
               setActiveAIChat(false);
+              setActiveDirectMatchChat(null);
+              setActiveChatGroup(null);
+              setActiveLikerDetail(null);
             }} 
-            className={`voya-mobile-nav-item ${mobileView === 'explore' && !activeAIChat ? 'active' : ''}`}
+            className={`voya-mobile-nav-item ${mobileView === 'explore' && !activeAIChat && !activeDirectMatchChat && !activeChatGroup ? 'active' : ''}`}
           >
             <i className="fa-solid fa-compass"></i>
             <span>Explore</span>
@@ -2187,8 +2199,12 @@ const Dashboard = ({ token, currentUser }) => {
           <button 
             onClick={() => {
               setMobileView('chats');
+              setActiveAIChat(false);
+              setActiveDirectMatchChat(null);
+              setActiveChatGroup(null);
+              setActiveLikerDetail(null);
             }} 
-            className={`voya-mobile-nav-item ${mobileView === 'chats' ? 'active' : ''}`}
+            className={`voya-mobile-nav-item ${(mobileView === 'chats' || activeDirectMatchChat || activeChatGroup) && !activeAIChat ? 'active' : ''}`}
           >
             <i className="fa-solid fa-comments"></i>
             <span>Chats</span>

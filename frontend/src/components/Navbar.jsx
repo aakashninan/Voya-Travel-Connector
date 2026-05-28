@@ -270,6 +270,7 @@ const Navbar = ({ user, onLogout }) => {
       .voya-nav {
         padding: 0 12px !important;
         height: 56px !important;
+        margin: 8px 10px 0 10px !important;
       }
       .voya-nav-links {
         gap: 6px !important;
