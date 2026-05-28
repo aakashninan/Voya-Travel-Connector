@@ -40,7 +40,7 @@ const getAIChatResponse = async (req, res) => {
 
       // Fallback chain to ensure we support whichever active model is enabled on your key
       const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
-      let lastError = null;
+      const errors = [];
 
       for (const model of modelsToTry) {
         try {
@@ -65,14 +65,15 @@ const getAIChatResponse = async (req, res) => {
           
           const errData = await response.json().catch(() => ({}));
           console.error(`[AI] Gemini model ${model} failed:`, errData);
-          lastError = errData.error?.message || `HTTP ${response.status}`;
+          const msg = errData.error?.message || `HTTP ${response.status}`;
+          errors.push(`${model}: ${msg}`);
         } catch (err) {
           console.error(`[AI] Exception with Gemini model ${model}:`, err);
-          lastError = err.message;
+          errors.push(`${model}: ${err.message}`);
         }
       }
 
-      throw new Error(`All Gemini models failed. Last error: ${lastError}`);
+      throw new Error(`All Gemini models failed. Details:\n- ${errors.join('\n- ')}`);
     };
 
     // 1. Try OpenAI if configured

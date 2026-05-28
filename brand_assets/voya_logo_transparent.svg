@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" fill="none">
+  <!-- Terracotta Rounded Mark in Center (No background for transparent overlay usage) -->
+  <rect x="150" y="150" width="700" height="700" rx="200" fill="#E8824F" />
+  
+  <!-- Perfectly Centered White Icon (Scale 22.22, Translate 300) -->
+  <g transform="translate(300, 300) scale(22.22)">
+    <path d="M3 4L9 14L15 4" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="9" cy="7" r="2.8" stroke="#FFFFFF" stroke-width="1.8" fill="none" />
+  </g>
+</svg>
