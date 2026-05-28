@@ -512,12 +512,37 @@ h1, h2, h3, h4, h5, h6 {
   
   .swipe-card {
     max-width: 100% !important;
-    height: 520px !important;
+    height: 480px !important; /* Scaled down for neat fit on phones */
   }
   
   .card-deck-wrapper {
     max-width: 100% !important;
-    height: 520px !important;
+    height: 480px !important; /* Scaled down for neat fit on phones */
+  }
+
+  /* Suppress side floating buttons completely on mobile to prevent overlapping bottom nav */
+  .floating-skip-btn, 
+  .floating-like-btn {
+    display: none !important;
+  }
+
+  /* Compact padding inside all panels on mobile devices */
+  .glass-panel {
+    padding: 14px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Clean and compact chat timeline bubble widths on mobile */
+  .premium-chat-sender,
+  .premium-chat-recipient,
+  .premium-chat-ai {
+    padding: 10px 14px !important;
+    max-width: 88% !important;
+  }
+
+  /* Prevent margins overflowing on mobile */
+  .app-layout {
+    padding: 10px !important;
   }
 }
 

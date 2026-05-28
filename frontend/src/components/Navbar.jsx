@@ -265,6 +265,35 @@ const Navbar = ({ user, onLogout }) => {
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
+    @media (max-width: 600px) {
+      .voya-nav {
+        padding: 0 12px !important;
+        height: 56px !important;
+      }
+      .voya-nav-links {
+        gap: 6px !important;
+      }
+      .voya-nav-link,
+      .voya-nav-divider {
+        display: none !important;
+      }
+      .voya-nav-username {
+        display: none !important;
+      }
+      .voya-nav-user-pill {
+        padding: 5px !important;
+        border-radius: 50% !important;
+      }
+      .voya-nav-btn-ghost {
+        padding: 8px 10px !important;
+        font-size: 0.75rem !important;
+        border-radius: 100px !important;
+      }
+      .mobile-hide-text {
+        display: none !important;
+      }
+    }
   `;
 
   const initials = user?.name
@@ -343,8 +372,8 @@ const Navbar = ({ user, onLogout }) => {
                 )}
               </Link>
 
-              <button onClick={handleLogoutClick} className="voya-nav-btn-ghost">
-                <i className="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+              <button onClick={handleLogoutClick} className="voya-nav-btn-ghost" title="Sign Out">
+                <i className="fa-solid fa-arrow-right-from-bracket"></i> <span className="mobile-hide-text">Sign Out</span>
               </button>
             </>
           ) : (
