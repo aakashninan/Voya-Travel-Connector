@@ -9,10 +9,81 @@ const getAIChatResponse = async (req, res) => {
     const lastMessage = messages[messages.length - 1];
     const userText = lastMessage.content || '';
 
-    // 1. Hybrid Check: If OPENAI_API_KEY is configured in the environment, use the real LLM
-    if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== '') {
-      console.log('[AI] API Key found. Querying OpenAI GPT-4o-mini...');
+    const systemPrompt = `You are Voya, the ultimate AI Travel Co-Pilot, dynamic trip planner, and premium travel concierge. Your mission is to provide outstanding, expert-level travel advice.
+    
+    You must answer ALL travel-related questions with high precision and rich details. When a user asks you to plan a trip, recommend stays, or give ideas:
+    1. DESTINATION IDEAS & CURATED HIGHLIGHTS: Recommend stunning travel spots, local insider secrets, best times to visit, local safety tips, and cultural etiquette.
+    2. CUSTOM STAY & HOTEL RECOMMENDATIONS: Always suggest specific, real accommodations categorized into three distinct budget tiers:
+       - 🎒 Budget / Backpacker (Premium hostels, cozy homestays, or unique local stays with estimated prices in local currency / USD)
+       - 🏨 Mid-Range / Boutique (Design-focused boutique hotels or artistic guesthouses with estimated prices)
+       - 💎 Luxury / Premium (World-class resorts, 5-star properties, or historic villa estates with estimated prices)
+       Provide estimated price tags and a vivid description of what makes each stay unique.
+    3. COST & DAILY BUDGET BREAKDOWNS: Share an estimated daily cost breakdown covering food/dining, local taxis/transit, and guided tours/sightseeing.
+    4. IMMERSIVE DAY-BY-DAY ITINERARIES: Build structured, step-by-step itineraries featuring morning, afternoon, and evening action plans, scenic photo spots, and recommended local eateries.
+    5. GENERAL TRAVEL ANSWERS: Answer any questions about flight tips, packing checklists, visa requirements, currency exchanges, local transit guides, and seasonal weather patterns.
+    
+    Formatting & Style Instructions:
+    - Use a professional, warm, encouraging, and adventurous tone with relevant travel emojis to make the guide lively and exciting.
+    - Format everything with clean, premium Markdown (tables, bullet points, clear bold headings, and horizontal rules) for exceptional contrast and comfortable screen reading.
+    - Always end your response with an engaging, friendly question to refine their trip planning.`;
+
+    const hasOpenAI = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== '';
+    const hasGemini = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '';
+
+    // Helper to query Gemini LLM
+    const queryGemini = async () => {
+      console.log('[AI] Querying Google Gemini...');
+      const cleanedMessages = messages.map(msg => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: String(msg.content || '') }]
+      }));
+
+      // Fallback chain to ensure we support whichever active model is enabled on your key
+      const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      let lastError = null;
+
+      for (const model of modelsToTry) {
+        try {
+          console.log(`[AI] Attempting Gemini model: ${model}`);
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              systemInstruction: { parts: [{ text: systemPrompt }] },
+              contents: cleanedMessages,
+              generationConfig: { temperature: 0.7 }
+            })
+          });
+
+          if (response.ok) {
+            const geminiData = await response.json();
+            if (geminiData.candidates && geminiData.candidates[0]?.content?.parts?.[0]?.text) {
+              console.log(`[AI] Gemini Success with model: ${model}`);
+              return geminiData.candidates[0].content.parts[0].text;
+            }
+          }
+          
+          const errData = await response.json().catch(() => ({}));
+          console.error(`[AI] Gemini model ${model} failed:`, errData);
+          lastError = errData.error?.message || `HTTP ${response.status}`;
+        } catch (err) {
+          console.error(`[AI] Exception with Gemini model ${model}:`, err);
+          lastError = err.message;
+        }
+      }
+
+      throw new Error(`All Gemini models failed. Last error: ${lastError}`);
+    };
+
+    // 1. Try OpenAI if configured
+    if (hasOpenAI) {
+      console.log('[AI] Querying OpenAI GPT-4o-mini...');
       try {
+        const cleanedMessages = messages.map(msg => ({
+          role: msg.role === 'assistant' ? 'assistant' : 'user',
+          content: String(msg.content || '')
+        }));
+
         const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
@@ -22,14 +93,8 @@ const getAIChatResponse = async (req, res) => {
           body: JSON.stringify({
             model: 'gpt-4o-mini',
             messages: [
-              {
-                role: 'system',
-                content: `You are the voya AI Travel Guide, a sophisticated, witty, and premium travel co-pilot. 
-                Your task is to plan trips, prepare gorgeous day-by-day itineraries, and suggest top-rated hotels.
-                Format your responses beautifully using standard Markdown. Highlight key travel sections.
-                Always ask friendly, engaging follow-up questions about their budget or preferences. Use travel emojis!`
-              },
-              ...messages
+              { role: 'system', content: systemPrompt },
+              ...cleanedMessages
             ],
             temperature: 0.7
           })
@@ -40,16 +105,60 @@ const getAIChatResponse = async (req, res) => {
           const reply = aiData.choices[0].message.content;
           return res.json({ reply });
         } else {
-          const errData = await openaiResponse.json();
+          const errData = await openaiResponse.json().catch(() => ({}));
           console.error('[AI] OpenAI error response:', errData);
-          // Fallback to simulator if OpenAI fails
+          
+          // OpenAI failed! If we have a Gemini API key, HOT-SWAP TO GEMINI automatically!
+          if (hasGemini) {
+            console.log('[AI] OpenAI key failed (out of quota/invalid). Hot-swapping to free Gemini API...');
+            try {
+              const reply = await queryGemini();
+              return res.json({ reply });
+            } catch (geminiErr) {
+              console.error('[AI] Hot-swap Gemini also failed:', geminiErr);
+            }
+          }
+
+          // If no Gemini key is set, or Gemini hot-swap failed, return a friendly OpenAI error message
+          let errorMessage = 'I encountered an error querying the OpenAI service. ';
+          if (openaiResponse.status === 401) {
+            errorMessage += 'The `OPENAI_API_KEY` configured in the backend `.env` file appears to be invalid or unauthorized.';
+          } else if (openaiResponse.status === 429) {
+            errorMessage += 'Your OpenAI account has hit a rate limit or has run out of credit/quota.';
+          } else {
+            errorMessage += `Error details: ${errData.error?.message || 'Unknown OpenAI Service error'}`;
+          }
+
+          return res.json({ 
+            reply: `⚠️ **Voya AI Co-Pilot Alert** ⚠️\n\n${errorMessage}\n\n_System has temporarily fallen back to local simulator. Ask about Munnar (Kerala), Goa, Tokyo, Paris, or Bali to test the local database!_` 
+          });
         }
       } catch (err) {
-        console.error('[AI] OpenAI fetch failed, falling back to simulator:', err);
+        console.error('[AI] OpenAI exception, trying hot-swap Gemini if available:', err);
+        if (hasGemini) {
+          try {
+            const reply = await queryGemini();
+            return res.json({ reply });
+          } catch (geminiErr) {
+            console.error('[AI] Hot-swap Gemini failed:', geminiErr);
+          }
+        }
+      }
+    }
+    // 2. Otherwise, Try Gemini directly if configured
+    else if (hasGemini) {
+      try {
+        const reply = await queryGemini();
+        return res.json({ reply });
+      } catch (err) {
+        console.error('[AI] Gemini fetch failed, falling back to simulator:', err);
+        return res.json({
+          reply: `⚠️ **Voya AI Co-Pilot Alert (Gemini)** ⚠️\n\n${err.message || 'I encountered an error querying the Gemini service.'}\n\n_System has temporarily fallen back to local simulator. Ask about Munnar (Kerala), Goa, Tokyo, Paris, or Bali to test the local database!_`
+        });
       }
     }
 
-    // 2. High-Fidelity Fallback Travel Simulator Engine
+    // 3. High-Fidelity Fallback Travel Simulator Engine
     console.log('[AI] Using fallback travel simulator engine...');
     const lowercaseText = userText.toLowerCase();
 
@@ -217,7 +326,12 @@ const getAIChatResponse = async (req, res) => {
       ];
 
       // Custom Munnar Local Expert Guide
-      if (lowercaseDest.includes('munnar')) {
+      if (
+        lowercaseDest.includes('munnar') ||
+        lowercaseDest.includes('munnare') ||
+        lowercaseDest.includes('munar') ||
+        lowercaseDest.includes('kerala')
+      ) {
         budgetAct = 'Walk through lush green tea gardens, capture mist at Photo Point, and enjoy spicy local street snacks.';
         midAct = 'Visit Eravikulam National Park to see rare Nilgiri Tahr mountain goats, boat ride at Mattupetty Dam, and explore spice gardens.';
         luxAct = 'Private 4x4 off-road jeep safari to Kolukkumalai tea estate (highest in the world) for sunrise, and high-tea on tea garden terraces.';

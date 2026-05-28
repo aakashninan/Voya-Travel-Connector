@@ -4,6 +4,8 @@ import { API_BASE_URL } from '../config';
 
 const Dashboard = ({ token, currentUser }) => {
   const chatEndRef = useRef(null);
+  const aiChatContainerRef = useRef(null);
+  const normalChatContainerRef = useRef(null);
   const aiInputRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -161,15 +163,23 @@ const Dashboard = ({ token, currentUser }) => {
 
   // Automatically scroll normal chat logs to bottom when messages updates
   useEffect(() => {
-    if (chatEndRef.current && (activeChatGroup || activeDirectMatchChat)) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (normalChatContainerRef.current && (activeChatGroup || activeDirectMatchChat)) {
+      const container = normalChatContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [activeChatGroup?.messages, activeChatGroup?._id, directMessages, activeDirectMatchChat?._id]);
 
   // Automatically scroll AI chat timeline to bottom on new messages or tab load
   useEffect(() => {
-    if (chatEndRef.current && activeAIChat) {
-      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (aiChatContainerRef.current && activeAIChat) {
+      const container = aiChatContainerRef.current;
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [aiMessages, activeAIChat]);
 
@@ -466,6 +476,59 @@ const Dashboard = ({ token, currentUser }) => {
         setPlayingAudioIdx(null);
       }, 4000);
     }
+  };
+
+  // Custom premium Markdown parser for beautiful text formatting without raw asterisks
+  const renderMarkdown = (text) => {
+    if (!text) return '';
+    const lines = text.split('\n');
+    return lines.map((line, index) => {
+      let trimmed = line.trim();
+      if (trimmed === '---') {
+        return <hr key={index} style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '12px 0' }} />;
+      }
+      if (trimmed.startsWith('### ')) {
+        return <h4 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', fontWeight: 750 }}>{parseFormatting(trimmed.substring(4))}</h4>;
+      }
+      if (trimmed.startsWith('#### ')) {
+        return <h5 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.0rem', color: 'var(--text-primary)', marginTop: '14px', marginBottom: '6px', fontWeight: 700 }}>{parseFormatting(trimmed.substring(5))}</h5>;
+      }
+      if (trimmed.startsWith('##### ')) {
+        return <h6 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', color: 'var(--text-primary)', marginTop: '12px', marginBottom: '4px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{parseFormatting(trimmed.substring(6))}</h6>;
+      }
+      if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+        return (
+          <div key={index} style={{ display: 'flex', gap: '8px', paddingLeft: '12px', marginBottom: '6px', fontSize: '0.88rem' }}>
+            <span style={{ color: 'var(--coral)' }}>•</span>
+            <span style={{ flex: 1 }}>{parseFormatting(trimmed.substring(2))}</span>
+          </div>
+        );
+      }
+      if (trimmed === '') {
+        return <div key={index} style={{ height: '8px' }} />;
+      }
+      return (
+        <p key={index} style={{ marginBottom: '8px', fontSize: '0.88rem', lineHeight: '1.5' }}>
+          {parseFormatting(line)}
+        </p>
+      );
+    });
+  };
+
+  const parseFormatting = (text) => {
+    const parts = text.split(/\*\*([^*]+)\*\*/g);
+    return parts.map((part, i) => {
+      if (i % 2 === 1) {
+        return <strong key={i} style={{ color: 'var(--text-primary)', fontWeight: 700 }}>{part}</strong>;
+      }
+      const subParts = part.split(/_([^_]+)_/g);
+      return subParts.map((subPart, j) => {
+        if (j % 2 === 1) {
+          return <em key={j} style={{ fontStyle: 'italic' }}>{subPart}</em>;
+        }
+        return subPart;
+      });
+    });
   };
 
   // Get active traveler card from deck
@@ -837,19 +900,21 @@ const Dashboard = ({ token, currentUser }) => {
       </div>
 
       {/* 2. CENTER PANEL: SWIPING CARD DECK OR GROUP CHAT OR DIRECT MATCH FORUM OR LIKER ELABORATE VIEW */}
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative', overflow: 'hidden' }}>
         {activeAIChat ? (
           /* ✨ VOYA AI TRAVEL CO-PILOT WORKSPACE */
           <div className="glass-panel" style={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
+            minHeight: 0,
             padding: '24px',
             position: 'relative',
             background: 'var(--mist-card)',
             border: '1px solid var(--glass-border)',
             borderRadius: '24px',
-            boxShadow: 'var(--shadow-crisp)'
+            boxShadow: 'var(--shadow-crisp)',
+            overflow: 'hidden'
           }}>
             {/* AI Chat Header */}
             <div style={{
@@ -895,7 +960,7 @@ const Dashboard = ({ token, currentUser }) => {
             </div>
 
             {/* AI Messages timeline */}
-            <div style={{
+            <div ref={aiChatContainerRef} style={{
               flex: 1,
               overflowY: 'auto',
               display: 'flex',
@@ -924,7 +989,7 @@ const Dashboard = ({ token, currentUser }) => {
                       fontFamily: 'var(--font-sans)'
                     }}
                   >
-                    {msg.content}
+                    {isUser ? msg.content : renderMarkdown(msg.content)}
                   </div>
                 );
               })}
@@ -1042,7 +1107,7 @@ const Dashboard = ({ token, currentUser }) => {
             </div>
 
             {/* Direct Chat Messages */}
-            <div style={{
+            <div ref={normalChatContainerRef} style={{
               flex: 1,
               overflowY: 'auto',
               display: 'flex',
@@ -1420,7 +1485,7 @@ const Dashboard = ({ token, currentUser }) => {
             </div>
 
             {/* Chat Log messages */}
-            <div style={{
+            <div ref={normalChatContainerRef} style={{
               flex: 1,
               overflowY: 'auto',
               display: 'flex',

@@ -24,3 +24,83 @@ MongoDB Connected: ac-cntlhtm-shard-00-01.u2zsh8o.mongodb.net
 [32m[nodemon] starting `node server.js`[39m
 Server running in development mode on port 5001
 MongoDB Connected: ac-cntlhtm-shard-00-00.u2zsh8o.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
+[AI] API Key found. Querying OpenAI GPT-4o-mini...
+[AI] OpenAI error response: {
+  error: {
+    message: 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.',
+    type: 'insufficient_quota',
+    param: null,
+    code: 'insufficient_quota'
+  }
+}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-01.u2zsh8o.mongodb.net
+[AI] API Key found. Querying OpenAI GPT-4o-mini...
+[AI] OpenAI error response: {
+  error: {
+    message: 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.',
+    type: 'insufficient_quota',
+    param: null,
+    code: 'insufficient_quota'
+  }
+}
+[AI] API Key found. Querying OpenAI GPT-4o-mini...
+[AI] OpenAI error response: {
+  error: {
+    message: 'You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.',
+    type: 'insufficient_quota',
+    param: null,
+    code: 'insufficient_quota'
+  }
+}
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-01.u2zsh8o.mongodb.net
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-01.u2zsh8o.mongodb.net
+[AI] Querying Google Gemini 1.5 Flash...
+[AI] Gemini error response: {
+  error: {
+    code: 404,
+    message: 'models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.',
+    status: 'NOT_FOUND'
+  }
+}
+[AI] Gemini fetch failed, falling back to simulator: Error: models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+    at queryGemini (/Users/aakashgikku/Documents/startup/backend/controllers/aiController.js:60:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async getAIChatResponse (/Users/aakashgikku/Documents/startup/backend/controllers/aiController.js:136:23)
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
+[AI] Querying Google Gemini...
+[AI] Attempting Gemini model: gemini-2.5-flash
+[AI] Gemini Success with model: gemini-2.5-flash
+[AI] Querying Google Gemini...
+[AI] Attempting Gemini model: gemini-2.5-flash
+[AI] Gemini Success with model: gemini-2.5-flash
