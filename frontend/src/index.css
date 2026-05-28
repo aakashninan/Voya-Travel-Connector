@@ -454,3 +454,74 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 8px 24px rgba(14, 165, 233, 0.15) !important;
 }
 
+/* Mobile View Responsive Blocks */
+@media (max-width: 768px) {
+  .mobile-hide {
+    display: none !important;
+  }
+  
+  /* Floating Bottom Navigation Bar for Mobile */
+  .voya-mobile-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 65px;
+    background: rgba(245, 239, 224, 0.94); /* Sand themed translucent */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid var(--glass-border);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+  }
+  
+  .voya-mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    border: none;
+    outline: none;
+    transition: var(--transition-smooth);
+    padding: 6px 12px;
+  }
+  
+  .voya-mobile-nav-item.active {
+    color: var(--coral);
+  }
+  
+  .voya-mobile-nav-item i {
+    font-size: 1.15rem;
+  }
+  
+  /* Adjust app layout details for bottom nav */
+  .app-layout {
+    grid-template-columns: 1fr !important;
+    padding-bottom: 85px !important;
+    gap: 0 !important;
+  }
+  
+  .swipe-card {
+    max-width: 100% !important;
+    height: 520px !important;
+  }
+  
+  .card-deck-wrapper {
+    max-width: 100% !important;
+    height: 520px !important;
+  }
+}
+
+.voya-mobile-nav {
+  display: none;
+}
+

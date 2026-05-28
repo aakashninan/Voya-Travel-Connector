@@ -42,6 +42,7 @@ const Dashboard = ({ token, currentUser }) => {
   // Earthy visual sync & animations
   const [myProfile, setMyProfile] = useState(null);
   const [swipeDirection, setSwipeDirection] = useState(null);
+  const [mobileView, setMobileView] = useState('explore'); // 'explore' | 'chats' | 'ai'
 
   // Feedback notifications
   const [notify, setNotify] = useState({ text: '', type: '' }); // type: 'success' | 'error'
@@ -168,8 +169,10 @@ const Dashboard = ({ token, currentUser }) => {
       setActiveChatGroup(null);
       setActiveDirectMatchChat(null);
       setActiveLikerDetail(null);
+      setMobileView('ai');
     } else {
       setActiveAIChat(false);
+      setMobileView('explore');
     }
   }, [location.search]);
 
@@ -650,7 +653,7 @@ const Dashboard = ({ token, currentUser }) => {
   return (
     <div className="app-layout" style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%' }}>
       {/* 1. LEFT PANEL: MATCHES & GROUP CONVERSATIONS */}
-      <div className="app-layout-left glass-panel" style={{
+      <div className={`app-layout-left glass-panel ${mobileView !== 'chats' ? 'mobile-hide' : ''}`} style={{
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
@@ -691,6 +694,7 @@ const Dashboard = ({ token, currentUser }) => {
             setActiveChatGroup(null);
             setActiveDirectMatchChat(null);
             setActiveLikerDetail(null);
+            setMobileView('ai');
           }}
           className={`btn ${activeAIChat ? 'btn-coral' : 'btn-glass'}`}
           style={{
@@ -817,6 +821,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveDirectMatchChat(null);
                       setActiveLikerDetail(null);
                       setActiveAIChat(false);
+                      setMobileView('explore');
                       // Turn off swiping feed to open group chat page!
                     }}
                     style={{
@@ -915,6 +920,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveChatGroup(null);
                       setActiveDirectMatchChat(null);
                       setActiveAIChat(false);
+                      setMobileView('explore');
                     }}
                     className="liker-card-hover"
                     style={{
@@ -973,6 +979,7 @@ const Dashboard = ({ token, currentUser }) => {
                       setActiveChatGroup(null);
                       setActiveLikerDetail(null);
                       setActiveAIChat(false);
+                      setMobileView('explore');
                     }}
                     style={{
                       display: 'flex',
@@ -1013,7 +1020,7 @@ const Dashboard = ({ token, currentUser }) => {
       </div>
 
       {/* 2. CENTER PANEL: SWIPING CARD DECK OR GROUP CHAT OR DIRECT MATCH FORUM OR LIKER ELABORATE VIEW */}
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative', overflow: 'hidden' }}>
+      <div className={(mobileView !== 'explore' && mobileView !== 'ai') ? 'mobile-hide' : ''} style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative', overflow: 'hidden', flex: 1 }}>
         {activeAIChat ? (
           /* ✨ VOYA AI TRAVEL CO-PILOT WORKSPACE */
           <div className="glass-panel" style={{
@@ -1042,6 +1049,7 @@ const Dashboard = ({ token, currentUser }) => {
                 <button
                   onClick={() => {
                     setActiveAIChat(false);
+                    setMobileView('explore');
                     navigate('/dashboard');
                   }}
                   className="btn btn-glass"
@@ -1180,7 +1188,10 @@ const Dashboard = ({ token, currentUser }) => {
             }}>
               <div>
                 <button
-                  onClick={() => setActiveDirectMatchChat(null)}
+                  onClick={() => {
+                    setActiveDirectMatchChat(null);
+                    setMobileView('chats');
+                  }}
                   className="btn btn-glass"
                   style={{ padding: '6px 12px', fontSize: '0.8rem', marginBottom: '8px' }}
                 >
@@ -1321,7 +1332,10 @@ const Dashboard = ({ token, currentUser }) => {
             }}>
               <div>
                 <button
-                  onClick={() => setActiveLikerDetail(null)}
+                  onClick={() => {
+                    setActiveLikerDetail(null);
+                    setMobileView('chats');
+                  }}
                   className="btn btn-glass"
                   style={{ padding: '6px 12px', fontSize: '0.8rem', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.4)' }}
                 >
@@ -1613,7 +1627,10 @@ const Dashboard = ({ token, currentUser }) => {
             }}>
               <div>
                 <button
-                  onClick={() => setActiveChatGroup(null)}
+                  onClick={() => {
+                    setActiveChatGroup(null);
+                    setMobileView('chats');
+                  }}
                   className="btn btn-glass"
                   style={{ padding: '6px 12px', fontSize: '0.8rem', marginBottom: '8px' }}
                 >
@@ -2162,6 +2179,42 @@ const Dashboard = ({ token, currentUser }) => {
           </div>
         </div>
       )}
+
+      {/* Floating Bottom Navigation Bar for Mobile Phones */}
+      <div className="voya-mobile-nav">
+        <button 
+          onClick={() => {
+            setMobileView('explore');
+            setActiveAIChat(false);
+          }} 
+          className={`voya-mobile-nav-item ${mobileView === 'explore' && !activeAIChat ? 'active' : ''}`}
+        >
+          <i className="fa-solid fa-compass"></i>
+          <span>Explore</span>
+        </button>
+        <button 
+          onClick={() => {
+            setMobileView('chats');
+          }} 
+          className={`voya-mobile-nav-item ${mobileView === 'chats' ? 'active' : ''}`}
+        >
+          <i className="fa-solid fa-comments"></i>
+          <span>Chats</span>
+        </button>
+        <button 
+          onClick={() => {
+            setMobileView('ai');
+            setActiveAIChat(true);
+            setActiveChatGroup(null);
+            setActiveDirectMatchChat(null);
+            setActiveLikerDetail(null);
+          }} 
+          className={`voya-mobile-nav-item ${mobileView === 'ai' || activeAIChat ? 'active' : ''}`}
+        >
+          <i className="fa-solid fa-wand-magic-sparkles"></i>
+          <span>AI Guide</span>
+        </button>
+      </div>
     </div>
   );
 };
