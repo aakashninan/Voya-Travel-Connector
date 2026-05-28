@@ -7,22 +7,25 @@ const TRAVEL_STYLE_OPTIONS = [
 ];
 
 const HINGE_QUESTIONS = [
-  'My absolute worst travel habit is...',
-  'The weirdest food I\'ve eaten just to be polite...',
-  'My ultimate travel red flag in a partner is...',
-  'Most adventurous thing I\'ve done...',
-  'My perfect travel day looks like...',
-  'I\'m looking for a travel partner who...',
-  'Worst travel experience that made me laugh...',
-  'A destination that completely changed me...',
-  'My golden rule of traveling is...'
+  'My ultimate travel love language is...',
+  'Let\'s agree to skip...',
+  'My funniest "lost in translation" moment was...',
+  'A travel destination that completely changed how I think...',
+  'The soundtrack to my favorite travel memory is...',
+  'A hidden gem I\'ll carry to my grave is...',
+  'My golden rule for surviving a 14-hour layover is...',
+  'I\'m looking for a travel partner who insists on...',
+  'The weirdest street food I\'ve eaten and actually loved...',
+  'My dream "no-plans" weekend getaway looks like...',
+  'The worst tourist trap I visited that was actually worth it...'
 ];
 
 const VOICE_QUESTIONS = [
-  'Say hello in your native language...',
-  'My travel vibe in three words...',
-  'A secret travel tip I\'m willing to share...',
-  'The worst tourist trap I\'ve ever visited...'
+  'Tell the story of a time you got beautifully lost...',
+  'If you could pack a bag right now, where are we going?...',
+  'Describe the sensory details of your favorite place on Earth...',
+  'Give your best tip for making friends in a brand new country...',
+  'What is your ultimate, unspoken travel hack?...'
 ];
 
 // High-quality default travel image links to keep UI premium immediately (unused now)
@@ -51,9 +54,9 @@ const ProfileSetup = ({ token, onLogout }) => {
 
   // Hinge Prompts (Maximum 3) with prefilled travel-journal templates
   const [prompts, setPrompts] = useState([
-    { question: HINGE_QUESTIONS[0], answer: 'Packing enough socks for a 6-month polar expedition even though I\'m only traveling for a weekend.' },
-    { question: HINGE_QUESTIONS[1], answer: 'Deep-fried grasshoppers in Mexico. Honestly? Tasted exactly like crunchy potato chips with lime!' },
-    { question: HINGE_QUESTIONS[2], answer: 'Someone who insists on a rigid hourly itinerary. Let\'s get lost in the back alleys instead!' }
+    { question: HINGE_QUESTIONS[0], answer: 'Sharing street tacos, waking up at 5:00 AM for empty sunrise hikes, and sitting in silence at a cozy Kyoto café.' },
+    { question: HINGE_QUESTIONS[1], answer: 'Over-hyped Instagram spots and rigid 7:00 AM spreadsheets. Let\'s wander down the back alleys without a map instead!' },
+    { question: HINGE_QUESTIONS[2], answer: 'Ordering what I thought was "spicy chicken" in Thailand, only to be served a steaming bowl of super-spicy red ants. Honestly? Tasted like lime-infused crunchy chips!' }
   ]);
 
   // Voice Prompt State & Native Refs
