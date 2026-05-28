@@ -1047,7 +1047,7 @@ const Dashboard = ({ token, currentUser }) => {
               </button>
             </form>
           </div>
-        ) : activeDirectMatchChat ? (
+        ) : (activeDirectMatchChat && !activeLikerDetail) ? (
           /* 1-on-1 DIRECT MATCH CHAT FORUM */
           <div className="glass-panel" style={{
             display: 'flex',
@@ -1183,14 +1183,19 @@ const Dashboard = ({ token, currentUser }) => {
               </button>
             </form>
           </div>
-        ) : activeLikerDetail ? (
-          /* ELABORATED INCOMING LIKER PROFILE DETAIL CARD VIEW */
+          ) : activeLikerDetail ? (
+          /* ELABORATED PROFILE DETAIL CARD VIEW (UNIVERSAL) */
           <div className="glass-panel" style={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
             padding: '24px',
-            position: 'relative'
+            position: 'relative',
+            background: 'var(--mist-card)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: '24px',
+            boxShadow: 'var(--shadow-crisp)',
+            overflow: 'hidden'
           }}>
             {/* Liker Detail Header */}
             <div style={{
@@ -1205,42 +1210,86 @@ const Dashboard = ({ token, currentUser }) => {
                 <button
                   onClick={() => setActiveLikerDetail(null)}
                   className="btn btn-glass"
-                  style={{ padding: '6px 12px', fontSize: '0.8rem' }}
+                  style={{ padding: '6px 12px', fontSize: '0.8rem', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.4)' }}
                 >
-                  <i className="fa-solid fa-chevron-left"></i> Back to Explore
+                  <i className="fa-solid fa-chevron-left"></i> {activeDirectMatchChat ? 'Back to Chat' : activeChatGroup ? 'Back to Group' : 'Back to Explore'}
                 </button>
               </div>
               <span style={{ fontSize: '0.85rem', color: 'var(--cyan)', fontWeight: 600 }}>
-                🌍 Detail Vibe Check
+                {activeLikerDetail._id === currentUser?._id ? '🌍 Your Travel Profile Vibe' : '🌍 Traveler Vibe Check'}
               </span>
-            </div>
-
-            {/* Top Match/Skip button bar */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '16px', flexShrink: 0 }}>
-              <button
-                onClick={() => {
-                  handleSwipe(activeLikerDetail, 'dislike');
-                  setActiveLikerDetail(null);
-                }}
-                className="btn btn-glass"
-                style={{ flex: 1, maxWidth: '160px', padding: '10px', fontSize: '0.85rem', color: '#ef4444', borderColor: 'var(--glass-border)' }}
-              >
-                <i className="fa-solid fa-xmark"></i> Skip
-              </button>
-              <button
-                onClick={() => {
-                  handleSwipe(activeLikerDetail, 'like');
-                  setActiveLikerDetail(null);
-                }}
-                className="btn btn-coral"
-                style={{ flex: 1, maxWidth: '160px', padding: '10px', fontSize: '0.85rem' }}
-              >
-                <i className="fa-solid fa-heart"></i> Match Back
-              </button>
             </div>
 
             {/* Scrollable Liker Card View */}
             <div className="card-deck-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '440px', height: '420px', margin: '0 auto', flex: 1 }}>
+              {activeLikerDetail._id !== currentUser?._id && (
+                <>
+                  {/* Floating Skip button */}
+                  <button
+                    onClick={() => {
+                      handleSwipe(activeLikerDetail, 'dislike');
+                      setActiveLikerDetail(null);
+                    }}
+                    className="btn floating-skip-btn"
+                    style={{
+                      position: 'absolute',
+                      left: '-75px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'var(--glass-card)',
+                      border: '1px solid var(--glass-border)',
+                      color: '#f87171',
+                      fontSize: '1.6rem',
+                      zIndex: 100,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: 'var(--shadow-glow)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s'
+                    }}
+                    title="Skip"
+                  >
+                    <i className="fa-solid fa-xmark"></i>
+                  </button>
+
+                  {/* Floating Like button */}
+                  <button
+                    onClick={() => {
+                      handleSwipe(activeLikerDetail, 'like');
+                      setActiveLikerDetail(null);
+                    }}
+                    className="btn floating-like-btn"
+                    style={{
+                      position: 'absolute',
+                      right: '-75px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '60px',
+                      height: '60px',
+                      borderRadius: '50%',
+                      background: 'var(--coral)',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: '1.6rem',
+                      zIndex: 100,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 8px 25px var(--coral-glow)',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s'
+                    }}
+                    title="Like / Match"
+                  >
+                    <i className="fa-solid fa-heart"></i>
+                  </button>
+                </>
+              )}
+
               <div
                 className="swipe-card glass-panel"
                 style={{
@@ -1295,55 +1344,65 @@ const Dashboard = ({ token, currentUser }) => {
                 <div style={{ padding: '24px' }}>
                   {/* Bio */}
                   {activeLikerDetail.bio && (
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '20px', fontStyle: 'italic' }}>
+                    <p style={{
+                      fontSize: '0.9rem',
+                      color: 'var(--text-secondary)',
+                      lineHeight: '1.6',
+                      marginBottom: '20px',
+                      fontStyle: 'italic'
+                    }}>
                       "{activeLikerDetail.bio}"
                     </p>
                   )}
 
                   {/* Travel Preferences Summary */}
-                  <div className="glass-panel" style={{ padding: '16px', borderRadius: '16px', background: 'rgba(255,255,255,0.01)', marginBottom: '20px' }}>
+                  <div className="glass-panel" style={{
+                    padding: '16px',
+                    borderRadius: '16px',
+                    background: 'rgba(255,255,255,0.01)',
+                    marginBottom: '20px'
+                  }}>
                     <h5 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
                       <i className="fa-solid fa-suitcase-rolling" style={{ color: 'var(--cyan)' }}></i> Itinerary & Preferences
                     </h5>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.8rem' }}>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>DESTINATIONS</span>
-                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-muted)' }}>📍 Destinations: </span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                           {activeLikerDetail.destinations?.join(', ') || 'Flexible'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>CALENDAR</span>
-                        <span style={{ color: 'var(--coral)', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-muted)' }}>📅 When: </span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                           {activeLikerDetail.travelCalendar || 'Anytime'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>DURATION</span>
-                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-muted)' }}>⏱️ Duration: </span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                           {activeLikerDetail.travelDuration || 'Flexible'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>TRAVEL STYLES</span>
-                        <span style={{ color: 'var(--cyan)', fontWeight: 600 }}>
+                        <span style={{ color: 'var(--text-muted)' }}>🎒 Styles: </span>
+                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                           {activeLikerDetail.travelStyles?.join(', ') || 'Vagabond'}
                         </span>
                       </div>
-                      {/* Nativity / Nationality */}
                       {activeLikerDetail.nativity && (
                         <div>
-                          <span style={{ color: 'var(--text-muted)', display: 'block' }}>ORIGIN (NATIVITY)</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-muted)' }}>🌍 Nativity: </span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                             {activeLikerDetail.nativity}
                           </span>
                         </div>
                       )}
-                      {/* Current Residence / Location */}
                       {activeLikerDetail.location && (
                         <div>
-                          <span style={{ color: 'var(--text-muted)', display: 'block' }}>RESIDES IN</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
+                          <span style={{ color: 'var(--text-muted)' }}>🏠 Resides: </span>
+                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                             {activeLikerDetail.location}
                           </span>
                         </div>
@@ -1355,6 +1414,7 @@ const Dashboard = ({ token, currentUser }) => {
                   {activeLikerDetail.voicePrompt && activeLikerDetail.voicePrompt.audio && (
                     <div className="audio-player-glass">
                       <button
+                        type="button"
                         onClick={() => handlePlayVoice('liker', activeLikerDetail.voicePrompt.audio)}
                         className="audio-btn"
                         title="Listen to voice greeting"
@@ -1405,31 +1465,23 @@ const Dashboard = ({ token, currentUser }) => {
               </div>
             </div>
 
-            {/* Bottom Match/Skip button bar */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginTop: '16px', flexShrink: 0 }}>
-              <button
-                onClick={() => {
-                  handleSwipe(activeLikerDetail, 'dislike');
-                  setActiveLikerDetail(null);
-                }}
-                className="btn btn-glass"
-                style={{ flex: 1, maxWidth: '160px', padding: '10px', fontSize: '0.85rem', color: '#ef4444', borderColor: 'var(--glass-border)' }}
-              >
-                <i className="fa-solid fa-xmark"></i> Skip
-              </button>
-              <button
-                onClick={() => {
-                  handleSwipe(activeLikerDetail, 'like');
-                  setActiveLikerDetail(null);
-                }}
-                className="btn btn-coral"
-                style={{ flex: 1, maxWidth: '160px', padding: '10px', fontSize: '0.85rem' }}
-              >
-                <i className="fa-solid fa-heart"></i> Match Back
-              </button>
-            </div>
+            {/* If it's current user, show an edit profile button instead of swipe controls */}
+            {activeLikerDetail._id === currentUser?._id && (
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px', flexShrink: 0 }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigate('/profile');
+                  }}
+                  className="btn btn-coral"
+                  style={{ width: '100%', maxWidth: '240px', padding: '12px', fontSize: '0.85rem' }}
+                >
+                  <i className="fa-solid fa-pen-to-square"></i> Edit Profile Settings
+                </button>
+              </div>
+            )}
           </div>
-        ) : activeChatGroup ? (
+        ) : (activeChatGroup && !activeLikerDetail) ? (
           <div className="glass-panel" style={{
             display: 'flex',
             flexDirection: 'column',
