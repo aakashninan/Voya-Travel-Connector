@@ -478,41 +478,131 @@ const Dashboard = ({ token, currentUser }) => {
     }
   };
 
-  // Custom premium Markdown parser for beautiful text formatting without raw asterisks
+  // Custom premium Markdown parser for beautiful text formatting, including custom tables
   const renderMarkdown = (text) => {
     if (!text) return '';
     const lines = text.split('\n');
-    return lines.map((line, index) => {
-      let trimmed = line.trim();
-      if (trimmed === '---') {
-        return <hr key={index} style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '12px 0' }} />;
-      }
-      if (trimmed.startsWith('### ')) {
-        return <h4 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', fontWeight: 750 }}>{parseFormatting(trimmed.substring(4))}</h4>;
-      }
-      if (trimmed.startsWith('#### ')) {
-        return <h5 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.0rem', color: 'var(--text-primary)', marginTop: '14px', marginBottom: '6px', fontWeight: 700 }}>{parseFormatting(trimmed.substring(5))}</h5>;
-      }
-      if (trimmed.startsWith('##### ')) {
-        return <h6 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', color: 'var(--text-primary)', marginTop: '12px', marginBottom: '4px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{parseFormatting(trimmed.substring(6))}</h6>;
-      }
-      if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-        return (
-          <div key={index} style={{ display: 'flex', gap: '8px', paddingLeft: '12px', marginBottom: '6px', fontSize: '0.88rem' }}>
-            <span style={{ color: 'var(--coral)' }}>•</span>
-            <span style={{ flex: 1 }}>{parseFormatting(trimmed.substring(2))}</span>
+    const elements = [];
+    let inTable = false;
+    let tableHeaders = [];
+    let tableRows = [];
+
+    const commitTable = (keyIndex) => {
+      if (tableHeaders.length > 0 || tableRows.length > 0) {
+        elements.push(
+          <div key={`table-${keyIndex}`} style={{ overflowX: 'auto', margin: '16px 0', width: '100%' }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              fontSize: '0.85rem',
+              textAlign: 'left',
+              border: '1px solid var(--glass-border)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              background: 'rgba(255, 255, 255, 0.01)'
+            }}>
+              {tableHeaders.length > 0 && (
+                <thead>
+                  <tr style={{ background: 'rgba(232, 130, 79, 0.08)', borderBottom: '2px solid var(--glass-border)' }}>
+                    {tableHeaders.map((h, i) => (
+                      <th key={i} style={{ padding: '10px 14px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        {parseFormatting(h)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+              )}
+              <tbody>
+                {tableRows.map((row, rIdx) => (
+                  <tr key={rIdx} style={{ 
+                    borderBottom: '1px solid var(--glass-border)', 
+                    background: rIdx % 2 === 1 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                    transition: 'background 0.2s'
+                  }}>
+                    {row.map((cell, cIdx) => (
+                      <td key={cIdx} style={{ padding: '10px 14px', color: 'var(--text-secondary)' }}>
+                        {parseFormatting(cell)}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         );
+        tableHeaders = [];
+        tableRows = [];
       }
-      if (trimmed === '') {
-        return <div key={index} style={{ height: '8px' }} />;
+      inTable = false;
+    };
+
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
+      const trimmed = line.trim();
+
+      // Check if this line is a table row (starts and ends with | or contains multiple |)
+      const isTableRow = trimmed.startsWith('|') && trimmed.endsWith('|') && trimmed.length > 1;
+
+      if (isTableRow) {
+        // Check if it is a separator line like | --- | --- |
+        const isSeparator = /^\|[\s-|-:|]*\|$/.test(trimmed) && trimmed.includes('---');
+        
+        if (isSeparator) {
+          // It's a separator line, skip it but mark that we are in a table
+          inTable = true;
+          continue;
+        }
+
+        // Split by pipe and remove first and last empty elements
+        const cells = trimmed.split('|').map(c => c.trim()).filter((_, i, arr) => i > 0 && i < arr.length - 1);
+
+        if (!inTable) {
+          // If we weren't in a table, this is the header row!
+          tableHeaders = cells;
+          inTable = true;
+        } else {
+          // If we were already in a table, this is a data row!
+          tableRows.push(cells);
+        }
+      } else {
+        // Not a table row. If we were in a table, commit it first!
+        if (inTable) {
+          commitTable(index);
+        }
+
+        if (trimmed === '---') {
+          elements.push(<hr key={index} style={{ border: 'none', borderTop: '1px solid var(--glass-border)', margin: '12px 0' }} />);
+        } else if (trimmed.startsWith('### ')) {
+          elements.push(<h4 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.15rem', color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', fontWeight: 750 }}>{parseFormatting(trimmed.substring(4))}</h4>);
+        } else if (trimmed.startsWith('#### ')) {
+          elements.push(<h5 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '1.0rem', color: 'var(--text-primary)', marginTop: '14px', marginBottom: '6px', fontWeight: 700 }}>{parseFormatting(trimmed.substring(5))}</h5>);
+        } else if (trimmed.startsWith('##### ')) {
+          elements.push(<h6 key={index} style={{ fontFamily: 'var(--font-serif)', fontSize: '0.88rem', color: 'var(--text-primary)', marginTop: '12px', marginBottom: '4px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{parseFormatting(trimmed.substring(6))}</h6>);
+        } else if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+          elements.push(
+            <div key={index} style={{ display: 'flex', gap: '8px', paddingLeft: '12px', marginBottom: '6px', fontSize: '0.88rem' }}>
+              <span style={{ color: 'var(--coral)' }}>•</span>
+              <span style={{ flex: 1 }}>{parseFormatting(trimmed.substring(2))}</span>
+            </div>
+          );
+        } else if (trimmed === '') {
+          elements.push(<div key={index} style={{ height: '8px' }} />);
+        } else {
+          elements.push(
+            <p key={index} style={{ marginBottom: '8px', fontSize: '0.88rem', lineHeight: '1.5' }}>
+              {parseFormatting(line)}
+            </p>
+          );
+        }
       }
-      return (
-        <p key={index} style={{ marginBottom: '8px', fontSize: '0.88rem', lineHeight: '1.5' }}>
-          {parseFormatting(line)}
-        </p>
-      );
-    });
+    }
+
+    // If the text ends while still in a table, commit it!
+    if (inTable) {
+      commitTable(lines.length);
+    }
+
+    return elements;
   };
 
   const parseFormatting = (text) => {
