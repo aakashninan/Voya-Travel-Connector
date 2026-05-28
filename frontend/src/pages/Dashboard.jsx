@@ -647,11 +647,7 @@ const Dashboard = ({ token, currentUser }) => {
   const activeUserCard = feed[currentIndex];
 
   return (
-    <div className="app-layout" style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%', position: 'relative' }}>
-      {/* Drifting Organic Ambient Glow Backdrop Orbs */}
-      <div className="voya-glow-orb orb-primary"></div>
-      <div className="voya-glow-orb orb-secondary"></div>
-
+    <div className="app-layout" style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%' }}>
       {/* 1. LEFT PANEL: MATCHES & GROUP CONVERSATIONS */}
       <div className="app-layout-left glass-panel" style={{
         display: 'flex',
@@ -695,7 +691,7 @@ const Dashboard = ({ token, currentUser }) => {
             setActiveDirectMatchChat(null);
             setActiveLikerDetail(null);
           }}
-          className={`btn voya-shimmer-btn ${activeAIChat ? 'btn-coral' : 'btn-glass'}`}
+          className={`btn ${activeAIChat ? 'btn-coral' : 'btn-glass'}`}
           style={{
             width: '100%',
             display: 'flex',
@@ -708,24 +704,21 @@ const Dashboard = ({ token, currentUser }) => {
             borderRadius: '14px',
             marginBottom: '20px',
             border: activeAIChat ? '1px solid var(--terracotta)' : '1px solid var(--glass-border)',
-            boxShadow: activeAIChat ? '0 8px 25px rgba(232, 130, 79, 0.35)' : '0 4px 12px rgba(0,0,0,0.03)',
+            boxShadow: activeAIChat ? '0 4px 15px rgba(200, 112, 74, 0.25)' : 'none',
             transition: 'all 0.3s ease'
           }}
         >
           <span style={{ fontSize: '1.1rem' }}>✨</span>
           <span>voya AI Guide</span>
-          {activeAIChat ? (
+          {activeAIChat && (
             <span style={{
               marginLeft: 'auto',
               background: 'rgba(255, 255, 255, 0.2)',
               padding: '2px 8px',
               borderRadius: '20px',
               fontSize: '0.65rem',
-              textTransform: 'uppercase',
-              fontWeight: 700
+              textTransform: 'uppercase'
             }}>Active</span>
-          ) : (
-            <span className="pulse-dot" style={{ marginLeft: 'auto' }}></span>
           )}
         </button>
 
@@ -1093,17 +1086,19 @@ const Dashboard = ({ token, currentUser }) => {
                 return (
                   <div
                     key={idx}
-                    className={isUser ? 'premium-chat-sender' : 'premium-chat-ai'}
                     style={{
                       alignSelf: isUser ? 'flex-end' : 'flex-start',
                       maxWidth: '85%',
+                      background: isUser ? 'var(--terracotta)' : '#FFF',
+                      color: isUser ? '#fff' : 'var(--text-primary)',
+                      border: isUser ? 'none' : '1px solid var(--glass-border)',
                       padding: '14px 18px',
+                      borderRadius: isUser ? '18px 18px 0 18px' : '18px 18px 18px 0',
+                      boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
                       fontSize: '0.9rem',
                       lineHeight: '1.6',
                       whiteSpace: 'pre-wrap',
-                      fontFamily: 'var(--font-sans)',
-                      border: 'none',
-                      animation: 'pop-in 0.35s ease forwards'
+                      fontFamily: 'var(--font-sans)'
                     }}
                   >
                     {isUser ? msg.content : renderMarkdown(msg.content)}
@@ -1112,21 +1107,22 @@ const Dashboard = ({ token, currentUser }) => {
               })}
 
               {aiLoading && (
-                <div 
-                  className="premium-chat-ai"
-                  style={{
-                    alignSelf: 'flex-start',
-                    maxWidth: '85%',
-                    padding: '14px 18px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.85rem',
-                    border: '1px solid rgba(232, 130, 79, 0.3)'
-                  }}
-                >
-                  <div className="spinner-border" role="status" style={{ width: '1rem', height: '1rem', borderWidth: '2px', color: 'var(--terracotta)' }}></div>
-                  <span style={{ color: 'rgba(255, 255, 255, 0.85)' }}>Voya AI is planning your route and match budgets...</span>
+                <div style={{
+                  alignSelf: 'flex-start',
+                  maxWidth: '85%',
+                  background: '#FFF',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--glass-border)',
+                  padding: '14px 18px',
+                  borderRadius: '18px 18px 18px 0',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  fontSize: '0.85rem'
+                }}>
+                  <div className="spinner-border text-coral" role="status" style={{ width: '1rem', height: '1rem', borderWidth: '2px', color: 'var(--terracotta)' }}></div>
+                  <span style={{ color: 'var(--text-secondary)' }}>Voya AI is planning your route and match budgets...</span>
                 </div>
               )}
               <div ref={chatEndRef} />
@@ -1248,33 +1244,32 @@ const Dashboard = ({ token, currentUser }) => {
                   return (
                     <div
                       key={idx}
-                      className={isMe ? 'premium-chat-sender' : 'premium-chat-recipient'}
                       style={{
                         alignSelf: isMe ? 'flex-end' : 'flex-start',
                         maxWidth: '75%',
-                        padding: '12px 16px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        border: 'none',
-                        animation: 'pop-in 0.3s ease forwards'
+                        background: isMe ? 'var(--cyan)' : 'rgba(15, 23, 42, 0.04)',
+                        border: isMe ? 'none' : '1px solid var(--glass-border)',
+                        padding: '10px 14px',
+                        borderRadius: isMe ? '16px 16px 0 16px' : '16px 16px 16px 0',
+                        color: isMe ? '#fff' : 'var(--text-primary)'
                       }}
                     >
                       <span style={{
                         display: 'block',
                         fontSize: '0.7rem',
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: isMe ? 'rgba(255,255,255,0.85)' : 'var(--coral)',
                         marginBottom: '4px'
                       }}>
                         {msg.senderName}
                       </span>
-                      <p style={{ fontSize: '0.88rem', wordBreak: 'break-word', lineHeight: '1.5' }}>{msg.text}</p>
+                      <p style={{ fontSize: '0.85rem', wordBreak: 'break-word', lineHeight: '1.4' }}>{msg.text}</p>
                       <span style={{
                         display: 'block',
                         textAlign: 'right',
                         fontSize: '0.6rem',
-                        color: isMe ? 'rgba(255,255,255,0.65)' : 'var(--text-muted)',
-                        marginTop: '6px'
+                        color: isMe ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)',
+                        marginTop: '4px'
                       }}>
                         {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
@@ -1408,7 +1403,7 @@ const Dashboard = ({ token, currentUser }) => {
               )}
 
               <div
-                className="swipe-card glass-panel swipe-card-enter"
+                className="swipe-card glass-panel"
                 style={{
                   width: '100%',
                   height: '100%',
@@ -1424,18 +1419,8 @@ const Dashboard = ({ token, currentUser }) => {
                   backgroundImage: `url(${activeLikerDetail.pictures?.[0] || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  position: 'relative'
                 }}>
-                  {/* Instagram Story Progress Indicators */}
-                  <div className="instagram-story-bar">
-                    {(activeLikerDetail.pictures || [1]).map((pic, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`instagram-story-segment ${idx === 0 ? 'active' : ''}`}
-                      ></div>
-                    ))}
-                  </div>
                   <div style={{
                     position: 'absolute',
                     bottom: '16px',
@@ -1689,33 +1674,32 @@ const Dashboard = ({ token, currentUser }) => {
                   return (
                     <div
                       key={idx}
-                      className={isMe ? 'premium-chat-sender' : 'premium-chat-recipient'}
                       style={{
                         alignSelf: isMe ? 'flex-end' : 'flex-start',
                         maxWidth: '75%',
-                        padding: '12px 16px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        border: 'none',
-                        animation: 'pop-in 0.3s ease forwards'
+                        background: isMe ? 'var(--coral)' : 'rgba(15, 23, 42, 0.04)',
+                        border: isMe ? 'none' : '1px solid var(--glass-border)',
+                        padding: '10px 14px',
+                        borderRadius: isMe ? '16px 16px 0 16px' : '16px 16px 16px 0',
+                        color: isMe ? '#fff' : 'var(--text-primary)'
                       }}
                     >
                       <span style={{
                         display: 'block',
                         fontSize: '0.7rem',
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: isMe ? 'rgba(255,255,255,0.85)' : 'var(--cyan)',
                         marginBottom: '4px'
                       }}>
                         {msg.senderName}
                       </span>
-                      <p style={{ fontSize: '0.88rem', wordBreak: 'break-word', lineHeight: '1.5' }}>{msg.text}</p>
+                      <p style={{ fontSize: '0.85rem', wordBreak: 'break-word', lineHeight: '1.4' }}>{msg.text}</p>
                       <span style={{
                         display: 'block',
                         textAlign: 'right',
                         fontSize: '0.6rem',
-                        color: isMe ? 'rgba(255,255,255,0.65)' : 'var(--text-muted)',
-                        marginTop: '6px'
+                        color: isMe ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)',
+                        marginTop: '4px'
                       }}>
                         {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
@@ -1937,7 +1921,7 @@ const Dashboard = ({ token, currentUser }) => {
                 </button>
 
                 {/* CARD DECK CARD WITH ANIMATION STATES */}
-                <div className={`swipe-card glass-panel swipe-card-enter ${
+                <div className={`swipe-card glass-panel ${
                   swipeDirection === 'left' ? 'swipe-left-anim' :
                   swipeDirection === 'right' ? 'swipe-right-anim' : ''
                 }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0, borderRadius: '24px', overflowY: 'auto' }}>
@@ -1949,18 +1933,8 @@ const Dashboard = ({ token, currentUser }) => {
                   backgroundImage: `url(${activeUserCard.pictures?.[0] || 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80'})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                  position: 'relative',
-                  overflow: 'hidden'
+                  position: 'relative'
                 }}>
-                  {/* Instagram Story Progress Indicators */}
-                  <div className="instagram-story-bar">
-                    {(activeUserCard.pictures || [1]).map((pic, idx) => (
-                      <div 
-                        key={idx} 
-                        className={`instagram-story-segment ${idx === 0 ? 'active' : ''}`}
-                      ></div>
-                    ))}
-                  </div>
                   {/* Floating Gender and Style Pills */}
                   <div style={{
                     position: 'absolute',
