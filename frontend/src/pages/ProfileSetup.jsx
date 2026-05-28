@@ -123,19 +123,65 @@ const ProfileSetup = ({ token, onLogout }) => {
     setPictures(updated);
   };
 
+  // Helper to compress base64 images to web-optimized 800px JPEGs on the client side
+  const compressImage = (base64Str, maxWidth = 800, maxHeight = 800, quality = 0.7) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = base64Str;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Convert to high-performance web optimized JPEG
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64);
+      };
+      img.onerror = () => {
+        resolve(base64Str);
+      };
+    });
+  };
+
   const handleFileChange = (index, e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image file must be smaller than 5MB');
+    // Support up to 10MB upload files since we automatically compress them anyway!
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Image file must be smaller than 10MB');
       return;
     }
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      handlePictureChange(index, reader.result);
-      setMessage('Image loaded successfully!');
+    reader.onloadend = async () => {
+      setMessage('Optimizing image for instant loading...');
+      try {
+        const compressed = await compressImage(reader.result, 800, 800, 0.7);
+        handlePictureChange(index, compressed);
+        setMessage('Image optimized and loaded successfully!');
+      } catch (err) {
+        console.error('Image compression failed, using original:', err);
+        handlePictureChange(index, reader.result);
+        setMessage('Image loaded successfully (without optimization).');
+      }
     };
     reader.readAsDataURL(file);
   };

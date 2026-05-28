@@ -202,11 +202,53 @@ const getSyncData = async (req, res) => {
       }
     }
 
+    // 5. Optimize sync payload by slicing base64 picture arrays to only keep the first avatar preview.
+    // This dramatically cuts down transfer bandwidth and makes chat loading instantaneous!
+    const optimizedMatches = matchedUsers.map(u => {
+      const obj = u.toObject();
+      if (obj.pictures && obj.pictures.length > 0) {
+        obj.pictures = [obj.pictures[0]];
+      }
+      return obj;
+    });
+
+    const optimizedLikes = likedByUsers.map(u => {
+      const obj = u.toObject();
+      if (obj.pictures && obj.pictures.length > 0) {
+        obj.pictures = [obj.pictures[0]];
+      }
+      return obj;
+    });
+
+    const optimizedGroups = myGroups.map(g => {
+      const groupObj = g.toObject();
+      if (groupObj.members) {
+        groupObj.members = groupObj.members.map(member => {
+          if (member.pictures && member.pictures.length > 0) {
+            member.pictures = [member.pictures[0]];
+          }
+          return member;
+        });
+      }
+      if (groupObj.creator && groupObj.creator.pictures && groupObj.creator.pictures.length > 0) {
+        groupObj.creator.pictures = [groupObj.creator.pictures[0]];
+      }
+      return groupObj;
+    });
+
+    const optimizedInvites = pendingInvites.map(i => {
+      const inviteObj = i.toObject();
+      if (inviteObj.creator && inviteObj.creator.pictures && inviteObj.creator.pictures.length > 0) {
+        inviteObj.creator.pictures = [inviteObj.creator.pictures[0]];
+      }
+      return inviteObj;
+    });
+
     res.json({
-      matches: matchedUsers,
-      likesReceived: likedByUsers,
-      groups: myGroups,
-      pendingInvites,
+      matches: optimizedMatches,
+      likesReceived: optimizedLikes,
+      groups: optimizedGroups,
+      pendingInvites: optimizedInvites,
       directMessages
     });
   } catch (error) {

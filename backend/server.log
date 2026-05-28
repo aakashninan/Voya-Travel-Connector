@@ -104,3 +104,9 @@ MongoDB Connected: ac-cntlhtm-shard-00-02.u2zsh8o.mongodb.net
 [AI] Querying Google Gemini...
 [AI] Attempting Gemini model: gemini-2.5-flash
 [AI] Gemini Success with model: gemini-2.5-flash
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+[32m[nodemon] restarting due to changes...[39m
+[32m[nodemon] starting `node server.js`[39m
+Server running in development mode on port 5001
+MongoDB Connected: ac-cntlhtm-shard-00-00.u2zsh8o.mongodb.net

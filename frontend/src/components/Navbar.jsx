@@ -228,6 +228,18 @@ const Navbar = ({ user, onLogout }) => {
       border-radius: 100px;
       background: rgba(245,239,224,0.06);
       border: 1px solid rgba(245,239,224,0.1);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .voya-nav-user-pill:hover {
+      background: rgba(245,239,224,0.12);
+      border-color: rgba(232, 130, 79, 0.4);
+    }
+
+    .voya-nav-user-pill:hover .voya-nav-username {
+      color: var(--sand);
     }
 
     .voya-nav-avatar {
@@ -304,17 +316,14 @@ const Navbar = ({ user, onLogout }) => {
               >
                 <i className="fa-solid fa-wand-magic-sparkles" style={{ color: 'var(--terracotta)' }}></i> AI Guide
               </Link>
-              <Link
-                to="/profile"
-                className={`voya-nav-link ${location.pathname === '/profile' ? 'active' : ''}`}
-              >
-                <i className="fa-solid fa-user-gear"></i> Profile Setup
-              </Link>
-
               <div className="voya-nav-divider" />
 
               {/* User pill */}
-              <div className="voya-nav-user-pill">
+              <Link
+                to="/profile"
+                className="voya-nav-user-pill"
+                title="Configure traveler profile setup"
+              >
                 {profilePics?.[0] ? (
                   <div style={{
                     width: '28px',
@@ -332,7 +341,7 @@ const Navbar = ({ user, onLogout }) => {
                 {user?.name && (
                   <span className="voya-nav-username">{user.name.split(' ')[0]}</span>
                 )}
-              </div>
+              </Link>
 
               <button onClick={handleLogoutClick} className="voya-nav-btn-ghost">
                 <i className="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
