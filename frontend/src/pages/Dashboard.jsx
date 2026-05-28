@@ -50,6 +50,7 @@ const Dashboard = ({ token, currentUser }) => {
 
   // AI Travel Co-Pilot States
   const [activeAIChat, setActiveAIChat] = useState(false);
+  const [aiLoadingStatus, setAiLoadingStatus] = useState('Voya AI Co-Pilot is starting...');
   const [aiMessages, setAiMessages] = useState(() => {
     const saved = sessionStorage.getItem('voya_ai_messages');
     if (saved) {
@@ -215,6 +216,26 @@ const Dashboard = ({ token, currentUser }) => {
       aiInputRef.current.focus();
     }
   }, [aiLoading, activeAIChat]);
+
+  // Dynamic travel-planning status phrase shifting for AI loader
+  useEffect(() => {
+    if (!aiLoading) return;
+    setAiLoadingStatus('Voya AI is starting Co-Pilot engine...');
+    const loadingPhrases = [
+      'Mapping scenic routes...',
+      'Matching budget-friendly boutique hotels...',
+      'Assembling day-by-day itineraries...',
+      'Calculating local transit & daily dining costs...',
+      'Polishing custom travel guide tips...',
+      'Consulting Voya local experts database...'
+    ];
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % loadingPhrases.length;
+      setAiLoadingStatus(loadingPhrases[index]);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, [aiLoading]);
 
   // Keydown event listener for left/right arrows to like/skip cards
   useEffect(() => {
@@ -1109,22 +1130,18 @@ const Dashboard = ({ token, currentUser }) => {
               })}
 
               {aiLoading && (
-                <div style={{
-                  alignSelf: 'flex-start',
-                  maxWidth: '85%',
-                  background: '#FFF',
-                  color: 'var(--text-primary)',
-                  border: '1px solid var(--glass-border)',
-                  padding: '14px 18px',
-                  borderRadius: '18px 18px 18px 0',
-                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  fontSize: '0.85rem'
-                }}>
-                  <div className="spinner-border text-coral" role="status" style={{ width: '1rem', height: '1rem', borderWidth: '2px', color: 'var(--terracotta)' }}></div>
-                  <span style={{ color: 'var(--text-secondary)' }}>Voya AI is planning your route and match budgets...</span>
+                <div className="voya-thinking-container">
+                  <div className="voya-thinking-bubble glass-panel">
+                    <div className="voya-thinking-header">
+                      <i className="fa-solid fa-wand-magic-sparkles voya-thinking-glow-icon"></i>
+                      <span className="voya-thinking-status">{aiLoadingStatus}</span>
+                    </div>
+                    <div className="voya-thinking-dots">
+                      <span className="voya-thinking-dot"></span>
+                      <span className="voya-thinking-dot"></span>
+                      <span className="voya-thinking-dot"></span>
+                    </div>
+                  </div>
                 </div>
               )}
               <div ref={chatEndRef} />
