@@ -275,9 +275,15 @@ const Navbar = ({ user, onLogout }) => {
       .voya-nav-links {
         gap: 6px !important;
       }
-      .voya-nav-link,
+      .voya-nav-link:not(.voya-nav-login-link),
       .voya-nav-divider {
         display: none !important;
+      }
+      .voya-nav-login-link {
+        display: flex !important;
+        font-size: 0.75rem !important;
+        padding: 6px 12px !important;
+        color: rgba(245,239,224,0.7) !important;
       }
       .voya-nav-username {
         display: none !important;
@@ -381,7 +387,7 @@ const Navbar = ({ user, onLogout }) => {
             <>
               <Link
                 to="/login"
-                className={`voya-nav-link ${location.pathname === '/login' ? 'active' : ''}`}
+                className={`voya-nav-link voya-nav-login-link ${location.pathname === '/login' ? 'active' : ''}`}
               >
                 Login
               </Link>
