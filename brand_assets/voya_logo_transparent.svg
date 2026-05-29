@@ -1,16 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" fill="none">
-  <!-- Terracotta Rounded Container in Center -->
-  <rect x="150" y="150" width="700" height="700" rx="200" fill="#E8824F" />
-  
-  <!-- Waypoint Twist Logo in Center with White Accents (Scale 6.0, Translate 200) -->
-  <g transform="translate(200, 200) scale(6.0)">
+  <!-- Waypoint Twist Logo (Original Colors, Transparent Background) -->
+  <g transform="translate(100, 100) scale(8.0)">
     <!-- Gold Waypoint circle precisely at the center intersection -->
     <circle cx="50" cy="62" r="5.5" fill="#D4A843" />
     
-    <!-- Left Arm and Loop (White, 0.95 Opacity) -->
-    <path d="M 32,20 C 32,48 42,68 50,68 C 55,68 56.5,64 54,60 C 51.5,56 45,60 48,65" stroke="#FFFFFF" stroke-opacity="0.95" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Terracotta Path (Left Arm and Loop) -->
+    <path d="M 32,20 C 32,48 42,68 50,68 C 55,68 56.5,64 54,60 C 51.5,56 45,60 48,65" stroke="#E8824F" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
     
-    <!-- Right Arm and Loop (White, 0.85 Opacity for subtle depth) -->
-    <path d="M 68,20 C 68,48 58,68 50,68 C 45,68 43.5,64 46,60 C 48.5,56 55,60 52,65" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Sage Green Path (Right Arm and Loop) -->
+    <path d="M 68,20 C 68,48 58,68 50,68 C 45,68 43.5,64 46,60 C 48.5,56 55,60 52,65" stroke="#7A8C6E" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
   </g>
 </svg>
