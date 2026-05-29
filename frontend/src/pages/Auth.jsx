@@ -117,10 +117,11 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
               justifyContent: 'center'
             }}>
               <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px' }}>
-                <path d="M50 15 A 35 35 0 0 0 15 50 A 35 35 0 0 0 50 85 Z" fill="#E8824F" opacity="0.85"/>
-                <path d="M50 15 A 35 35 0 0 1 85 50 A 35 35 0 0 1 50 85 Z" fill="#7A8C6E" opacity="0.85"/>
-                <path d="M50 15 A 35 35 0 0 1 50 85 A 35 35 0 0 1 50 15 Z" fill="#1A1410" opacity="0.9"/>
-                <circle cx="50" cy="50" r="14" fill="#D4A843" />
+                <g transform="translate(5, 5) scale(0.9)">
+                  <circle cx="50" cy="62" r="6" fill="#D4A843" />
+                  <path d="M 32,20 C 32,48 42,68 50,68 C 55,68 56.5,64 54,60 C 51.5,56 45,60 48,65" stroke="#E8824F" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 68,20 C 68,48 58,68 50,68 C 45,68 43.5,64 46,60 C 48.5,56 55,60 52,65" stroke="#7A8C6E" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                </g>
               </svg>
             </div>
             <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--bg-sand)' }}>
