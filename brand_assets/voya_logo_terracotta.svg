@@ -2,15 +2,11 @@
   <!-- Terracotta Solid Background -->
   <rect width="1000" height="1000" fill="#E8824F" />
   
-  <!-- Waypoint Twist Logo in Center (Scale 7.0, Translate 150) -->
-  <g transform="translate(150, 150) scale(7.0)">
-    <!-- Left Loop (White) -->
-    <path d="M28 32 C34 32, 48 48, 50 56 C52 64, 48 68, 42 68 C36 68, 30 56, 28 32 Z" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-    
-    <!-- Right Loop (White) -->
-    <path d="M72 32 C66 32, 52 48, 50 56 C48 64, 52 68, 58 68 C64 68, 70 56, 72 32 Z" stroke="#FFFFFF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-    
-    <!-- Gold Node (#D4A843) -->
-    <circle cx="50" cy="58" r="6" fill="#D4A843"/>
+  <!-- Contemporary Horizon Logo in Center with White Accents (Scale 8.0, Translate 100) -->
+  <g transform="translate(100, 100) scale(8.0)">
+    <path d="M50 15 A 35 35 0 0 0 15 50 A 35 35 0 0 0 50 85 Z" fill="#FFFFFF" opacity="0.85"/>
+    <path d="M50 15 A 35 35 0 0 1 85 50 A 35 35 0 0 1 50 85 Z" fill="#FFFFFF" opacity="0.85"/>
+    <path d="M50 15 A 35 35 0 0 1 50 85 A 35 35 0 0 1 50 15 Z" fill="#E8824F" opacity="0.9"/>
+    <circle cx="50" cy="50" r="14" fill="#D4A843" />
   </g>
 </svg>
