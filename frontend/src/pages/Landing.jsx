@@ -672,20 +672,20 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="voya-stats-row">
+          <div className="voya-stats-row" style={{ flexWrap: 'wrap', gap: '20px 32px' }}>
             <div>
-              <div className="voya-stat-number">48K+</div>
-              <div className="voya-stat-label">Travelers</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Thousands</div>
+              <div className="voya-stat-label">Active Travelers</div>
             </div>
             <div className="voya-stat-divider" />
             <div>
-              <div className="voya-stat-number">12K</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Countless</div>
               <div className="voya-stat-label">Trips Planned</div>
             </div>
             <div className="voya-stat-divider" />
             <div>
-              <div className="voya-stat-number">94%</div>
-              <div className="voya-stat-label">Match Rate</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Highly Rated</div>
+              <div className="voya-stat-label">Match Success</div>
             </div>
           </div>
         </div>
@@ -1030,17 +1030,15 @@ const Landing = () => {
       {/* ── TESTIMONIAL + GROUP PREVIEW ── */}
       <div className="voya-testimonial">
         <div>
-          <div className="voya-quote-mark">"</div>
-          <div className="voya-quote-text">
-            voya totally changed how I travel. I was nervous about backpacking solo in Southeast Asia,
-            but I matched with Sarah and Liam. We created a planning group, aligned our calendars,
-            did a voice check, and ended up having the trip of a lifetime!
+          <div className="voya-quote-mark" style={{ fontSize: '3rem', color: 'var(--terracotta)' }}>“</div>
+          <div className="voya-quote-text" style={{ fontStyle: 'normal', fontSize: '1.25rem', lineHeight: '1.65' }}>
+            We founded voya to make travel social, transparent, and completely free from solo-explorer friction. By combining real-time companion matching with intuitive day-by-day AI planning, we want to help you discover not just new landscapes, but a global family of adventurers. Your next great story starts with the people you share it with.
           </div>
-          <div className="voya-quote-author">
-            <div className="voya-author-avatar">A</div>
+          <div className="voya-quote-author" style={{ marginTop: '24px' }}>
+            <div className="voya-author-avatar" style={{ background: 'var(--terracotta)', fontWeight: 700 }}>VF</div>
             <div>
-              <div className="voya-author-name">Alex M.</div>
-              <div className="voya-author-role">Adventurer &amp; Backpacker</div>
+              <div className="voya-author-name">The voya Founders</div>
+              <div className="voya-author-role">Aakash &amp; Team</div>
             </div>
           </div>
         </div>
