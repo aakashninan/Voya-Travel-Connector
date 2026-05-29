@@ -674,18 +674,18 @@ const Landing = () => {
 
           <div className="voya-stats-row" style={{ flexWrap: 'wrap', gap: '20px 32px' }}>
             <div>
-              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Thousands</div>
-              <div className="voya-stat-label">Active Travelers</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>100% Free</div>
+              <div className="voya-stat-label">Open Beta Access</div>
             </div>
             <div className="voya-stat-divider" />
             <div>
-              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Countless</div>
-              <div className="voya-stat-label">Trips Planned</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Global</div>
+              <div className="voya-stat-label">Destinations</div>
             </div>
             <div className="voya-stat-divider" />
             <div>
-              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>Highly Rated</div>
-              <div className="voya-stat-label">Match Success</div>
+              <div className="voya-stat-number" style={{ fontSize: '1.45rem', letterSpacing: '-0.02em' }}>AI Guided</div>
+              <div className="voya-stat-label">Co-Pilot Engine</div>
             </div>
           </div>
         </div>
@@ -1038,7 +1038,7 @@ const Landing = () => {
             <div className="voya-author-avatar" style={{ background: 'var(--terracotta)', fontWeight: 700 }}>VF</div>
             <div>
               <div className="voya-author-name">The voya Founders</div>
-              <div className="voya-author-role">Aakash &amp; Team</div>
+              <div className="voya-author-role">Team Voya</div>
             </div>
           </div>
         </div>
