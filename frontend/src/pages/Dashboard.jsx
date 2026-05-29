@@ -32,6 +32,8 @@ const Dashboard = ({ token, currentUser }) => {
   const [activeChatGroup, setActiveChatGroup] = useState(null);
   const [chatMessage, setChatMessage] = useState('');
   const [inviteeMatchId, setInviteeMatchId] = useState('');
+  const [chatsLoading, setChatsLoading] = useState(false);
+  const lastActiveChatId = useRef(null);
 
   // Modals & Overlays
   const [matchAlert, setMatchAlert] = useState(null); // { name, picture }
@@ -138,6 +140,8 @@ const Dashboard = ({ token, currentUser }) => {
       }
     } catch (err) {
       console.error('Error fetching connections:', err);
+    } finally {
+      setChatsLoading(false);
     }
   };
 
@@ -187,6 +191,18 @@ const Dashboard = ({ token, currentUser }) => {
     }, pollInterval);
     return () => clearInterval(interval);
   }, [token, activeChatGroup, activeDirectMatchChat]);
+
+  // Instant load chat logs and show skeleton shimmer loader upon new chat selection
+  useEffect(() => {
+    const currentChatId = activeDirectMatchChat?._id || activeChatGroup?._id || null;
+    if (currentChatId && currentChatId !== lastActiveChatId.current) {
+      setChatsLoading(true);
+      lastActiveChatId.current = currentChatId;
+      fetchConnections(); // Fetch immediately without polling delay!
+    } else if (!currentChatId) {
+      lastActiveChatId.current = null;
+    }
+  }, [activeDirectMatchChat?._id, activeChatGroup?._id]);
 
   // Automatically scroll normal chat logs to bottom when messages updates
   useEffect(() => {
@@ -1017,16 +1033,28 @@ const Dashboard = ({ token, currentUser }) => {
                       transition: 'all 0.3s'
                     }}
                   >
-                    <div style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '50%',
-                      background: 'var(--glass-border)',
-                      backgroundImage: `url(${m.pictures?.[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      flexShrink: 0
-                    }}></div>
+                    <div 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveLikerDetail(m);
+                        setMobileView('explore');
+                      }}
+                      style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        background: 'var(--glass-border)',
+                        backgroundImage: `url(${m.pictures?.[0] || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        flexShrink: 0,
+                        border: '2px solid transparent',
+                        transition: 'border-color 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--coral)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
+                      title="View Traveler Profile"
+                    ></div>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <span style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                         {m.name}, {m.age}
@@ -1254,7 +1282,14 @@ const Dashboard = ({ token, currentUser }) => {
               paddingRight: '8px',
               marginBottom: '20px'
             }}>
-              {directMessages.length === 0 ? (
+              {chatsLoading ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1, padding: '10px 0' }}>
+                  <div className="chat-skeleton-bubble other" style={{ width: '45%' }} />
+                  <div className="chat-skeleton-bubble me" style={{ width: '60%' }} />
+                  <div className="chat-skeleton-bubble other" style={{ width: '50%' }} />
+                  <div className="chat-skeleton-bubble me" style={{ width: '35%' }} />
+                </div>
+              ) : directMessages.length === 0 ? (
                 <div style={{
                   margin: 'auto',
                   textAlign: 'center',
@@ -1358,7 +1393,7 @@ const Dashboard = ({ token, currentUser }) => {
 
             {/* Scrollable Liker Card View */}
             <div className="card-deck-wrapper" style={{ position: 'relative', width: '100%', maxWidth: '440px', height: '420px', margin: '0 auto', flex: 1 }}>
-              {activeLikerDetail._id !== currentUser?._id && (
+              {activeLikerDetail._id !== currentUser?._id && !matches.some(m => m._id === activeLikerDetail._id) && (
                 <>
                   {/* Floating Skip button */}
                   <button
@@ -1685,7 +1720,14 @@ const Dashboard = ({ token, currentUser }) => {
               paddingRight: '8px',
               marginBottom: '20px'
             }}>
-              {activeChatGroup.messages?.length === 0 ? (
+              {chatsLoading ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1, padding: '10px 0' }}>
+                  <div className="chat-skeleton-bubble other" style={{ width: '50%' }} />
+                  <div className="chat-skeleton-bubble me" style={{ width: '40%' }} />
+                  <div className="chat-skeleton-bubble other" style={{ width: '65%' }} />
+                  <div className="chat-skeleton-bubble me" style={{ width: '45%' }} />
+                </div>
+              ) : activeChatGroup.messages?.length === 0 ? (
                 <div style={{
                   margin: 'auto',
                   textAlign: 'center',

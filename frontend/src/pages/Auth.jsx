@@ -175,21 +175,34 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
             className="btn btn-glass"
             style={{
               position: 'absolute',
-              top: '20px',
-              right: '20px',
-              padding: '8px 16px',
-              fontSize: '0.8rem',
+              top: '24px',
+              left: '24px',
+              padding: '10px 18px',
+              fontSize: '0.85rem',
               borderRadius: '100px',
-              background: 'rgba(255,255,255,0.7)',
+              background: 'rgba(255,255,255,0.85)',
               border: '1px solid var(--glass-border)',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
+              gap: '8px',
               zIndex: 10,
-              cursor: 'pointer'
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(26,20,16,0.06)',
+              transition: 'all 0.25s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.background = '#ffffff';
+              e.currentTarget.style.boxShadow = '0 6px 15px rgba(232, 130, 79, 0.12)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,20,16,0.06)';
             }}
           >
-            <i className="fa-solid fa-arrow-left"></i> Back to Home
+            <i className="fa-solid fa-arrow-left" style={{ color: 'var(--coral)' }}></i> 
+            <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Back to Home</span>
           </button>
 
           <div className="glass-panel glass-panel-custom" style={{

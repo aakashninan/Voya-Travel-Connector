@@ -27,7 +27,17 @@ const HINGE_QUESTIONS = [
   'A local custom or tradition that deeply touched me...',
   'My ideal travel day starts with...',
   'The most adventurous thing on my bucket list is...',
-  'A time I faced a major travel hurdle and smiled through it...'
+  'A time I faced a major travel hurdle and smiled through it...',
+  'The best travel advice I\'ve ever received was...',
+  'My favorite way to connect with locals in a new place is...',
+  'The most spontaneous trip I ever took was...',
+  'A destination I would move to in a heartbeat is...',
+  'The best view I\'ve ever had from a window or balcony was in...',
+  'My absolute favorite travel souvenir is...',
+  'I feel most alive when I am...',
+  'A travel ritual I must do in every single city is...',
+  'My theory on how to pack the perfect backpack is...',
+  'The most magical night under the stars I\'ve experienced was in...'
 ];
 
 const VOICE_QUESTIONS = [
@@ -39,7 +49,11 @@ const VOICE_QUESTIONS = [
   'Tell us about a meal abroad that absolutely blew your mind...',
   'What does the perfect morning in a brand new city sound like to you?...',
   'Share a heartwarming story of kindness from a local stranger you met...',
-  'If your travel style was a sound or an instrument, what would it be?...'
+  'If your travel style was a sound or an instrument, what would it be?...',
+  'Describe your most magical night under the stars abroad...',
+  'Tell us about a local legend or story you learned on your travels...',
+  'Say "Hello" in all the languages you\'ve learned on the road...',
+  'What does adventure mean to you in three words?'
 ];
 
 // High-quality default travel image links to keep UI premium immediately (unused now)
