@@ -316,14 +316,8 @@ const Navbar = ({ user, onLogout }) => {
           className="voya-nav-logo"
           onClick={() => navigate(user ? '/dashboard' : '/')}
         >
-          <div className="voya-nav-logo-mark">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '22px', height: '22px' }}>
-              <g transform="translate(5, 5) scale(0.9)">
-                <circle cx="50" cy="62" r="6" fill="#D4A843" />
-                <path d="M 32,20 C 32,48 42,68 50,68 C 55,68 56.5,64 54,60 C 51.5,56 45,60 48,65" stroke="#E8824F" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M 68,20 C 68,48 58,68 50,68 C 45,68 43.5,64 46,60 C 48.5,56 55,60 52,65" stroke="#7A8C6E" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-              </g>
-            </svg>
+          <div className="voya-nav-logo-mark" style={{ background: 'transparent' }}>
+            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
           </div>
           <span className="voya-nav-logo-text">vo<span>ya</span></span>
         </div>
