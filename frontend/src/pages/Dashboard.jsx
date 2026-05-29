@@ -1207,7 +1207,11 @@ const Dashboard = ({ token, currentUser }) => {
                 >
                   <i className="fa-solid fa-chevron-left"></i> Back to Explore
                 </button>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div 
+                  onClick={() => setActiveLikerDetail(activeDirectMatchChat)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}
+                  title="View profile of traveler"
+                >
                   <div style={{
                     width: '36px',
                     height: '36px',

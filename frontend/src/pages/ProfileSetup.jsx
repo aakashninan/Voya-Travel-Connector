@@ -17,7 +17,17 @@ const HINGE_QUESTIONS = [
   'I\'m looking for a travel partner who insists on...',
   'The weirdest street food I\'ve eaten and actually loved...',
   'My dream "no-plans" weekend getaway looks like...',
-  'The worst tourist trap I visited that was actually worth it...'
+  'The worst tourist trap I visited that was actually worth it...',
+  'My absolute favorite local transit experience was...',
+  'The first thing I buy when I land in a new country is...',
+  'I know we\'ll be great travel buddies if you...',
+  'A hostel or guesthouse experience I will never forget...',
+  'The most breathtaking sunset spot I have ever discovered...',
+  'My packing style can best be described as...',
+  'A local custom or tradition that deeply touched me...',
+  'My ideal travel day starts with...',
+  'The most adventurous thing on my bucket list is...',
+  'A time I faced a major travel hurdle and smiled through it...'
 ];
 
 const VOICE_QUESTIONS = [
@@ -25,7 +35,11 @@ const VOICE_QUESTIONS = [
   'If you could pack a bag right now, where are we going?...',
   'Describe the sensory details of your favorite place on Earth...',
   'Give your best tip for making friends in a brand new country...',
-  'What is your ultimate, unspoken travel hack?...'
+  'What is your ultimate, unspoken travel hack?...',
+  'Tell us about a meal abroad that absolutely blew your mind...',
+  'What does the perfect morning in a brand new city sound like to you?...',
+  'Share a heartwarming story of kindness from a local stranger you met...',
+  'If your travel style was a sound or an instrument, what would it be?...'
 ];
 
 // High-quality default travel image links to keep UI premium immediately (unused now)

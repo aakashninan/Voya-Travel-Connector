@@ -166,8 +166,32 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
           justifyContent: 'center',
           padding: '40px 60px',
           background: 'var(--bg-gradient)',
-          overflowY: 'auto'
+          overflowY: 'auto',
+          position: 'relative'
         }}>
+          {/* Back to Home Button */}
+          <button 
+            onClick={() => navigate('/')}
+            className="btn btn-glass"
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              padding: '8px 16px',
+              fontSize: '0.8rem',
+              borderRadius: '100px',
+              background: 'rgba(255,255,255,0.7)',
+              border: '1px solid var(--glass-border)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              zIndex: 10,
+              cursor: 'pointer'
+            }}
+          >
+            <i className="fa-solid fa-arrow-left"></i> Back to Home
+          </button>
+
           <div className="glass-panel glass-panel-custom" style={{
             width: '100%',
             padding: '40px',
