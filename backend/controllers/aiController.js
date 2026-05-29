@@ -258,6 +258,22 @@ const generateFallbackReply = (userText) => {
   };
 };
 
+const fetchWithTimeout = async (url, options, timeoutMs = 8000) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    throw error;
+  }
+};
+
 const getAIChatResponse = async (req, res) => {
   try {
     const { messages } = req.body;
@@ -319,21 +335,21 @@ const getAIChatResponse = async (req, res) => {
     const hasOpenAI = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim() !== '';
     const hasGemini = process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== '';
 
-    // Helper to query Gemini LLM
-    const queryGemini = async () => {
+    // Helper to query Gemini LLM with custom timeout
+    const queryGemini = async (timeoutMs = 5000) => {
       console.log('[AI] Querying Google Gemini...');
       const cleanedMessages = messages.map(msg => ({
         role: msg.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: String(msg.content || '') }]
       }));
 
-      const modelsToTry = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash'];
       const errors = [];
 
       for (const model of modelsToTry) {
         try {
-          console.log(`[AI] Attempting Gemini model: ${model}`);
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+          console.log(`[AI] Attempting Gemini model: ${model} with timeout ${timeoutMs}ms`);
+          const response = await fetchWithTimeout(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${process.env.GEMINI_API_KEY}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -341,7 +357,7 @@ const getAIChatResponse = async (req, res) => {
               contents: cleanedMessages,
               generationConfig: { temperature: 0.7 }
             })
-          });
+          }, timeoutMs);
 
           if (response.ok) {
             const geminiData = await response.json();
@@ -373,7 +389,7 @@ const getAIChatResponse = async (req, res) => {
           content: String(msg.content || '')
         }));
 
-        const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        const openaiResponse = await fetchWithTimeout('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -387,7 +403,7 @@ const getAIChatResponse = async (req, res) => {
             ],
             temperature: 0.7
           })
-        });
+        }, 6000);
 
         if (openaiResponse.ok) {
           const aiData = await openaiResponse.json();
@@ -400,7 +416,7 @@ const getAIChatResponse = async (req, res) => {
           if (hasGemini) {
             console.log('[AI] OpenAI key failed. Hot-swapping to free Gemini API...');
             try {
-              const reply = await queryGemini();
+              const reply = await queryGemini(4000);
               return sendSuccessResponse(reply);
             } catch (geminiErr) {
               console.error('[AI] Hot-swap Gemini also failed:', geminiErr);
@@ -454,7 +470,7 @@ _Would you like me to customize any day, adjust the budget tier, or suggest gour
         console.error('[AI] OpenAI exception, trying hot-swap Gemini if available:', err);
         if (hasGemini) {
           try {
-            const reply = await queryGemini();
+            const reply = await queryGemini(4000);
             return sendSuccessResponse(reply);
           } catch (geminiErr) {
             console.error('[AI] Hot-swap Gemini failed:', geminiErr);
@@ -499,7 +515,7 @@ _Would you like me to customize any day, adjust the budget tier, or suggest gour
     // 2. Otherwise, Try Gemini directly if configured
     else if (hasGemini) {
       try {
-        const reply = await queryGemini();
+        const reply = await queryGemini(5000);
         return sendSuccessResponse(reply);
       } catch (err) {
         console.error('[AI] Gemini fetch failed, generating High-Fidelity Local Simulator response:', err);
