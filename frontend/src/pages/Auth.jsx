@@ -111,14 +111,15 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
               width: '28px',
               height: '28px',
               borderRadius: '8px',
-              background: 'var(--terracotta)',
+              background: 'var(--bg-ink)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '14px', height: '14px' }}>
-                <path d="M3 4L9 14L15 4" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="9" cy="7" r="2.8" stroke="white" strokeWidth="1.8"/>
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px' }}>
+                <path d="M28 32 C34 32, 48 48, 50 56 C52 64, 48 68, 42 68 C36 68, 30 56, 28 32 Z" stroke="#E8824F" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M72 32 C66 32, 52 48, 50 56 C48 64, 52 68, 58 68 C64 68, 70 56, 72 32 Z" stroke="#7A8C6E" strokeWidth="6.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <circle cx="50" cy="58" r="8" fill="#D4A843"/>
               </svg>
             </div>
             <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--bg-sand)' }}>
