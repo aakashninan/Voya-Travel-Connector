@@ -316,10 +316,10 @@ const Navbar = ({ user, onLogout }) => {
           className="voya-nav-logo"
           onClick={() => navigate(user ? '/dashboard' : '/')}
         >
-          <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '46px', height: '46px' }}>
-            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '46px', height: '46px', objectFit: 'contain' }} />
+          <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '54px', height: '54px' }}>
+            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '54px', height: '54px', objectFit: 'contain' }} />
           </div>
-          <span className="voya-nav-logo-text" style={{ fontSize: '1.8rem' }}>vo<span>ya</span></span>
+          <span className="voya-nav-logo-text" style={{ fontSize: '2.1rem' }}>vo<span>ya</span></span>
         </div>
 
         {/* Right side */}

@@ -650,8 +650,8 @@ const Landing = () => {
         {/* Left: Dark panel */}
         <div className="voya-hero-left">
           <div className="voya-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '52px', height: '52px', objectFit: 'contain' }} />
-            <span style={{ fontSize: '1.9rem' }}>vo<span>ya</span></span>
+            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
+            <span style={{ fontSize: '2.3rem' }}>vo<span>ya</span></span>
           </div>
 
           <div className="voya-hero-headline">
