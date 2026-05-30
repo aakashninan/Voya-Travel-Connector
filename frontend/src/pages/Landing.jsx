@@ -15,13 +15,13 @@ const Landing = () => {
 
     .voya-landing {
       font-family: 'DM Sans', sans-serif;
-      --sand: #F5EFE0;
-      --clay: #C8704A;
-      --terracotta: #E8824F;
-      --ink: #1A1410;
-      --mist: #EDE8DF;
-      --sage: #7A8C6E;
-      --dusk: #3D2B1F;
+      --sand: #FBEFE3;
+      --clay: #8C4E33;
+      --terracotta: #A45C3E;
+      --ink: #2C2621;
+      --mist: #F4EAE1;
+      --sage: #6B7519;
+      --dusk: #483E36;
       --gold: #D4A843;
       background: var(--sand);
       color: var(--ink);
@@ -72,7 +72,6 @@ const Landing = () => {
       font-size: 1.6rem;
       font-weight: 900;
       color: var(--sand);
-      letter-spacing: -0.02em;
       position: relative;
       z-index: 2;
     }
@@ -155,7 +154,7 @@ const Landing = () => {
       transition: background 0.2s, transform 0.15s;
     }
 
-    .voya-btn-primary:hover { background: #d06535; transform: translateY(-1px); }
+    .voya-btn-primary:hover { background: #8C4E33; transform: translateY(-1px); }
 
     .voya-btn-ghost {
       background: transparent;
@@ -480,8 +479,8 @@ const Landing = () => {
       font-size: 0.7rem;
       padding: 4px 12px;
       border-radius: 100px;
-      background: rgba(122,140,110,0.2);
-      color: #9AB88A;
+      background: rgba(156,194,171,0.2);
+      color: #9CC2AB;
       font-weight: 500;
     }
 
@@ -516,8 +515,8 @@ const Landing = () => {
       font-weight: 500;
     }
 
-    .voya-status-confirmed { background: rgba(122,140,110,0.2); color: #9AB88A; }
-    .voya-status-pending   { background: rgba(212,168,67,0.15); color: #D4A843; }
+    .voya-status-confirmed { background: rgba(156,194,171,0.2); color: #9CC2AB; }
+    .voya-status-pending   { background: rgba(229,192,123,0.15); color: #E5C07B; }
 
     /* ── CTA ── */
     .voya-cta {
@@ -646,7 +645,10 @@ const Landing = () => {
 
         {/* Left: Dark panel */}
         <div className="voya-hero-left">
-          <div className="voya-logo">vo<span>ya</span></div>
+          <div className="voya-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '42px', height: '42px', objectFit: 'contain' }} />
+            <span>vo<span>ya</span></span>
+          </div>
 
           <div className="voya-hero-headline">
             <div className="voya-badge">

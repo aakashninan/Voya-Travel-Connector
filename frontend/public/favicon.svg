@@ -1,16 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Dark Rounded Box -->
-  <rect width="100" height="100" rx="28" fill="#1A1410" />
+  <!-- Separate Green Dot at the top-left of the logo -->
+  <circle cx="26" cy="26" r="10" fill="#6B7519" />
+
+  <!-- Rounded Square Frame matching the new green logo -->
+  <rect x="25" y="25" width="60" height="60" rx="16" fill="#6B7519" />
   
-  <!-- Waypoint Twist Logo Group Centered -->
-  <g transform="translate(10, 10) scale(0.8)">
-    <!-- Gold Waypoint circle precisely at the center intersection -->
-    <circle cx="50" cy="62" r="5.5" fill="#D4A843" />
-    
-    <!-- Terracotta Path (Left Arm and Loop) -->
-    <path d="M 32,20 C 32,48 42,68 50,68 C 55,68 56.5,64 54,60 C 51.5,56 45,60 48,65" stroke="#E8824F" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
-    
-    <!-- Sage Green Path (Right Arm and Loop) -->
-    <path d="M 68,20 C 68,48 58,68 50,68 C 45,68 43.5,64 46,60 C 48.5,56 55,60 52,65" stroke="#7A8C6E" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" />
-  </g>
+  <!-- Stylized Dove Bird cutout in white inside the frame -->
+  <path d="M 55,42 C 62,38 72,42 75,48 C 76,50 78,55 72,60 C 65,65 52,70 54,74 C 55,76 58,76 60,74 C 55,78 44,77 42,72 C 40,68 46,60 48,54 C 50,48 48,46 55,42 Z" fill="#FFFFFF" />
+  <circle cx="62" cy="52" r="3" fill="#6B7519" />
 </svg>

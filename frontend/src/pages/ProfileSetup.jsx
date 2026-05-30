@@ -10,50 +10,27 @@ const HINGE_QUESTIONS = [
   'My ultimate travel love language is...',
   'Let\'s agree to skip...',
   'My funniest "lost in translation" moment was...',
-  'A travel destination that completely changed how I think...',
-  'The soundtrack to my favorite travel memory is...',
-  'A hidden gem I\'ll carry to my grave is...',
-  'My golden rule for surviving a 14-hour layover is...',
+  'I know we\'ll get along if your packing style is...',
+  'The weirdest street food I ate (and actually survived) was...',
+  'My golden rule for surviving a 14-hour airport layover...',
+  'A hostel horror story I now tell as a party trick...',
   'I\'m looking for a travel partner who insists on...',
-  'The weirdest street food I\'ve eaten and actually loved...',
-  'My dream "no-plans" weekend getaway looks like...',
-  'The worst tourist trap I visited that was actually worth it...',
-  'My absolute favorite local transit experience was...',
-  'The first thing I buy when I land in a new country is...',
-  'I know we\'ll be great travel buddies if you...',
-  'A hostel or guesthouse experience I will never forget...',
-  'The most breathtaking sunset spot I have ever discovered...',
-  'My packing style can best be described as...',
-  'A local custom or tradition that deeply touched me...',
-  'My ideal travel day starts with...',
-  'The most adventurous thing on my bucket list is...',
-  'A time I faced a major travel hurdle and smiled through it...',
-  'The best travel advice I\'ve ever received was...',
-  'My favorite way to connect with locals in a new place is...',
-  'The most spontaneous trip I ever took was...',
-  'A destination I would move to in a heartbeat is...',
-  'The best view I\'ve ever had from a window or balcony was in...',
-  'My absolute favorite travel souvenir is...',
-  'I feel most alive when I am...',
-  'A travel ritual I must do in every single city is...',
-  'My theory on how to pack the perfect backpack is...',
-  'The most magical night under the stars I\'ve experienced was in...'
+  'The worst tourist trap that I secretly loved...',
+  'My most spontaneous "I shouldn\'t have done that" travel story...',
+  'My absolute favorite questionable local transit experience...',
+  'The first thing I buy when I land in a new country to look like a local...',
+  'I\'m the kind of traveler who will literally...',
+  'My ultimate travel red flag in a companion is...'
 ];
 
 const VOICE_QUESTIONS = [
-  'Tell the story of a time you got beautifully lost...',
-  'If you could pack a bag right now, where are we going?...',
-  'Describe the sensory details of your favorite place on Earth...',
-  'Give your best tip for making friends in a brand new country...',
-  'What is your ultimate, unspoken travel hack?...',
-  'Tell us about a meal abroad that absolutely blew your mind...',
-  'What does the perfect morning in a brand new city sound like to you?...',
-  'Share a heartwarming story of kindness from a local stranger you met...',
-  'If your travel style was a sound or an instrument, what would it be?...',
-  'Describe your most magical night under the stars abroad...',
-  'Tell us about a local legend or story you learned on your travels...',
-  'Say "Hello" in all the languages you\'ve learned on the road...',
-  'What does adventure mean to you in three words?'
+  'Describe your travel style using only sound effects...',
+  'What is your ultimate, unspoken, slightly illegal travel hack?...',
+  'Tell the story of a time you got beautifully and stressfully lost...',
+  'Convince me to pack a bag and fly to your favorite spot right now...',
+  'What does the perfect morning in a chaotic street market sound like?...',
+  'Share your best tip for making friends with a stray street dog abroad...',
+  'What is a hostel experience that permanently changed you?...'
 ];
 
 // High-quality default travel image links to keep UI premium immediately (unused now)
@@ -71,7 +48,7 @@ const ProfileSetup = ({ token, onLogout }) => {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('men');
   const [occupation, setOccupation] = useState('World Nomad & Taco Enthusiast');
-  const [bio, setBio] = useState('On a mission to discover the world\'s most breathtaking sunrise hike and the ultimate street taco. I spend 80% of my time exploring hidden mountain ridges or sipping specialty coffee. Let\'s get lost together!');
+  const [bio, setBio] = useState('Professional wanderer on a quest to find the world\'s most chaotic street market and the most scenic spot to accidentally drop my passport. If we aren\'t eating street food from a plastic stool while dodging mopeds, did we even travel? Let\'s get lost (literally, I have zero sense of direction).');
   const [location, setLocation] = useState('San Francisco, USA');
   const [nativity, setNativity] = useState('Global Citizen');
   const [pictures, setPictures] = useState(['', '', '']);
@@ -82,9 +59,9 @@ const ProfileSetup = ({ token, onLogout }) => {
 
   // Hinge Prompts (Maximum 3) with prefilled travel-journal templates
   const [prompts, setPrompts] = useState([
-    { question: HINGE_QUESTIONS[0], answer: 'Sharing street tacos, waking up at 5:00 AM for empty sunrise hikes, and sitting in silence at a cozy Kyoto café.' },
-    { question: HINGE_QUESTIONS[1], answer: 'Over-hyped Instagram spots and rigid 7:00 AM spreadsheets. Let\'s wander down the back alleys without a map instead!' },
-    { question: HINGE_QUESTIONS[2], answer: 'Ordering what I thought was "spicy chicken" in Thailand, only to be served a steaming bowl of super-spicy red ants. Honestly? Tasted like lime-infused crunchy chips!' }
+    { question: 'My ultimate travel love language is...', answer: 'Sharing questionable street food, waking up at 4:30 AM to beat the crowds only to find the gates closed, and splitting a single scooter with way too much luggage.' },
+    { question: 'Let\'s agree to skip...', answer: 'Rigid hour-by-hour Google Doc spreadsheets and 5-star hotel buffets. If we don\'t have to communicate in pure sign language to order our dinner, I\'m out.' },
+    { question: 'My funniest "lost in translation" moment was...', answer: 'Trying to ask for "no spicy" in Thailand by making dramatic "fire" gestures, which the cook interpreted as a request for "nuclear heat". I cried. He smiled. We bonded.' }
   ]);
 
   // Voice Prompt State & Native Refs
@@ -369,6 +346,42 @@ const ProfileSetup = ({ token, onLogout }) => {
   return (
     <div style={{ maxWidth: '800px', margin: '40px auto', padding: '0 24px', position: 'relative' }}>
       <div className="welcome-gradient-bg" style={{ width: '400px', top: '10%' }}></div>
+
+      {/* Premium left-aligned Back to Explore button */}
+      <button 
+        onClick={() => navigate('/dashboard')}
+        className="btn btn-glass"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '10px 18px',
+          fontSize: '0.85rem',
+          borderRadius: '100px',
+          background: 'rgba(255,255,255,0.85)',
+          border: '1px solid var(--glass-border)',
+          cursor: 'pointer',
+          marginBottom: '20px',
+          boxShadow: '0 4px 12px rgba(44, 38, 33, 0.06)',
+          width: 'fit-content',
+          transition: 'all 0.25s ease',
+          position: 'relative',
+          zIndex: 11
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-1px)';
+          e.currentTarget.style.background = '#ffffff';
+          e.currentTarget.style.boxShadow = '0 6px 15px rgba(107, 124, 58, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
+          e.currentTarget.style.boxShadow = '0 4px 12px rgba(44, 38, 33, 0.06)';
+        }}
+      >
+        <i className="fa-solid fa-arrow-left" style={{ color: 'var(--sage)' }}></i> 
+        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Back to Explore</span>
+      </button>
 
       <div className="glass-panel" style={{ padding: '40px', borderRadius: '24px', position: 'relative', zIndex: 10 }}>
         {/* Profile Progress Stepper */}

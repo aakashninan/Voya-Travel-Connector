@@ -108,15 +108,15 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
           {/* Cover logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '28px',
-              height: '28px',
+              width: '38px',
+              height: '38px',
               borderRadius: '8px',
-              background: 'var(--bg-ink)',
+              background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '22px', height: '22px', objectFit: 'contain' }} />
+              <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '38px', height: '38px', objectFit: 'contain' }} />
             </div>
             <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--bg-sand)' }}>
               voya

@@ -44,13 +44,13 @@ const Navbar = ({ user, onLogout }) => {
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
 
     .voya-nav {
-      --sand: #F5EFE0;
-      --clay: #C8704A;
-      --terracotta: #E8824F;
-      --ink: #1A1410;
-      --mist: #EDE8DF;
-      --sage: #7A8C6E;
-      --dusk: #3D2B1F;
+      --sand: #FBEFE3;
+      --clay: #8C4E33;
+      --terracotta: #A45C3E;
+      --ink: #2C2621;
+      --mist: #F4EAE1;
+      --sage: #6B7519;
+      --dusk: #483E36;
       --gold: #D4A843;
 
       margin: 14px 20px 0 20px;
@@ -316,8 +316,8 @@ const Navbar = ({ user, onLogout }) => {
           className="voya-nav-logo"
           onClick={() => navigate(user ? '/dashboard' : '/')}
         >
-          <div className="voya-nav-logo-mark" style={{ background: 'transparent' }}>
-            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '24px', height: '24px', objectFit: 'contain' }} />
+          <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '38px', height: '38px' }}>
+            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '38px', height: '38px', objectFit: 'contain' }} />
           </div>
           <span className="voya-nav-logo-text">vo<span>ya</span></span>
         </div>

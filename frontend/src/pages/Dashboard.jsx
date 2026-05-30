@@ -302,6 +302,58 @@ const Dashboard = ({ token, currentUser }) => {
     };
   }, [feed, currentIndex, activeChatGroup, activeDirectMatchChat, activeLikerDetail, activeAIChat]);
 
+  // Touch Swiping Gesture Support for Mobile/Phones
+  const touchStartRef = useRef({ x: 0, y: 0 });
+  const touchMoveRef = useRef({ x: 0, y: 0 });
+
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+      touchMoveRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches.length === 1) {
+      touchMoveRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+      };
+    }
+  };
+
+  const handleTouchEnd = (e, targetUser, isLikerView = false) => {
+    const diffX = touchMoveRef.current.x - touchStartRef.current.x;
+    const diffY = touchMoveRef.current.y - touchStartRef.current.y;
+    
+    // Ignore vertical scrolling, only swipe if horizontal drag is dominant and exceeds 80px
+    if (Math.abs(diffX) > 80 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        // Swipe Right -> Like
+        if (isLikerView) {
+          handleSwipe(targetUser, 'like');
+          setActiveLikerDetail(null);
+        } else {
+          handleSwipe(targetUser, 'like');
+        }
+      } else {
+        // Swipe Left -> Dislike
+        if (isLikerView) {
+          handleSwipe(targetUser, 'dislike');
+          setActiveLikerDetail(null);
+        } else {
+          handleSwipe(targetUser, 'dislike');
+        }
+      }
+    }
+  };
+
   // Show status notification
   const triggerNotification = (text, type = 'success') => {
     setNotify({ text, type });
@@ -1469,6 +1521,9 @@ const Dashboard = ({ token, currentUser }) => {
                   borderRadius: '24px',
                   overflowY: 'auto'
                 }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={(e) => handleTouchEnd(e, activeLikerDetail, true)}
               >
                 {/* Images Carousel */}
                 <div style={{
@@ -1480,6 +1535,37 @@ const Dashboard = ({ token, currentUser }) => {
                   backgroundPosition: 'center',
                   position: 'relative'
                 }}>
+                  {/* Subtle dark gradient overlay for text readability */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(44, 38, 33, 0.85) 0%, rgba(44, 38, 33, 0.1) 50%, transparent 100%)',
+                    pointerEvents: 'none'
+                  }} />
+
+                  {/* Stamp Badge */}
+                  {activeLikerDetail.location && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      background: 'rgba(251, 239, 227, 0.92)',
+                      border: '1.5px dashed var(--sage)',
+                      color: 'var(--text-primary)',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      fontFamily: 'var(--font-display)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      transform: 'rotate(2deg)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      ✈️ {activeLikerDetail.location.split(',')[0]}
+                    </div>
+                  )}
+
                   <div style={{
                     position: 'absolute',
                     bottom: '16px',
@@ -1500,9 +1586,10 @@ const Dashboard = ({ token, currentUser }) => {
                     <span style={{
                       background: 'rgba(4,7,15,0.7)',
                       padding: '4px 10px',
-                      borderRadius: '10px',
-                      fontSize: '0.75rem',
+                      borderRadius: '100px',
+                      fontSize: '0.72rem',
                       color: 'var(--cyan)',
+                      fontWeight: 600,
                       width: 'fit-content',
                       border: '1px solid var(--cyan-glow)'
                     }}>
@@ -1516,69 +1603,80 @@ const Dashboard = ({ token, currentUser }) => {
                   {/* Bio */}
                   {activeLikerDetail.bio && (
                     <p style={{
-                      fontSize: '0.9rem',
+                      fontSize: '0.92rem',
                       color: 'var(--text-secondary)',
-                      lineHeight: '1.6',
-                      marginBottom: '20px',
-                      fontStyle: 'italic'
+                      lineHeight: '1.65',
+                      marginBottom: '24px',
+                      fontStyle: 'italic',
+                      borderLeft: '3px solid var(--sage)',
+                      paddingLeft: '12px'
                     }}>
                       "{activeLikerDetail.bio}"
                     </p>
                   )}
 
-                  {/* Travel Preferences Summary */}
+                  {/* Boarding Pass Style Itinerary Ticket */}
                   <div className="glass-panel" style={{
-                    padding: '16px',
-                    borderRadius: '16px',
-                    background: 'rgba(255,255,255,0.01)',
-                    marginBottom: '20px'
+                    padding: '18px',
+                    borderRadius: '20px',
+                    background: 'linear-gradient(135deg, rgba(251, 239, 227, 0.6) 0%, rgba(244, 234, 225, 0.6) 100%)',
+                    border: '1px dashed rgba(44, 38, 33, 0.15)',
+                    marginBottom: '24px',
+                    position: 'relative',
+                    boxShadow: '0 4px 15px rgba(44, 38, 33, 0.02)'
                   }}>
-                    <h5 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-                      <i className="fa-solid fa-suitcase-rolling" style={{ color: 'var(--cyan)' }}></i> Itinerary & Preferences
-                    </h5>
+                    {/* Ticket notches */}
+                    <div style={{ position: 'absolute', left: '-8px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--bg-sand)', borderRight: '1px solid var(--glass-border)', zIndex: 2 }} />
+                    <div style={{ position: 'absolute', right: '-8px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--bg-sand)', borderLeft: '1px solid var(--glass-border)', zIndex: 2 }} />
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
+                    <h5 style={{ fontSize: '0.78rem', color: 'var(--sage)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <i className="fa-solid fa-plane-departure"></i> EXPLORER BOARDING PASS
+                    </h5>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '14px 10px', fontSize: '0.8rem' }}>
                       <div>
-                        <span style={{ color: 'var(--text-muted)' }}>📍 Destinations: </span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {activeLikerDetail.destinations?.join(', ') || 'Flexible'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>DESTINATIONS</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          🌍 {activeLikerDetail.destinations?.join(', ') || 'Flexible Wandering'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)' }}>📅 When: </span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {activeLikerDetail.travelCalendar || 'Anytime'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>DURATION</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          ⏱️ {activeLikerDetail.travelDuration || 'Flexible'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)' }}>⏱️ Duration: </span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {activeLikerDetail.travelDuration || 'Flexible'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>CALENDAR / WINDOW</span>
+                        <span style={{ color: 'var(--terracotta)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          📅 {activeLikerDetail.travelCalendar || 'Open Dates'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)' }}>🎒 Styles: </span>
-                        <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                          {activeLikerDetail.travelStyles?.join(', ') || 'Vagabond'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>NATIVITY</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          🦁 {activeLikerDetail.nativity || 'Global Nomad'}
                         </span>
                       </div>
-                      {activeLikerDetail.nativity && (
-                        <div>
-                          <span style={{ color: 'var(--text-muted)' }}>🌍 Nativity: </span>
-                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                            {activeLikerDetail.nativity}
-                          </span>
-                        </div>
-                      )}
-                      {activeLikerDetail.location && (
-                        <div>
-                          <span style={{ color: 'var(--text-muted)' }}>🏠 Resides: </span>
-                          <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
-                            {activeLikerDetail.location}
-                          </span>
-                        </div>
-                      )}
                     </div>
+
+                    {/* Travel Style Pills */}
+                    {activeLikerDetail.travelStyles && activeLikerDetail.travelStyles.length > 0 && (
+                      <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed rgba(44, 38, 33, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {activeLikerDetail.travelStyles.map(style => (
+                          <span key={style} style={{
+                            background: 'rgba(107, 124, 58, 0.1)',
+                            color: 'var(--sage)',
+                            padding: '3px 8px',
+                            borderRadius: '100px',
+                            fontSize: '0.68rem',
+                            fontWeight: 700
+                          }}>
+                            #{style}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Voice Prompt Playback (If Exists) */}
@@ -1635,6 +1733,32 @@ const Dashboard = ({ token, currentUser }) => {
                 </div>
               </div>
             </div>
+
+            {/* Mobile Swipe Buttons for Elaborated Profile (Phone support!) */}
+            {activeLikerDetail._id !== currentUser?._id && !matches.some(m => m._id === activeLikerDetail._id) && (
+              <div className="mobile-action-buttons">
+                <button 
+                  onClick={() => {
+                    handleSwipe(activeLikerDetail, 'dislike');
+                    setActiveLikerDetail(null);
+                  }} 
+                  className="mobile-btn mobile-btn-skip"
+                  title="Skip"
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+                <button 
+                  onClick={() => {
+                    handleSwipe(activeLikerDetail, 'like');
+                    setActiveLikerDetail(null);
+                  }} 
+                  className="mobile-btn mobile-btn-like"
+                  title="Like"
+                >
+                  <i className="fa-solid fa-heart"></i>
+                </button>
+              </div>
+            )}
 
             {/* If it's current user, show an edit profile button instead of swipe controls */}
             {activeLikerDetail._id === currentUser?._id && (
@@ -1917,7 +2041,7 @@ const Dashboard = ({ token, currentUser }) => {
             </div>
 
             {/* Swiper Deck Wrapper */}
-            <div className="deck-container" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+            <div className="deck-container" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', position: 'relative', gap: '15px' }}>
             {currentIndex >= feed.length ? (
               <div className="glass-panel" style={{
                 padding: '40px',
@@ -2005,7 +2129,11 @@ const Dashboard = ({ token, currentUser }) => {
                 <div className={`swipe-card glass-panel ${
                   swipeDirection === 'left' ? 'swipe-left-anim' :
                   swipeDirection === 'right' ? 'swipe-right-anim' : ''
-                }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0, borderRadius: '24px', overflowY: 'auto' }}>
+                }`} style={{ position: 'relative', width: '100%', height: '100%', margin: 0, borderRadius: '24px', overflowY: 'auto' }}
+                  onTouchStart={handleTouchStart}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={(e) => handleTouchEnd(e, activeUserCard, false)}
+                >
                 {/* Images Carousel */}
                 <div style={{
                   width: '100%',
@@ -2016,6 +2144,37 @@ const Dashboard = ({ token, currentUser }) => {
                   backgroundPosition: 'center',
                   position: 'relative'
                 }}>
+                  {/* Subtle dark gradient overlay for text readability */}
+                  <div style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(44, 38, 33, 0.85) 0%, rgba(44, 38, 33, 0.1) 50%, transparent 100%)',
+                    pointerEvents: 'none'
+                  }} />
+
+                  {/* Stamp Badge */}
+                  {activeUserCard.location && (
+                    <div style={{
+                      position: 'absolute',
+                      top: '16px',
+                      right: '16px',
+                      background: 'rgba(251, 239, 227, 0.92)',
+                      border: '1.5px dashed var(--sage)',
+                      color: 'var(--text-primary)',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '0.65rem',
+                      fontWeight: 700,
+                      fontFamily: 'var(--font-display)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      transform: 'rotate(2deg)',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                    }}>
+                      ✈️ {activeUserCard.location.split(',')[0]}
+                    </div>
+                  )}
+
                   {/* Floating Gender and Style Pills */}
                   <div style={{
                     position: 'absolute',
@@ -2037,9 +2196,10 @@ const Dashboard = ({ token, currentUser }) => {
                     <span style={{
                       background: 'rgba(4,7,15,0.7)',
                       padding: '4px 10px',
-                      borderRadius: '10px',
-                      fontSize: '0.75rem',
+                      borderRadius: '100px',
+                      fontSize: '0.72rem',
                       color: 'var(--cyan)',
+                      fontWeight: 600,
                       width: 'fit-content',
                       border: '1px solid var(--cyan-glow)'
                     }}>
@@ -2053,70 +2213,87 @@ const Dashboard = ({ token, currentUser }) => {
                   {/* Bio */}
                   {activeUserCard.bio && (
                     <p style={{
-                      fontSize: '0.9rem',
+                      fontSize: '0.92rem',
                       color: 'var(--text-secondary)',
-                      lineHeight: '1.6',
-                      marginBottom: '20px',
-                      fontStyle: 'italic'
+                      lineHeight: '1.65',
+                      marginBottom: '24px',
+                      fontStyle: 'italic',
+                      borderLeft: '3px solid var(--sage)',
+                      paddingLeft: '12px'
                     }}>
                       "{activeUserCard.bio}"
                     </p>
                   )}
 
-                  {/* Travel Preferences Summary */}
+                  {/* Boarding Pass Style Itinerary Ticket */}
                   <div className="glass-panel" style={{
-                    padding: '16px',
-                    borderRadius: '16px',
-                    background: 'rgba(255,255,255,0.01)',
-                    marginBottom: '20px'
+                    padding: '18px',
+                    borderRadius: '20px',
+                    background: 'linear-gradient(135deg, rgba(251, 239, 227, 0.6) 0%, rgba(244, 234, 225, 0.6) 100%)',
+                    border: '1px dashed rgba(44, 38, 33, 0.15)',
+                    marginBottom: '24px',
+                    position: 'relative',
+                    boxShadow: '0 4px 15px rgba(44, 38, 33, 0.02)'
                   }}>
-                    <h5 style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>
-                      <i className="fa-solid fa-suitcase-rolling" style={{ color: 'var(--cyan)' }}></i> Itinerary & Preferences
+                    {/* Ticket notches */}
+                    <div style={{ position: 'absolute', left: '-8px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--bg-sand)', borderRight: '1px solid var(--glass-border)', zIndex: 2 }} />
+                    <div style={{ position: 'absolute', right: '-8px', top: '50%', transform: 'translateY(-50%)', width: '16px', height: '16px', borderRadius: '50%', background: 'var(--bg-sand)', borderLeft: '1px solid var(--glass-border)', zIndex: 2 }} />
+
+                    <h5 style={{ fontSize: '0.78rem', color: 'var(--sage)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <i className="fa-solid fa-plane-departure"></i> EXPLORER BOARDING PASS
                     </h5>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.8rem' }}>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '14px 10px', fontSize: '0.8rem' }}>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>DESTINATIONS</span>
-                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
-                          {activeUserCard.destinations?.join(', ') || 'Flexible'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>DESTINATIONS</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          🌍 {activeUserCard.destinations?.join(', ') || 'Flexible Wandering'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>CALENDAR</span>
-                        <span style={{ color: 'var(--coral)', fontWeight: 600 }}>
-                          {activeUserCard.travelCalendar || 'Anytime'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>DURATION</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          ⏱️ {activeUserCard.travelDuration || 'Flexible'}
                         </span>
                       </div>
                       <div>
-                        <span style={{ color: 'var(--text-muted)', display: 'block' }}>DURATION</span>
-                        <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
-                          {activeUserCard.travelDuration || 'Flexible'}
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>CALENDAR / WINDOW</span>
+                        <span style={{ color: 'var(--terracotta)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          📅 {activeUserCard.travelCalendar || 'Open Dates'}
                         </span>
                       </div>
-                      {/* Nativity / Nationality */}
-                      {activeUserCard.nativity && (
-                        <div>
-                          <span style={{ color: 'var(--text-muted)', display: 'block' }}>ORIGIN (NATIVITY)</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
-                            {activeUserCard.nativity}
-                          </span>
-                        </div>
-                      )}
-                      {/* Current Residence / Location */}
-                      {activeUserCard.location && (
-                        <div>
-                          <span style={{ color: 'var(--text-muted)', display: 'block' }}>RESIDES IN</span>
-                          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
-                            {activeUserCard.location}
-                          </span>
-                        </div>
-                      )}
+                      <div>
+                        <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.65rem', letterSpacing: '0.03em', fontWeight: 700 }}>NATIVITY</span>
+                        <span style={{ color: 'var(--text-primary)', fontWeight: 750, fontSize: '0.88rem' }}>
+                          🦁 {activeUserCard.nativity || 'Global Nomad'}
+                        </span>
+                      </div>
                     </div>
+
+                    {/* Travel Style Pills */}
+                    {activeUserCard.travelStyles && activeUserCard.travelStyles.length > 0 && (
+                      <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed rgba(44, 38, 33, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                        {activeUserCard.travelStyles.map(style => (
+                          <span key={style} style={{
+                            background: 'rgba(107, 124, 58, 0.1)',
+                            color: 'var(--sage)',
+                            padding: '3px 8px',
+                            borderRadius: '100px',
+                            fontSize: '0.68rem',
+                            fontWeight: 700
+                          }}>
+                            #{style}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {/* Voice Prompt Playback (If Exists) */}
                   {activeUserCard.voicePrompt && activeUserCard.voicePrompt.audio && (
                     <div className="audio-player-glass">
                       <button
+                        type="button"
                         onClick={() => handlePlayVoice(currentIndex, activeUserCard.voicePrompt.audio)}
                         className="audio-btn"
                         title="Listen to traveler"
@@ -2163,10 +2340,27 @@ const Dashboard = ({ token, currentUser }) => {
                       }}
                     />
                   ))}
-
                 </div>
               </div>
+
+              {/* Mobile Swipe Buttons (Phone support!) */}
+              <div className="mobile-action-buttons">
+                <button 
+                  onClick={() => handleSwipe(activeUserCard, 'dislike')} 
+                  className="mobile-btn mobile-btn-skip"
+                  title="Skip"
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+                <button 
+                  onClick={() => handleSwipe(activeUserCard, 'like')} 
+                  className="mobile-btn mobile-btn-like"
+                  title="Like"
+                >
+                  <i className="fa-solid fa-heart"></i>
+                </button>
               </div>
+            </div>
             )}
           </div>
           </div>

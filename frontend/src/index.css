@@ -2,13 +2,13 @@
 
 :root {
   /* Organic Earthy Travel Tokens */
-  --bg-sand: #F5EFE0;
-  --bg-mist: #EDE8DF;
-  --bg-ink: #1A1410;
-  --bg-dusk: #3D2B1F;
-  --clay: #C8704A;
-  --terracotta: #E8824F;
-  --sage: #7A8C6E;
+  --bg-sand: #FBEFE3;
+  --bg-mist: #F4EAE1;
+  --bg-ink: #2C2621;
+  --bg-dusk: #483E36;
+  --clay: #8C4E33;
+  --terracotta: #A45C3E;
+  --sage: #6B7519;
   --gold: #D4A843;
 
   /* App Mappings */
@@ -17,21 +17,21 @@
   --bg-gradient: linear-gradient(135deg, var(--bg-sand) 0%, var(--bg-mist) 100%);
   --coral: var(--terracotta);
   --coral-hover: var(--clay);
-  --coral-glow: rgba(232, 130, 79, 0.12);
+  --coral-glow: rgba(164, 92, 62, 0.12);
   --cyan: var(--sage);
-  --cyan-hover: #607253;
-  --cyan-glow: rgba(122, 140, 110, 0.12);
+  --cyan-hover: #5A6214;
+  --cyan-glow: rgba(107, 117, 25, 0.12);
   --violet: var(--bg-dusk);
   --violet-hover: var(--bg-ink);
-  --violet-glow: rgba(61, 43, 31, 0.1);
-  --glass-card: rgba(255, 255, 255, 0.72);
-  --glass-card-hover: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(26, 20, 16, 0.08);
-  --glass-border-hover: rgba(26, 20, 16, 0.16);
+  --violet-glow: rgba(72, 62, 54, 0.1);
+  --glass-card: rgba(255, 255, 255, 0.76);
+  --glass-card-hover: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(44, 38, 33, 0.08);
+  --glass-border-hover: rgba(44, 38, 33, 0.16);
   --text-primary: var(--bg-ink);
-  --text-secondary: #4A3E36;
-  --text-muted: #7E7065;
-  --shadow-glow: 0 8px 32px 0 rgba(26, 20, 16, 0.04);
+  --text-secondary: #483E36;
+  --text-muted: #8E7D70;
+  --shadow-glow: 0 8px 32px 0 rgba(44, 38, 33, 0.04);
   --font-display: 'Outfit', 'Playfair Display', Georgia, serif;
   --font-body: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: var(--font-body);
@@ -585,6 +585,53 @@ h1, h2, h3, h4, h5, h6 {
   .floating-skip-btn, 
   .floating-like-btn {
     display: none !important;
+  }
+
+  /* Beautiful Phone Interaction Controls directly underneath deck cards */
+  .mobile-action-buttons {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 15px;
+    width: 100%;
+    z-index: 100;
+  }
+
+  .mobile-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-elastic);
+    box-shadow: 0 4px 12px rgba(44, 38, 33, 0.15);
+  }
+
+  .mobile-btn-skip {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--glass-border);
+    color: #ef4444;
+  }
+
+  .mobile-btn-skip:hover {
+    background: #fff;
+    transform: scale(1.08);
+  }
+
+  .mobile-btn-like {
+    background: var(--coral);
+    color: white;
+    box-shadow: 0 6px 15px var(--coral-glow);
+  }
+
+  .mobile-btn-like:hover {
+    background: var(--coral-hover);
+    transform: scale(1.08);
   }
 
   /* Compact padding inside all panels on mobile devices */
