@@ -4,8 +4,8 @@
   /* Organic Earthy Travel Tokens */
   --bg-sand: #FBEFE3;
   --bg-mist: #F4EAE1;
-  --bg-ink: #16110E;
-  --bg-dusk: #2C221D;
+  --bg-ink: #2C2520;
+  --bg-dusk: #40352E;
   --clay: #A83805;
   --terracotta: #C8460A;
   --sage: #C8460A;
@@ -29,7 +29,7 @@
   --glass-border: rgba(44, 38, 33, 0.08);
   --glass-border-hover: rgba(44, 38, 33, 0.16);
   --text-primary: var(--bg-ink);
-  --text-secondary: #3E322A;
+  --text-secondary: #4D3F37;
   --text-muted: #8E7D70;
   --shadow-glow: 0 8px 32px 0 rgba(44, 38, 33, 0.04);
   --font-display: 'Outfit', 'Playfair Display', Georgia, serif;

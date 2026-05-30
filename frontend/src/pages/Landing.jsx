@@ -18,10 +18,10 @@ const Landing = () => {
       --sand: #FBEFE3;
       --clay: #A83805;
       --terracotta: #C8460A;
-      --ink: #16110E;
+      --ink: #2C2520;
       --mist: #F4EAE1;
       --sage: #C8460A;
-      --dusk: #2C221D;
+      --dusk: #40352E;
       --gold: #D4A843;
       background: var(--sand);
       color: var(--ink);
@@ -40,7 +40,8 @@ const Landing = () => {
       padding: 48px 48px 60px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      gap: 48px;
       position: relative;
       overflow: hidden;
     }
@@ -76,7 +77,7 @@ const Landing = () => {
       z-index: 2;
     }
 
-    .voya-logo span { color: var(--terracotta); }
+    .voya-logo span { color: var(--sand); }
 
     .voya-hero-headline { position: relative; z-index: 2; }
 
@@ -129,12 +130,12 @@ const Landing = () => {
       line-height: 1.65;
       font-weight: 300;
       max-width: 360px;
-      margin-bottom: 36px;
+      margin-bottom: 24px;
     }
 
     .voya-hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
     }
 

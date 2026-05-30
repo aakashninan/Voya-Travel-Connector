@@ -47,10 +47,10 @@ const Navbar = ({ user, onLogout }) => {
       --sand: #FBEFE3;
       --clay: #A83805;
       --terracotta: #C8460A;
-      --ink: #16110E;
+      --ink: #2C2520;
       --mist: #F4EAE1;
       --sage: #C8460A;
-      --dusk: #2C221D;
+      --dusk: #40352E;
       --gold: #D4A843;
 
       margin: 14px 20px 0 20px;
@@ -121,7 +121,7 @@ const Navbar = ({ user, onLogout }) => {
     }
 
     .voya-nav-logo-text span {
-      color: var(--terracotta);
+      color: var(--sand);
     }
 
     /* ── LINKS ── */
