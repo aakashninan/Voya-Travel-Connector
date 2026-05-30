@@ -30,20 +30,22 @@ const Landing = () => {
 
     /* ── HERO ── */
     .voya-hero {
-      min-height: 100vh;
+      height: 100vh;
+      max-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
+      overflow: hidden;
     }
 
     .voya-hero-left {
       background: var(--ink);
-      padding: 48px 48px 60px;
+      padding: 32px 40px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 48px;
+      justify-content: space-between;
       position: relative;
       overflow: hidden;
+      height: 100%;
     }
 
     .voya-hero-left::before {
@@ -94,7 +96,7 @@ const Landing = () => {
       color: var(--terracotta);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
     }
 
     .voya-badge-dot {
@@ -111,26 +113,29 @@ const Landing = () => {
 
     .voya-h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 5.6rem;
+      font-size: 4.6rem;
       font-weight: 900;
-      line-height: 0.96;
+      line-height: 0.94;
       color: var(--sand);
       letter-spacing: -0.04em;
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .voya-h1 em {
       font-style: italic;
       color: var(--sage);
+      font-size: 1.05em;
+      display: inline-block;
+      margin-top: 4px;
     }
 
     .voya-hero-sub {
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       color: rgba(245,239,224,0.55);
-      line-height: 1.65;
+      line-height: 1.55;
       font-weight: 300;
       max-width: 360px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .voya-hero-actions {
@@ -621,7 +626,7 @@ const Landing = () => {
 
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .voya-hero { grid-template-columns: 1fr; min-height: auto; }
+      .voya-hero { grid-template-columns: 1fr; height: auto; max-height: none; overflow: visible; }
       .voya-hero-right { min-height: 50vh; }
       .voya-h1 { font-size: 3.8rem; }
       .voya-features { padding: 60px 24px; }
