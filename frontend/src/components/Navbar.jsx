@@ -115,7 +115,7 @@ const Navbar = ({ user, onLogout }) => {
       font-family: 'Playfair Display', serif;
       font-size: 1.55rem;
       font-weight: 900;
-      color: var(--sand);
+      color: var(--sage);
       letter-spacing: -0.03em;
       line-height: 1;
     }
@@ -306,6 +306,10 @@ const Navbar = ({ user, onLogout }) => {
   const initials = user?.name
     ? user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
     : user?.email?.[0]?.toUpperCase() || 'U';
+
+  if (location.pathname === '/' && !user) {
+    return null;
+  }
 
   return (
     <>

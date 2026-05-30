@@ -74,7 +74,7 @@ const Landing = () => {
       font-family: 'Playfair Display', serif;
       font-size: 1.6rem;
       font-weight: 900;
-      color: var(--sand);
+      color: var(--sage);
       position: relative;
       z-index: 2;
     }
