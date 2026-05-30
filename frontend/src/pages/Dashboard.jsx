@@ -1665,7 +1665,7 @@ const Dashboard = ({ token, currentUser }) => {
                       <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed rgba(44, 38, 33, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                         {activeLikerDetail.travelStyles.map(style => (
                           <span key={style} style={{
-                            background: 'rgba(107, 124, 58, 0.1)',
+                            background: 'rgba(200, 70, 10, 0.1)',
                             color: 'var(--sage)',
                             padding: '3px 8px',
                             borderRadius: '100px',
@@ -2275,7 +2275,7 @@ const Dashboard = ({ token, currentUser }) => {
                       <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px dashed rgba(44, 38, 33, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                         {activeUserCard.travelStyles.map(style => (
                           <span key={style} style={{
-                            background: 'rgba(107, 124, 58, 0.1)',
+                            background: 'rgba(200, 70, 10, 0.1)',
                             color: 'var(--sage)',
                             padding: '3px 8px',
                             borderRadius: '100px',

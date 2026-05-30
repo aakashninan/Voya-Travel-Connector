@@ -20,7 +20,7 @@ const Landing = () => {
       --terracotta: #A45C3E;
       --ink: #2C2621;
       --mist: #F4EAE1;
-      --sage: #6B7519;
+      --sage: #C8460A;
       --dusk: #483E36;
       --gold: #D4A843;
       background: var(--sand);
@@ -372,7 +372,7 @@ const Landing = () => {
     }
 
     .voya-icon-coral { background: rgba(200,112,74,0.12); color: var(--clay); }
-    .voya-icon-sage  { background: rgba(122,140,110,0.12); color: var(--sage); }
+    .voya-icon-sage  { background: rgba(200,70,10,0.12); color: var(--sage); }
     .voya-icon-gold  { background: rgba(212,168,67,0.12); color: var(--gold); }
 
     .voya-feat-number {

@@ -8,7 +8,7 @@
   --bg-dusk: #483E36;
   --clay: #8C4E33;
   --terracotta: #A45C3E;
-  --sage: #6B7519;
+  --sage: #C8460A;
   --gold: #D4A843;
 
   /* App Mappings */
@@ -19,8 +19,8 @@
   --coral-hover: var(--clay);
   --coral-glow: rgba(164, 92, 62, 0.12);
   --cyan: var(--sage);
-  --cyan-hover: #5A6214;
-  --cyan-glow: rgba(107, 117, 25, 0.12);
+  --cyan-hover: #A83805;
+  --cyan-glow: rgba(200, 70, 10, 0.12);
   --violet: var(--bg-dusk);
   --violet-hover: var(--bg-ink);
   --violet-glow: rgba(72, 62, 54, 0.1);

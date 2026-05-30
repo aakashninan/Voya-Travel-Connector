@@ -49,7 +49,7 @@ const Navbar = ({ user, onLogout }) => {
       --terracotta: #A45C3E;
       --ink: #2C2621;
       --mist: #F4EAE1;
-      --sage: #6B7519;
+      --sage: #C8460A;
       --dusk: #483E36;
       --gold: #D4A843;
 

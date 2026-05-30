@@ -371,7 +371,7 @@ const ProfileSetup = ({ token, onLogout }) => {
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'translateY(-1px)';
           e.currentTarget.style.background = '#ffffff';
-          e.currentTarget.style.boxShadow = '0 6px 15px rgba(107, 124, 58, 0.15)';
+          e.currentTarget.style.boxShadow = '0 6px 15px rgba(200, 70, 10, 0.15)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'translateY(0)';

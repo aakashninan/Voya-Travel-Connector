@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Separate Green Dot at the top-left of the logo -->
-  <circle cx="26" cy="26" r="10" fill="#6B7519" />
+  <!-- Separate Burnt Orange Dot at the top-left of the logo -->
+  <circle cx="26" cy="26" r="10" fill="#C8460A" />
 
-  <!-- Rounded Square Frame matching the new green logo -->
-  <rect x="25" y="25" width="60" height="60" rx="16" fill="#6B7519" />
+  <!-- Rounded Square Frame matching the new burnt orange logo -->
+  <rect x="25" y="25" width="60" height="60" rx="16" fill="#C8460A" />
   
   <!-- Stylized Dove Bird cutout in white inside the frame -->
   <path d="M 55,42 C 62,38 72,42 75,48 C 76,50 78,55 72,60 C 65,65 52,70 54,74 C 55,76 58,76 60,74 C 55,78 44,77 42,72 C 40,68 46,60 48,54 C 50,48 48,46 55,42 Z" fill="#FFFFFF" />
-  <circle cx="62" cy="52" r="3" fill="#6B7519" />
+  <circle cx="62" cy="52" r="3" fill="#C8460A" />
 </svg>
