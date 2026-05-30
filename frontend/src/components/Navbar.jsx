@@ -45,12 +45,12 @@ const Navbar = ({ user, onLogout }) => {
 
     .voya-nav {
       --sand: #FBEFE3;
-      --clay: #8C4E33;
-      --terracotta: #A45C3E;
-      --ink: #2C2621;
+      --clay: #A83805;
+      --terracotta: #C8460A;
+      --ink: #16110E;
       --mist: #F4EAE1;
       --sage: #C8460A;
-      --dusk: #483E36;
+      --dusk: #2C221D;
       --gold: #D4A843;
 
       margin: 14px 20px 0 20px;

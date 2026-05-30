@@ -16,12 +16,12 @@ const Landing = () => {
     .voya-landing {
       font-family: 'DM Sans', sans-serif;
       --sand: #FBEFE3;
-      --clay: #8C4E33;
-      --terracotta: #A45C3E;
-      --ink: #2C2621;
+      --clay: #A83805;
+      --terracotta: #C8460A;
+      --ink: #16110E;
       --mist: #F4EAE1;
       --sage: #C8460A;
-      --dusk: #483E36;
+      --dusk: #2C221D;
       --gold: #D4A843;
       background: var(--sand);
       color: var(--ink);
@@ -110,9 +110,9 @@ const Landing = () => {
 
     .voya-h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 4.2rem;
+      font-size: 5.6rem;
       font-weight: 900;
-      line-height: 1.02;
+      line-height: 0.96;
       color: var(--sand);
       letter-spacing: -0.04em;
       margin-bottom: 20px;
@@ -120,7 +120,7 @@ const Landing = () => {
 
     .voya-h1 em {
       font-style: italic;
-      color: var(--terracotta);
+      color: var(--sage);
     }
 
     .voya-hero-sub {
@@ -154,7 +154,7 @@ const Landing = () => {
       transition: background 0.2s, transform 0.15s;
     }
 
-    .voya-btn-primary:hover { background: #8C4E33; transform: translateY(-1px); }
+    .voya-btn-primary:hover { background: #A83805; transform: translateY(-1px); }
 
     .voya-btn-ghost {
       background: transparent;
@@ -622,7 +622,7 @@ const Landing = () => {
     @media (max-width: 900px) {
       .voya-hero { grid-template-columns: 1fr; min-height: auto; }
       .voya-hero-right { min-height: 50vh; }
-      .voya-h1 { font-size: 2.8rem; }
+      .voya-h1 { font-size: 3.8rem; }
       .voya-features { padding: 60px 24px; }
       .voya-features-grid { grid-template-columns: 1fr; gap: 16px; }
       .voya-feat-card:first-child { border-radius: 24px 24px 0 0; }
@@ -657,7 +657,9 @@ const Landing = () => {
             </div>
 
             <h1 className="voya-h1">
-              Swipe.<br />Pack.<br /><em style={{ color: 'var(--sage)' }}>Go.</em>
+              <span style={{ color: '#FFFFFF' }}>Swipe.</span><br />
+              <span style={{ color: '#FFFFFF' }}>Pack.</span><br />
+              <em>Go.</em>
             </h1>
 
             <p className="voya-hero-sub">
