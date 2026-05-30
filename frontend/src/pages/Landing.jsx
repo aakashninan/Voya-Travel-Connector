@@ -30,8 +30,8 @@ const Landing = () => {
 
     /* ── HERO ── */
     .voya-hero {
-      height: 100vh;
-      max-height: 100vh;
+      height: calc(100vh - 92px);
+      max-height: calc(100vh - 92px);
       display: grid;
       grid-template-columns: 1fr 1fr;
       overflow: hidden;

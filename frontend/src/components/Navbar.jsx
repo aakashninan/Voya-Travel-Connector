@@ -307,10 +307,6 @@ const Navbar = ({ user, onLogout }) => {
     ? user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
     : user?.email?.[0]?.toUpperCase() || 'U';
 
-  if (location.pathname === '/' && !user) {
-    return null;
-  }
-
   return (
     <>
       <style>{styles}</style>
