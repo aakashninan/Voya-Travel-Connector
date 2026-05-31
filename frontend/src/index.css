@@ -548,13 +548,13 @@ h1, h2, h3, h4, h5, h6 {
   
   .swipe-card {
     max-width: 100% !important;
-    height: 420px !important; /* Perfect visual fit on all phone screen sizes */
+    height: 100% !important; /* Stretch card to fill deck wrapper */
   }
   
   .card-deck-wrapper {
     width: calc(100% - 40px) !important;
     max-width: 100% !important;
-    height: 420px !important; /* Perfect visual fit on all phone screen sizes */
+    height: calc(100dvh - 245px) !important; /* Fill full available vertical space dynamically */
     margin: 0 auto !important;
   }
 
