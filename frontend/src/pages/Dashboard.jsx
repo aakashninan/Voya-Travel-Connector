@@ -332,6 +332,9 @@ const Dashboard = ({ token, currentUser }) => {
     const diffX = touchMoveRef.current.x - touchStartRef.current.x;
     const diffY = touchMoveRef.current.y - touchStartRef.current.y;
     
+    // If the user scrolled vertically, cancel/ignore the swipe gesture
+    if (Math.abs(diffY) > 40) return;
+    
     // Ignore vertical scrolling, only swipe if horizontal drag is dominant and exceeds 80px
     if (Math.abs(diffX) > 80 && Math.abs(diffX) > Math.abs(diffY)) {
       if (diffX > 0) {
@@ -745,7 +748,7 @@ const Dashboard = ({ token, currentUser }) => {
   return (
     <div className={`app-layout ${showMobileNav ? 'has-mobile-nav' : ''}`} style={{ gridTemplateColumns: '320px 1fr', gap: '24px', padding: '24px', maxWidth: '100%' }}>
       {/* 1. LEFT PANEL: MATCHES & GROUP CONVERSATIONS */}
-      <div className={`app-layout-left glass-panel ${mobileView !== 'chats' ? 'mobile-hide' : ''}`} style={{
+      <div className={`app-layout-left glass-panel ${(mobileView !== 'chats' || activeDirectMatchChat || activeChatGroup || activeLikerDetail) ? 'mobile-hide' : ''}`} style={{
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
@@ -1124,7 +1127,7 @@ const Dashboard = ({ token, currentUser }) => {
       </div>
 
       {/* 2. CENTER PANEL: SWIPING CARD DECK OR GROUP CHAT OR DIRECT MATCH FORUM OR LIKER ELABORATE VIEW */}
-      <div className={(mobileView !== 'explore' && mobileView !== 'ai') ? 'mobile-hide' : ''} style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative', overflow: 'hidden', flex: 1 }}>
+      <div className={(mobileView !== 'explore' && mobileView !== 'ai' && !activeDirectMatchChat && !activeChatGroup && !activeLikerDetail) ? 'mobile-hide' : ''} style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, position: 'relative', overflow: 'hidden', flex: 1 }}>
         {activeAIChat ? (
           /* ✨ VOYA AI TRAVEL CO-PILOT WORKSPACE */
           <div className="glass-panel" style={{
@@ -1285,7 +1288,7 @@ const Dashboard = ({ token, currentUser }) => {
                   className="btn btn-glass"
                   style={{ padding: '6px 12px', fontSize: '0.8rem', marginBottom: '8px' }}
                 >
-                  <i className="fa-solid fa-chevron-left"></i> Back to Explore
+                  <i className="fa-solid fa-chevron-left"></i> Back to Chats
                 </button>
                 <div 
                   onClick={() => setActiveLikerDetail(activeDirectMatchChat)}
@@ -1802,7 +1805,7 @@ const Dashboard = ({ token, currentUser }) => {
                   className="btn btn-glass"
                   style={{ padding: '6px 12px', fontSize: '0.8rem', marginBottom: '8px' }}
                 >
-                  <i className="fa-solid fa-chevron-left"></i> Back to Explore
+                  <i className="fa-solid fa-chevron-left"></i> Back to Chats
                 </button>
                 <h3 style={{ fontSize: '1.4rem' }}>{activeChatGroup.name}</h3>
                 {activeChatGroup.destination && (
