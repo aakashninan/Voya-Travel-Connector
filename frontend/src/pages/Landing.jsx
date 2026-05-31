@@ -693,8 +693,32 @@ const Landing = () => {
       .voya-hero-left { padding: 36px 28px 48px; }
       .voya-section-title { font-size: 2.2rem; }
     }
-
     @media (max-width: 600px) {
+      .voya-hero-headline {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+      .voya-badge {
+        align-self: center !important;
+        font-size: 0.65rem !important;
+        padding: 5px 10px !important;
+        margin-bottom: 20px !important;
+      }
+      .voya-h1 {
+        font-size: 2.6rem !important;
+        line-height: 1.05 !important;
+        margin-bottom: 18px !important;
+        text-align: center !important;
+      }
+      .voya-hero-sub {
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+        max-width: 100% !important;
+        margin-bottom: 28px !important;
+        text-align: center !important;
+      }
       .voya-hero-actions,
       .voya-cta-actions {
         display: flex !important;
@@ -708,6 +732,13 @@ const Landing = () => {
         margin: 0 !important;
         justify-content: center !important;
         text-align: center !important;
+      }
+      .voya-hero-left {
+        padding: 48px 20px 40px 20px !important;
+      }
+      .voya-stats-row {
+        justify-content: center !important;
+        gap: 16px 24px !important;
       }
     }
   `;
@@ -1069,7 +1100,12 @@ const Landing = () => {
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="35" y="15" width="30" height="60" rx="6" fill="#FFFFFF" stroke="#C8460A" strokeWidth="2.5"/>
                   <line x1="45" y1="20" x2="55" y2="20" stroke="#C8460A" strokeWidth="2" strokeLinecap="round"/>
-                  <path d="M50 35 C47 30, 42 32, 42 37 C42 43, 50 49, 50 49 C50 49, 58 43, 58 37 C58 32, 53 30, 50 35 Z" fill="#C8460A"/>
+                  {/* Real Travel Backpack graphic inside the phone */}
+                  <rect x="42" y="30" width="16" height="20" rx="3" fill="#C8460A" />
+                  <path d="M47 30V28a1.5 1.5 0 0 1 3 0v2" stroke="#FFFFFF" strokeWidth="1" strokeLinecap="round" />
+                  <rect x="44.5" y="38" width="11" height="9" rx="1.5" fill="#FFFFFF" stroke="#C8460A" strokeWidth="1" />
+                  <rect x="44.5" y="32" width="1.5" height="5" rx="0.5" fill="#FFFFFF" />
+                  <rect x="54" y="32" width="1.5" height="5" rx="0.5" fill="#FFFFFF" />
                   <path d="M22 45 A 25 25 0 0 1 22 35" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.3"/>
                   <path d="M15 52 A 35 35 0 0 1 15 28" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.15"/>
                   <path d="M78 45 A 25 25 0 0 0 78 35" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.3"/>

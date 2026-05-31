@@ -9,9 +9,24 @@ const BackpackIcon = ({ size = 22, style = {} }) => (
     width={size} 
     height={size} 
     fill="currentColor" 
-    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+    style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, ...style }}
   >
-    <path d="M17 9.5V7c0-2.76-2.24-5-5-5S7 4.24 7 7v2.5c-1.66 0-3 1.34-3 3v6c0 1.66 1.34 3 3 3h10c1.66 0 3-1.34 3-3v-6c0-1.66-1.34-3-3-3zm-8-2.5c0-1.66 1.34-3 3-3s3 1.34 3 3v2.5H9V7zm8 11.5H7v-6h10v6zM10 14h4v1.5h-4V14z" />
+    {/* Carry Handle */}
+    <path d="M9 3.5V2a1.5 1.5 0 0 1 3 0v1.5h-3z" />
+    
+    {/* Main Pack Body */}
+    <path d="M5 8.5C5 5.5 7.5 5 12 5s7 .5 7 3.5v10c0 1.9-1.6 3.5-3.5 3.5h-7C6.6 22 5 20.4 5 18.5v-10z" />
+    
+    {/* Front Pocket (Bulge) in contrast (white or cutout) */}
+    <path d="M8 12h8v5a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5z" fill="#FFFFFF" stroke="currentColor" strokeWidth="0.5" />
+    
+    {/* Vertical Harness Straps */}
+    <rect x="7.5" y="6" width="1.5" height="6" rx="0.5" fill="#FFFFFF" />
+    <rect x="15" y="6" width="1.5" height="6" rx="0.5" fill="#FFFFFF" />
+    
+    {/* Buckle details */}
+    <circle cx="8.25" cy="10" r="0.75" fill="currentColor" />
+    <circle cx="15.75" cy="10" r="0.75" fill="currentColor" />
   </svg>
 );
 
@@ -1615,7 +1630,7 @@ const Dashboard = ({ token, currentUser }) => {
                 </div>
 
                 {/* Card Main Body */}
-                <div style={{ padding: '24px' }}>
+                <div className="swipe-card-body" style={{ padding: '24px' }}>
                   {/* Bio */}
                   {activeLikerDetail.bio && (
                     <p style={{
@@ -2225,7 +2240,7 @@ const Dashboard = ({ token, currentUser }) => {
                 </div>
 
                 {/* Card Main Body */}
-                <div style={{ padding: '24px' }}>
+                <div className="swipe-card-body" style={{ padding: '24px' }}>
                   {/* Bio */}
                   {activeUserCard.bio && (
                     <p style={{
