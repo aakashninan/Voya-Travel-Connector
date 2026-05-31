@@ -32,8 +32,8 @@
   --text-secondary: #4D3F37;
   --text-muted: #8E7D70;
   --shadow-glow: 0 8px 32px 0 rgba(44, 38, 33, 0.04);
-  --font-display: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif;
-  --font-body: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif;
+  --font-display: 'Outfit', 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-brand: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif;
   --font-sans: var(--font-body);
   --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);

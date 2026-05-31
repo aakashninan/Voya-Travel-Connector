@@ -103,7 +103,7 @@ const Landing = () => {
     }
 
     .voya-h1 {
-      font-family: var(--font-display), serif !important;
+      font-family: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif !important;
       font-size: 5.4rem;
       font-weight: 900;
       line-height: 0.96;
