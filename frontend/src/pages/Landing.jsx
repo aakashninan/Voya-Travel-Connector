@@ -70,16 +70,7 @@ const Landing = () => {
       pointer-events: none;
     }
 
-    .voya-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--sage);
-      position: relative;
-      z-index: 2;
-    }
-
-    .voya-logo span { color: var(--sand); }
+    /* Unused voya-logo CSS removed */
 
     .voya-hero-headline { position: relative; z-index: 2; }
 
@@ -320,89 +311,124 @@ const Landing = () => {
       flex-shrink: 0;
     }
 
-    /* ── FEATURES ── */
+    /* ── FEATURES REDESIGN ── */
     .voya-features {
       padding: 100px 60px;
       background: var(--sand);
     }
 
     .voya-section-kicker {
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: 0.8rem;
+      font-weight: 600;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--sage);
+      color: var(--terracotta);
       margin-bottom: 16px;
     }
 
     .voya-section-title {
       font-family: 'Playfair Display', serif;
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 900;
-      line-height: 1.1;
+      line-height: 1.15;
       letter-spacing: -0.03em;
       color: var(--ink);
-      max-width: 500px;
+      max-width: 600px;
       margin-bottom: 60px;
     }
 
     .voya-features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 32px;
     }
 
     .voya-feat-card {
-      background: var(--mist);
-      padding: 40px 36px;
+      background: #FFFFFF;
+      padding: 44px 36px 40px 36px;
+      border-radius: 24px !important;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 12px 36px rgba(44, 37, 32, 0.05);
+      border: 1px solid rgba(44, 37, 32, 0.04);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
     }
 
-    .voya-feat-card:first-child { border-radius: 24px 0 0 24px; }
-    .voya-feat-card:last-child { border-radius: 0 24px 24px 0; }
-    .voya-feat-card:hover .voya-feat-icon-wrap { transform: scale(1.08); }
+    .voya-feat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      transition: height 0.25s ease;
+    }
+    
+    .voya-feat-card.feat-1::before { background: var(--terracotta); }
+    .voya-feat-card.feat-2::before { background: #6B7C3A; }
+    .voya-feat-card.feat-3::before { background: var(--gold); }
+
+    .voya-feat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 48px rgba(44, 37, 32, 0.1);
+      border-color: rgba(200, 70, 10, 0.15);
+    }
+    
+    .voya-feat-card:hover::before {
+      height: 8px;
+    }
 
     .voya-feat-icon-wrap {
-      width: 52px; height: 52px;
-      border-radius: 14px;
+      width: 60px; height: 60px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
-      margin-bottom: 24px;
-      transition: transform 0.2s;
+      font-size: 1.4rem;
+      margin-bottom: 28px;
+      transition: transform 0.3s ease;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
     }
 
-    .voya-icon-coral { background: rgba(200,112,74,0.12); color: var(--clay); }
-    .voya-icon-sage  { background: rgba(200,70,10,0.12); color: var(--sage); }
-    .voya-icon-gold  { background: rgba(212,168,67,0.12); color: var(--gold); }
+    .voya-icon-coral { background: rgba(200,70,10,0.08); color: var(--terracotta); border: 1px solid rgba(200,70,10,0.12); }
+    .voya-icon-sage  { background: rgba(107,124,58,0.08); color: #6B7C3A; border: 1px solid rgba(107,124,58,0.12); }
+    .voya-icon-gold  { background: rgba(212,168,67,0.08); color: var(--gold); border: 1px solid rgba(212,168,67,0.12); }
+
+    .voya-feat-card:hover .voya-feat-icon-wrap {
+      transform: scale(1.08) rotate(2deg);
+    }
 
     .voya-feat-number {
       position: absolute;
-      top: 32px; right: 32px;
+      top: 28px; right: 32px;
       font-family: 'Playfair Display', serif;
-      font-size: 4rem;
+      font-size: 3.6rem;
       font-weight: 900;
-      color: rgba(26,20,16,0.04);
+      color: rgba(44, 37, 32, 0.05);
       line-height: 1;
       pointer-events: none;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .voya-feat-card:hover .voya-feat-number {
+      color: rgba(44, 37, 32, 0.08);
+      transform: translateY(-2px);
     }
 
     .voya-feat-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.35rem;
-      font-weight: 700;
+      font-size: 1.45rem;
+      font-weight: 800;
       color: var(--ink);
-      margin-bottom: 12px;
-      line-height: 1.3;
+      margin-bottom: 14px;
+      line-height: 1.35;
     }
 
     .voya-feat-desc {
-      font-size: 0.88rem;
-      color: rgba(26,20,16,0.55);
+      font-size: 0.92rem;
+      color: rgba(44, 37, 32, 0.65);
       line-height: 1.7;
-      font-weight: 300;
+      font-weight: 400;
     }
 
     /* ── TESTIMONIAL ── */
@@ -990,7 +1016,7 @@ const Landing = () => {
 
         <div className="voya-features-grid">
           {/* Card 1 */}
-          <div className="voya-feat-card">
+          <div className="voya-feat-card feat-1">
             <div className="voya-feat-number">01</div>
             <div className="voya-feat-icon-wrap voya-icon-coral">
               <i className="fa-solid fa-microphone-lines" />
@@ -1003,7 +1029,7 @@ const Landing = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="voya-feat-card">
+          <div className="voya-feat-card feat-2">
             <div className="voya-feat-number">02</div>
             <div className="voya-feat-icon-wrap voya-icon-sage">
               <i className="fa-solid fa-sliders" />
@@ -1016,7 +1042,7 @@ const Landing = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="voya-feat-card">
+          <div className="voya-feat-card feat-3">
             <div className="voya-feat-number">03</div>
             <div className="voya-feat-icon-wrap voya-icon-gold">
               <i className="fa-solid fa-users-rectangle" />
@@ -1092,9 +1118,8 @@ const Landing = () => {
 
       {/* ── FOOTER ── */}
       <footer className="voya-footer">
-        <div className="voya-footer-logo">vo<span>ya</span></div>
         <div className="voya-footer-copy">
-          &copy; {new Date().getFullYear()} voya Inc. Made with passion for travelers worldwide.
+          &copy; {new Date().getFullYear()} Made with passion for travelers worldwide.
         </div>
       </footer>
     </div>

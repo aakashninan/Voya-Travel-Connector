@@ -312,15 +312,17 @@ const Navbar = ({ user, onLogout }) => {
       <style>{styles}</style>
       <nav className="voya-nav">
         {/* Logo */}
-        <div
-          className="voya-nav-logo"
-          onClick={() => navigate(user ? '/dashboard' : '/')}
-        >
-          <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '54px', height: '54px' }}>
-            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '54px', height: '54px', objectFit: 'contain' }} />
+        {location.pathname !== '/' && (
+          <div
+            className="voya-nav-logo"
+            onClick={() => navigate(user ? '/dashboard' : '/')}
+          >
+            <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '54px', height: '54px' }}>
+              <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '54px', height: '54px', objectFit: 'contain' }} />
+            </div>
+            <span className="voya-nav-logo-text" style={{ fontSize: '2.1rem' }}>vo<span>ya</span></span>
           </div>
-          <span className="voya-nav-logo-text" style={{ fontSize: '2.1rem' }}>vo<span>ya</span></span>
-        </div>
+        )}
 
         {/* Right side */}
         <div className="voya-nav-links">
