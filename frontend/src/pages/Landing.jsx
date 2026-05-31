@@ -721,7 +721,13 @@ const Landing = () => {
         margin-bottom: 28px !important;
         text-align: center !important;
       }
-      .voya-hero-actions,
+      .voya-hero-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+        margin-bottom: 32px !important;
+      }
       .voya-cta-actions {
         display: flex !important;
         flex-direction: column !important;
@@ -741,6 +747,24 @@ const Landing = () => {
       .voya-stats-row {
         justify-content: center !important;
         gap: 16px 24px !important;
+      }
+      .voya-trip-header {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+      .voya-trip-title {
+        font-size: 0.65rem !important;
+        letter-spacing: 0.05em !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .voya-trip-badge {
+        font-size: 0.65rem !important;
+        padding: 3px 8px !important;
+        white-space: nowrap !important;
       }
     }
   `;
