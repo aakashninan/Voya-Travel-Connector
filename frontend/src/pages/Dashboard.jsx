@@ -115,6 +115,40 @@ const Dashboard = ({ token, currentUser }) => {
   // Voice playback simulation
   const [playingAudioIdx, setPlayingAudioIdx] = useState(null); // indices
 
+  const [hasNotification, setHasNotification] = useState(false);
+
+  // Notification indicator logic for new matches / likes / group messages
+  useEffect(() => {
+    if (!token) return;
+    
+    let hasUnread = false;
+
+    // 1. Pending likes received
+    if (likesReceived && likesReceived.length > 0) {
+      hasUnread = true;
+    }
+
+    // 2. Unread group messages
+    const readMap = JSON.parse(localStorage.getItem('voya_read_groups') || '{}');
+    if (myGroups && myGroups.length > 0) {
+      myGroups.forEach(g => {
+        const lastMsg = g.messages?.[g.messages.length - 1];
+        if (lastMsg) {
+          if (activeChatGroup?._id === g._id) {
+            readMap[g._id] = lastMsg._id;
+          } else if (readMap[g._id] !== lastMsg._id) {
+            hasUnread = true;
+          }
+        }
+      });
+    }
+    localStorage.setItem('voya_read_groups', JSON.stringify(readMap));
+
+    // Save flag to localStorage so Navbar can read it
+    localStorage.setItem('voya_unread_notification', hasUnread ? 'true' : 'false');
+    setHasNotification(hasUnread);
+  }, [token, likesReceived, myGroups, activeChatGroup]);
+
   // Fetch Feed
   const fetchFeed = async () => {
     try {
@@ -2493,8 +2527,12 @@ const Dashboard = ({ token, currentUser }) => {
               setActiveLikerDetail(null);
             }} 
             className={`voya-mobile-nav-item ${(mobileView === 'chats' || activeDirectMatchChat || activeChatGroup) && !activeAIChat ? 'active' : ''}`}
+            style={{ position: 'relative' }}
           >
             <i className="fa-solid fa-comments"></i>
+            {hasNotification && (
+              <span className="voya-nav-notification-dot" />
+            )}
             <span>Chats</span>
           </button>
           <button 

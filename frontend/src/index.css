@@ -507,6 +507,19 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1000;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
   }
+
+  .voya-nav-notification-dot {
+    position: absolute;
+    top: 6px;
+    right: calc(50% - 15px);
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444 !important;
+    border-radius: 50% !important;
+    border: 1.5px solid rgba(245, 239, 224, 0.94) !important;
+    z-index: 100 !important;
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.6) !important;
+  }
   
   .voya-mobile-nav-item {
     display: flex;

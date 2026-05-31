@@ -301,7 +301,35 @@ const Navbar = ({ user, onLogout }) => {
         display: none !important;
       }
     }
+
+    .voya-desktop-notification-badge {
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      width: 7px;
+      height: 7px;
+      background-color: #ef4444 !important;
+      border-radius: 50% !important;
+      border: 1px solid var(--ink) !important;
+      box-shadow: 0 0 4px rgba(239, 68, 68, 0.6) !important;
+    }
   `;
+
+  const [hasUnread, setHasUnread] = useState(false);
+
+  useEffect(() => {
+    if (!user) {
+      setHasUnread(false);
+      return;
+    }
+    const checkNotification = () => {
+      const val = localStorage.getItem('voya_unread_notification');
+      setHasUnread(val === 'true');
+    };
+    checkNotification();
+    const interval = setInterval(checkNotification, 1500);
+    return () => clearInterval(interval);
+  }, [user]);
 
   const initials = user?.name
     ? user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()
@@ -329,8 +357,12 @@ const Navbar = ({ user, onLogout }) => {
               <Link
                 to="/dashboard"
                 className={`voya-nav-link ${location.pathname === '/dashboard' && new URLSearchParams(location.search).get('tab') !== 'ai' ? 'active' : ''}`}
+                style={{ position: 'relative' }}
               >
                 <i className="fa-solid fa-compass"></i> Explore
+                {hasUnread && (
+                  <span className="voya-desktop-notification-badge" />
+                )}
               </Link>
               <Link
                 to="/dashboard?tab=ai"
