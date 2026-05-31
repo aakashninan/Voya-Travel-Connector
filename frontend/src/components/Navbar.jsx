@@ -41,7 +41,7 @@ const Navbar = ({ user, onLogout }) => {
   };
 
   const styles = `
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 
     .voya-nav {
       --sand: #FBEFE3;
@@ -112,11 +112,11 @@ const Navbar = ({ user, onLogout }) => {
     }
 
     .voya-nav-logo-text {
-      font-family: 'Monaco', 'Courier New', 'Courier', monospace !important;
-      font-size: 1.55rem;
+      font-family: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif !important;
+      font-size: 2.15rem;
       font-weight: 700;
       color: var(--sage);
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
       line-height: 1;
       text-transform: lowercase;
     }

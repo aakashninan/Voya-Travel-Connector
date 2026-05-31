@@ -5,7 +5,7 @@ const Landing = () => {
   const navigate = useNavigate();
 
   const styles = `
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 
     .voya-landing * {
       box-sizing: border-box;
@@ -586,7 +586,7 @@ const Landing = () => {
     .voya-cta::before {
       content: 'voya';
       position: absolute;
-      font-family: 'Playfair Display', serif;
+      font-family: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif;
       font-size: 18rem;
       font-weight: 900;
       font-style: italic;
@@ -660,7 +660,7 @@ const Landing = () => {
     }
 
     .voya-footer-logo {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Advercase', 'EB Garamond', 'Apple Garamond', 'Garamond', serif;
       font-size: 1.3rem;
       font-weight: 900;
       color: var(--sand);
