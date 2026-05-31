@@ -2,6 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
 
+// Custom inline travel backpack SVG icon component
+const BackpackIcon = ({ size = 22, style = {} }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    width={size} 
+    height={size} 
+    fill="currentColor" 
+    style={{ display: 'inline-block', verticalAlign: 'middle', ...style }}
+  >
+    <path d="M17 9.5V7c0-2.76-2.24-5-5-5S7 4.24 7 7v2.5c-1.66 0-3 1.34-3 3v6c0 1.66 1.34 3 3 3h10c1.66 0 3-1.34 3-3v-6c0-1.66-1.34-3-3-3zm-8-2.5c0-1.66 1.34-3 3-3s3 1.34 3 3v2.5H9V7zm8 11.5H7v-6h10v6zM10 14h4v1.5h-4V14z" />
+  </svg>
+);
+
 const Dashboard = ({ token, currentUser }) => {
   const chatEndRef = useRef(null);
   const aiChatContainerRef = useRef(null);
@@ -1511,7 +1524,7 @@ const Dashboard = ({ token, currentUser }) => {
                     }}
                     title="Like / Match"
                   >
-                    <i className="fa-solid fa-heart"></i>
+                    <BackpackIcon size={24} />
                   </button>
                 </>
               )}
@@ -1739,7 +1752,7 @@ const Dashboard = ({ token, currentUser }) => {
 
             {/* Mobile Swipe Buttons for Elaborated Profile (Phone support!) */}
             {activeLikerDetail._id !== currentUser?._id && !matches.some(m => m._id === activeLikerDetail._id) && (
-              <div className="mobile-action-buttons">
+              <div className="mobile-action-buttons liker-mobile-actions">
                 <button 
                   onClick={() => {
                     handleSwipe(activeLikerDetail, 'dislike');
@@ -1758,7 +1771,7 @@ const Dashboard = ({ token, currentUser }) => {
                   className="mobile-btn mobile-btn-like"
                   title="Like"
                 >
-                  <i className="fa-solid fa-heart"></i>
+                  <BackpackIcon size={22} />
                 </button>
               </div>
             )}
@@ -2125,7 +2138,7 @@ const Dashboard = ({ token, currentUser }) => {
                   }}
                   title="Like (Right Arrow)"
                 >
-                  <i className="fa-solid fa-heart"></i>
+                  <BackpackIcon size={24} />
                 </button>
 
                 {/* CARD DECK CARD WITH ANIMATION STATES */}
@@ -2347,7 +2360,7 @@ const Dashboard = ({ token, currentUser }) => {
               </div>
 
               {/* Mobile Swipe Buttons (Phone support!) */}
-              <div className="mobile-action-buttons">
+              <div className="mobile-action-buttons deck-mobile-actions">
                 <button 
                   onClick={() => handleSwipe(activeUserCard, 'dislike')} 
                   className="mobile-btn mobile-btn-skip"
@@ -2360,7 +2373,7 @@ const Dashboard = ({ token, currentUser }) => {
                   className="mobile-btn mobile-btn-like"
                   title="Like"
                 >
-                  <i className="fa-solid fa-heart"></i>
+                  <BackpackIcon size={22} />
                 </button>
               </div>
             </div>

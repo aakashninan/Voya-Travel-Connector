@@ -473,32 +473,6 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-50%) scale(1.1) !important;
 }
 
-@media (max-width: 680px) {
-  .floating-skip-btn {
-    left: 20px !important;
-    top: auto !important;
-    bottom: 24px !important;
-    transform: none !important;
-    position: fixed !important;
-    background: rgba(255, 255, 255, 0.96) !important;
-    z-index: 999 !important;
-  }
-  .floating-skip-btn:hover {
-    transform: scale(1.08) !important;
-  }
-  
-  .floating-like-btn {
-    right: 20px !important;
-    top: auto !important;
-    bottom: 24px !important;
-    transform: none !important;
-    position: fixed !important;
-    z-index: 999 !important;
-  }
-  .floating-like-btn:hover {
-    transform: scale(1.08) !important;
-  }
-}
 
 .liker-card-hover {
   transition: var(--transition-elastic) !important;
@@ -578,8 +552,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .card-deck-wrapper {
+    width: calc(100% - 40px) !important;
     max-width: 100% !important;
     height: 420px !important; /* Perfect visual fit on all phone screen sizes */
+    margin: 0 auto !important;
   }
 
   /* Target inline style and override carousel image height on mobile viewports to declutter */
@@ -587,10 +563,53 @@ h1, h2, h3, h4, h5, h6 {
     height: 160px !important;
   }
 
-  /* Suppress side floating buttons completely on mobile to prevent overlapping bottom nav */
+  /* Enable side-floating buttons on mobile viewports and position them overlapping the card */
   .floating-skip-btn, 
   .floating-like-btn {
+    display: flex !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    z-index: 100 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.25rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .floating-skip-btn {
+    left: -20px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(239, 68, 68, 0.25) !important;
+    color: #ef4444 !important;
+  }
+
+  .floating-skip-btn:hover {
+    background: #ffffff !important;
+    transform: translateY(-50%) scale(1.1) !important;
+  }
+
+  .floating-like-btn {
+    right: -20px !important;
+    background: var(--terracotta) !important;
+    border: none !important;
+    color: #ffffff !important;
+  }
+
+  .floating-like-btn:hover {
+    background: #a83805 !important;
+    transform: translateY(-50%) scale(1.1) !important;
+  }
+
+  /* Hide the bottom button bar on mobile deck card layout, but keep liker-details mobile action bar */
+  .deck-mobile-actions {
     display: none !important;
+  }
+  .liker-mobile-actions {
+    display: flex !important;
   }
 
   /* Beautiful Phone Interaction Controls directly underneath deck cards */

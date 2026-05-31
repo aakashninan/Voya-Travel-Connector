@@ -693,6 +693,23 @@ const Landing = () => {
       .voya-hero-left { padding: 36px 28px 48px; }
       .voya-section-title { font-size: 2.2rem; }
     }
+
+    @media (max-width: 600px) {
+      .voya-hero-actions,
+      .voya-cta-actions {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+      }
+      .voya-hero-actions button,
+      .voya-cta-actions button {
+        width: 100% !important;
+        margin: 0 !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+    }
   `;
 
   return (
@@ -1172,12 +1189,14 @@ const Landing = () => {
         <p className="voya-cta-sub">
           Join thousands of travelers already finding their perfect trip companions.
         </p>
-        <button onClick={() => navigate('/register')} className="voya-btn-white">
-          Create Your Profile
-        </button>
-        <button onClick={() => navigate('/login')} className="voya-btn-outline-white">
-          Sign In
-        </button>
+        <div className="voya-cta-actions">
+          <button onClick={() => navigate('/register')} className="voya-btn-white">
+            Create Your Profile
+          </button>
+          <button onClick={() => navigate('/login')} className="voya-btn-outline-white">
+            Sign In
+          </button>
+        </div>
       </div>
 
       {/* ── FOOTER ── */}
