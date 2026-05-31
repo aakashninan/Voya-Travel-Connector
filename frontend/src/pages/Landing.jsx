@@ -39,7 +39,7 @@ const Landing = () => {
 
     .voya-hero-left {
       background: var(--ink);
-      padding: 32px 40px;
+      padding: 60px 40px 32px 40px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -648,10 +648,6 @@ const Landing = () => {
 
         {/* Left: Dark panel */}
         <div className="voya-hero-left">
-          <div className="voya-logo" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
-            <span style={{ fontSize: '2.3rem' }}>vo<span>ya</span></span>
-          </div>
 
           <div className="voya-hero-headline">
             <div className="voya-badge">
