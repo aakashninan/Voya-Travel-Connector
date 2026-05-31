@@ -103,7 +103,7 @@ const Landing = () => {
     }
 
     .voya-h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 5.4rem;
       font-weight: 900;
       line-height: 0.96;
@@ -176,7 +176,7 @@ const Landing = () => {
     }
 
     .voya-stat-number {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 2rem;
       font-weight: 700;
       color: var(--sand);
@@ -327,7 +327,7 @@ const Landing = () => {
     }
 
     .voya-section-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 3.2rem;
       font-weight: 900;
       line-height: 1.15;
@@ -438,7 +438,7 @@ const Landing = () => {
     }
 
     .voya-feat-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 1.45rem;
       font-weight: 800;
       color: var(--ink);
@@ -478,7 +478,7 @@ const Landing = () => {
     }
 
     .voya-quote-text {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 1.5rem;
       font-weight: 700;
       font-style: italic;
@@ -599,7 +599,7 @@ const Landing = () => {
     }
 
     .voya-cta-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display), serif !important;
       font-size: 3.5rem;
       font-weight: 900;
       line-height: 1.1;
