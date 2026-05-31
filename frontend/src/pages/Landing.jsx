@@ -1011,8 +1011,8 @@ const Landing = () => {
 
       {/* ── FEATURES ── */}
       <div className="voya-features">
-        <div className="voya-section-kicker">How it works</div>
-        <div className="voya-section-title">Three steps to your perfect trip.</div>
+        <div className="voya-section-kicker">THE VOYA ETHOS</div>
+        <div className="voya-section-title">Wanderlust is better when shared.</div>
 
         <div className="voya-features-grid">
           {/* Card 1 */}
@@ -1021,10 +1021,9 @@ const Landing = () => {
             <div className="voya-feat-icon-wrap voya-icon-coral">
               <i className="fa-solid fa-microphone-lines" />
             </div>
-            <div className="voya-feat-title">Vibe Check</div>
+            <div className="voya-feat-title">Wanderlust Synchronized</div>
             <p className="voya-feat-desc">
-              Build a profile packed with personality. Upload travel pictures, answer adventurous text prompts,
-              and share audio voice memos so your future travel buddies can check the vibe before connecting.
+              Because climbing Kilimanjaro is epic, but having someone to laugh with when you both realize you packed the wrong socks is priceless. We match your travel frequency, your budget bandwidth, and your hunger for the unknown.
             </p>
           </div>
 
@@ -1034,10 +1033,9 @@ const Landing = () => {
             <div className="voya-feat-icon-wrap voya-icon-sage">
               <i className="fa-solid fa-sliders" />
             </div>
-            <div className="voya-feat-title">Smart Journey Filters</div>
+            <div className="voya-feat-title">Vibe Over Vanity</div>
             <p className="voya-feat-desc">
-              Customize your search to match your plans perfectly. Filter potential partners by gender,
-              preferred trip durations, target locations, travel calendar schedules, and travel styles.
+              Forget highly-curated influencer snapshots. We're about raw, voice-guided travel chemistry. Listen to real voice memos, read genuine travel prompts, and co-design pathways before you ever book a flight.
             </p>
           </div>
 
@@ -1047,10 +1045,9 @@ const Landing = () => {
             <div className="voya-feat-icon-wrap voya-icon-gold">
               <i className="fa-solid fa-users-rectangle" />
             </div>
-            <div className="voya-feat-title">Double-Opt-In Planning</div>
+            <div className="voya-feat-title">Trust is Our Compass</div>
             <p className="voya-feat-desc">
-              Create groups from your mutual matches to discuss itineraries. Group invitations require
-              explicit traveler approvals first, ensuring you only travel with people you've vetted.
+              No creeps, no catfish—just genuine co-travelers who actually match. With secure double-opt-in group planning and verified identity checkpoints, you're co-creating journeys with travel buddies who've earned their spot in your boarding queue.
             </p>
           </div>
         </div>
