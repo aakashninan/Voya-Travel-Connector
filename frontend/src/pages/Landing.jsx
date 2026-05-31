@@ -113,9 +113,9 @@ const Landing = () => {
 
     .voya-h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 3.4rem;
+      font-size: 5.4rem;
       font-weight: 900;
-      line-height: 1.1;
+      line-height: 0.96;
       color: var(--sand);
       letter-spacing: -0.04em;
       margin-bottom: 12px;
@@ -124,7 +124,6 @@ const Landing = () => {
     .voya-h1 em {
       font-style: italic;
       color: var(--sage);
-      font-size: 1.05em;
     }
 
     .voya-hero-sub {
@@ -626,7 +625,7 @@ const Landing = () => {
     @media (max-width: 900px) {
       .voya-hero { grid-template-columns: 1fr; height: auto; max-height: none; overflow: visible; }
       .voya-hero-right { min-height: 50vh; }
-      .voya-h1 { font-size: 2.2rem; }
+      .voya-h1 { font-size: 3.4rem; }
       .voya-features { padding: 60px 24px; }
       .voya-features-grid { grid-template-columns: 1fr; gap: 16px; }
       .voya-feat-card:first-child { border-radius: 24px 24px 0 0; }
@@ -660,12 +659,10 @@ const Landing = () => {
               Discover Your Next Adventure Companion
             </div>
 
-            <h1 className="voya-h1" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ color: '#FFFFFF' }}>Swipe</span>
-              <span style={{ color: 'var(--sage)', fontSize: '1.2em', lineHeight: '1' }}>•</span>
-              <span style={{ color: '#FFFFFF' }}>Pack</span>
-              <span style={{ color: 'var(--sage)', fontSize: '1.2em', lineHeight: '1' }}>•</span>
-              <em>Go</em>
+            <h1 className="voya-h1">
+              <span style={{ color: '#FFFFFF' }}>Swipe.</span><br />
+              <span style={{ color: '#FFFFFF' }}>Pack.</span><br />
+              <em>Go</em><span style={{ color: '#FFFFFF' }}>.</span>
             </h1>
 
             <p className="voya-hero-sub">
