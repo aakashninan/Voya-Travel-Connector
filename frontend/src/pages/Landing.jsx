@@ -340,39 +340,44 @@ const Landing = () => {
     .voya-features-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 32px;
+      gap: 48px;
     }
 
-    .voya-feat-card {
-      background: #FFFFFF;
-      border-radius: 28px !important;
+    .voya-feat-column {
+      background: transparent;
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
       position: relative;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(44, 37, 32, 0.04);
-      border: 1px solid rgba(44, 37, 32, 0.05);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
       padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    .voya-feat-column:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: -24px;
+      width: 1px;
+      height: 80%;
+      background: rgba(44, 37, 32, 0.1);
     }
 
     .voya-feat-visual {
-      height: 170px;
+      height: 120px;
       position: relative;
-      overflow: hidden;
       display: flex;
       align-items: center;
-      justify-content: center;
-      transition: background 0.3s ease;
+      justify-content: flex-start;
+      margin-bottom: 24px;
+      background: transparent !important;
     }
 
-    .feat-1 .voya-feat-visual { background: linear-gradient(135deg, rgba(200, 70, 10, 0.04), rgba(200, 70, 10, 0.08)); }
-    .feat-2 .voya-feat-visual { background: linear-gradient(135deg, rgba(107, 124, 58, 0.04), rgba(107, 124, 58, 0.08)); }
-    .feat-3 .voya-feat-visual { background: linear-gradient(135deg, rgba(212, 168, 67, 0.04), rgba(212, 168, 67, 0.08)); }
-
     .voya-feat-svg-wrap {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -384,70 +389,51 @@ const Landing = () => {
       height: 100%;
     }
 
-    .voya-feat-card:hover .voya-feat-svg-wrap {
-      transform: scale(1.15) translateY(-6px);
+    .voya-feat-column:hover .voya-feat-svg-wrap {
+      transform: scale(1.1) translateY(-4px) rotate(1deg);
     }
 
     .voya-feat-card-content {
-      padding: 28px 28px 32px 28px;
+      padding: 0;
       display: flex;
       flex-direction: column;
       position: relative;
-      flex-grow: 1;
     }
 
     .voya-feat-pill {
       align-self: flex-start;
-      padding: 4px 12px;
-      border-radius: 100px;
+      padding: 4px 0;
+      background: transparent !important;
       font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
     }
 
-    .feat-1 .voya-feat-pill { background: rgba(200, 70, 10, 0.08); color: var(--terracotta); }
-    .feat-2 .voya-feat-pill { background: rgba(107, 124, 58, 0.08); color: #6B7C3A; }
-    .feat-3 .voya-feat-pill { background: rgba(212, 168, 67, 0.08); color: var(--gold); }
+    .feat-1 .voya-feat-pill { color: var(--terracotta); }
+    .feat-2 .voya-feat-pill { color: #6B7C3A; }
+    .feat-3 .voya-feat-pill { color: var(--gold); }
 
-    .voya-feat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 5px;
-      transition: height 0.25s ease;
-      z-index: 10;
-    }
-    
-    .voya-feat-card.feat-1::before { background: var(--terracotta); }
-    .voya-feat-card.feat-2::before { background: #6B7C3A; }
-    .voya-feat-card.feat-3::before { background: var(--gold); }
-
-    .voya-feat-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 24px 48px rgba(44, 37, 32, 0.08);
-      border-color: rgba(200, 70, 10, 0.12);
-    }
-    
-    .voya-feat-card:hover::before {
-      height: 7px;
+    .voya-feat-column:hover .voya-feat-pill {
+      filter: brightness(1.2);
     }
 
     .voya-feat-number {
       position: absolute;
-      bottom: 24px; right: 28px;
+      top: -20px; right: 0;
       font-family: 'Playfair Display', serif;
-      font-size: 3.4rem;
+      font-size: 3.2rem;
       font-weight: 900;
-      color: rgba(44, 37, 32, 0.04);
+      color: rgba(44, 37, 32, 0.03);
       line-height: 1;
       pointer-events: none;
       transition: all 0.3s ease;
     }
 
-    .voya-feat-card:hover .voya-feat-number {
-      color: rgba(44, 37, 32, 0.07);
+    .voya-feat-column:hover .voya-feat-number {
+      color: rgba(44, 37, 32, 0.06);
       transform: scale(1.05);
     }
 
@@ -457,12 +443,17 @@ const Landing = () => {
       font-weight: 800;
       color: var(--ink);
       margin-bottom: 12px;
-      line-height: 1.35;
+      line-height: 1.3;
+      transition: color 0.3s ease;
+    }
+
+    .voya-feat-column:hover .voya-feat-title {
+      color: var(--terracotta);
     }
 
     .voya-feat-desc {
       font-size: 0.9rem;
-      color: rgba(44, 37, 32, 0.65);
+      color: rgba(44, 37, 32, 0.7);
       line-height: 1.65;
       font-weight: 400;
     }
@@ -689,9 +680,12 @@ const Landing = () => {
       .voya-hero-right { min-height: 50vh; }
       .voya-h1 { font-size: 3.4rem; }
       .voya-features { padding: 60px 24px; }
-      .voya-features-grid { grid-template-columns: 1fr; gap: 16px; }
-      .voya-feat-card:first-child { border-radius: 24px 24px 0 0; }
-      .voya-feat-card:last-child { border-radius: 0 0 24px 24px; }
+      .voya-features-grid { grid-template-columns: 1fr; gap: 48px; }
+      .voya-feat-column::after { display: none !important; }
+      .voya-feat-visual { justify-content: center; margin-bottom: 16px; }
+      .voya-feat-card-content { align-items: center; text-align: center; }
+      .voya-feat-pill { align-self: center; }
+      .voya-feat-number { display: none !important; }
       .voya-testimonial { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
       .voya-cta { padding: 60px 24px; }
       .voya-cta-title { font-size: 2.2rem; }
@@ -1051,8 +1045,8 @@ const Landing = () => {
         <div className="voya-section-title">Adventure hits different when shared.</div>
 
         <div className="voya-features-grid">
-          {/* Card 1 */}
-          <div className="voya-feat-card feat-1">
+          {/* Column 1 */}
+          <div className="voya-feat-column feat-1">
             <div className="voya-feat-visual">
               <div className="voya-feat-svg-wrap">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1077,8 +1071,8 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="voya-feat-card feat-2">
+          {/* Column 2 */}
+          <div className="voya-feat-column feat-2">
             <div className="voya-feat-visual">
               <div className="voya-feat-svg-wrap">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1102,8 +1096,8 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="voya-feat-card feat-3">
+          {/* Column 3 */}
+          <div className="voya-feat-column feat-3">
             <div className="voya-feat-visual">
               <div className="voya-feat-svg-wrap">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
