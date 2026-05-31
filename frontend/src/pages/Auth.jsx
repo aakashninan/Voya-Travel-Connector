@@ -126,8 +126,8 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
             }}>
               <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '38px', height: '38px', objectFit: 'contain' }} />
             </div>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--bg-sand)' }}>
-              voya
+            <span style={{ fontFamily: "'Monaco', 'Courier New', 'Courier', monospace", fontSize: '1.4rem', fontWeight: 700, letterSpacing: '-0.05em', color: 'var(--bg-sand)', textTransform: 'lowercase' }}>
+              vo<span style={{ color: 'var(--terracotta)' }}>ya</span>
             </span>
           </div>
 

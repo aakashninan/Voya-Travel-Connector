@@ -112,12 +112,13 @@ const Navbar = ({ user, onLogout }) => {
     }
 
     .voya-nav-logo-text {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Monaco', 'Courier New', 'Courier', monospace !important;
       font-size: 1.55rem;
-      font-weight: 900;
+      font-weight: 700;
       color: var(--sage);
-      letter-spacing: -0.03em;
+      letter-spacing: -0.05em;
       line-height: 1;
+      text-transform: lowercase;
     }
 
     .voya-nav-logo-text span {
@@ -347,7 +348,7 @@ const Navbar = ({ user, onLogout }) => {
           <div className="voya-nav-logo-mark" style={{ background: 'transparent', width: '54px', height: '54px' }}>
             <img src="/voya_logo_premium.png" alt="Voya Logo" style={{ width: '54px', height: '54px', objectFit: 'contain' }} />
           </div>
-          <span className="voya-nav-logo-text" style={{ fontSize: '2.1rem' }}>vo<span>ya</span></span>
+          <span className="voya-nav-logo-text" style={{ fontSize: '2.1rem', letterSpacing: '-0.06em', textTransform: 'lowercase' }}>vo<span>ya</span></span>
         </div>
 
         {/* Right side */}
