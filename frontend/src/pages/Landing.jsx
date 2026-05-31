@@ -1181,10 +1181,21 @@ const Landing = () => {
             We founded voya to make travel social, transparent, and completely free from solo-explorer friction. By combining real-time companion matching with intuitive day-by-day AI planning, we want to help you discover not just new landscapes, but a global family of adventurers. Your next great story starts with the people you share it with.
           </div>
           <div className="voya-quote-author" style={{ marginTop: '24px' }}>
-            <div className="voya-author-avatar" style={{ background: 'var(--terracotta)', fontWeight: 700 }}>VF</div>
+            <div className="voya-author-avatar" style={{ background: 'var(--terracotta)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img 
+                src="/voya_logo_premium.png" 
+                alt="Voya Logo" 
+                style={{ 
+                  width: '26px', 
+                  height: '26px', 
+                  objectFit: 'contain',
+                  filter: 'brightness(0) invert(1)' 
+                }} 
+              />
+            </div>
             <div>
-              <div className="voya-author-name">The voya Founders</div>
-              <div className="voya-author-role">Team Voya</div>
+              <div className="voya-author-name">Team Voya</div>
+              <div className="voya-author-role">voya Founders</div>
             </div>
           </div>
         </div>
