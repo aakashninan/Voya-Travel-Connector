@@ -71,13 +71,21 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
       }
       .auth-container {
         justify-content: center !important;
+        min-height: calc(100vh - 64px) !important;
       }
       .auth-form-panel {
         max-width: 100% !important;
-        padding: 30px 20px !important;
+        padding: 24px 16px !important;
       }
       .glass-panel-custom {
-        padding: 30px 20px !important;
+        padding: 28px 18px !important;
+        border-radius: 20px !important;
+      }
+      .auth-underlying-links {
+        margin-top: 24px !important;
+        padding-top: 16px !important;
+        font-size: 0.8rem !important;
+        line-height: 1.55 !important;
       }
     }
   `;
@@ -159,6 +167,7 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
           width: '100%',
           maxWidth: '560px',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           padding: '40px 60px',
@@ -166,50 +175,48 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
           overflowY: 'auto',
           position: 'relative'
         }}>
-          {/* Back to Home Button */}
-          <button 
-            onClick={() => navigate('/')}
-            className="btn btn-glass"
-            style={{
-              position: 'absolute',
-              top: '24px',
-              left: '24px',
-              padding: '10px 18px',
-              fontSize: '0.85rem',
-              borderRadius: '100px',
-              background: 'rgba(255,255,255,0.85)',
-              border: '1px solid var(--glass-border)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              zIndex: 10,
-              cursor: 'pointer',
-              boxShadow: '0 4px 12px rgba(26,20,16,0.06)',
-              transition: 'all 0.25s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)';
-              e.currentTarget.style.background = '#ffffff';
-              e.currentTarget.style.boxShadow = '0 6px 15px rgba(232, 130, 79, 0.12)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,20,16,0.06)';
-            }}
-          >
-            <i className="fa-solid fa-arrow-left" style={{ color: 'var(--coral)' }}></i> 
-            <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Back to Home</span>
-          </button>
+          <div className="auth-panel-wrapper" style={{ display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '440px', gap: '16px' }}>
+            {/* Back to Home Button */}
+            <button 
+              onClick={() => navigate('/')}
+              className="btn btn-glass"
+              style={{
+                alignSelf: 'flex-start',
+                padding: '10px 18px',
+                fontSize: '0.85rem',
+                borderRadius: '100px',
+                background: 'rgba(255,255,255,0.85)',
+                border: '1px solid var(--glass-border)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 12px rgba(26,20,16,0.06)',
+                transition: 'all 0.25s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.background = '#ffffff';
+                e.currentTarget.style.boxShadow = '0 6px 15px rgba(232, 130, 79, 0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.background = 'rgba(255,255,255,0.85)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(26,20,16,0.06)';
+              }}
+            >
+              <i className="fa-solid fa-arrow-left" style={{ color: 'var(--coral)' }}></i> 
+              <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Back to Home</span>
+            </button>
 
-          <div className="glass-panel glass-panel-custom" style={{
-            width: '100%',
-            padding: '40px',
-            borderRadius: '24px',
-            background: 'var(--glass-card)',
-            border: '1px solid var(--glass-border)',
-            boxShadow: 'var(--shadow-glow)'
-          }}>
+            <div className="glass-panel glass-panel-custom" style={{
+              width: '100%',
+              padding: '40px',
+              borderRadius: '24px',
+              background: 'var(--glass-card)',
+              border: '1px solid var(--glass-border)',
+              boxShadow: 'var(--shadow-glow)'
+            }}>
             <div style={{ textAlign: 'center', marginBottom: '32px' }}>
               <h2 style={{ fontSize: '1.85rem', marginBottom: '8px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-display)' }}>
                 {isRegister ? 'Create Account' : 'Welcome Back'}
@@ -342,7 +349,7 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
               </button>
             </form>
 
-            <div style={{
+            <div className="auth-underlying-links" style={{
               textAlign: 'center',
               marginTop: '24px',
               paddingTop: '20px',
@@ -366,6 +373,7 @@ const Auth = ({ isRegister, onLoginSuccess }) => {
                 </span>
               )}
             </div>
+          </div>
           </div>
         </div>
       </div>

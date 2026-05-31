@@ -707,10 +707,12 @@ const Landing = () => {
         margin-bottom: 20px !important;
       }
       .voya-h1 {
-        font-size: 2.6rem !important;
-        line-height: 1.05 !important;
-        margin-bottom: 18px !important;
+        font-size: 3.8rem !important;
+        line-height: 1.02 !important;
+        margin-bottom: 20px !important;
         text-align: center !important;
+        letter-spacing: -0.04em !important;
+        font-weight: 900 !important;
       }
       .voya-hero-sub {
         font-size: 0.88rem !important;
