@@ -343,7 +343,7 @@ const getAIChatResponse = async (req, res) => {
         parts: [{ text: String(msg.content || '') }]
       }));
 
-      const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash'];
+      const modelsToTry = ['gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.1-flash-lite'];
       const errors = [];
 
       for (const model of modelsToTry) {
@@ -435,10 +435,9 @@ const getAIChatResponse = async (req, res) => {
           console.log('[AI] Active LLMs failed. Generating High-Fidelity Local Simulator response...');
           const fallback = generateFallbackReply(userText);
           const reply = `
-⚠️ **Voya AI Co-Pilot Rate Limit Notice** ⚠️
+🚀 **Voya AI Co-Pilot Update** 🚀
 
-${errorMessage}
-**System has successfully fallen back to Voya's High-Fidelity Local Travel Simulator!**
+We are currently experiencing high request volumes on our primary cloud servers. To ensure you have a seamless experience, **Voya's High-Fidelity Local Travel Simulator** has automatically stepped in to craft your itinerary!
 
 ---
 
@@ -480,10 +479,9 @@ _Would you like me to customize any day, adjust the budget tier, or suggest gour
         console.log('[AI] Active LLMs failed on exception. Generating High-Fidelity Local Simulator response...');
         const fallback = generateFallbackReply(userText);
         const reply = `
-⚠️ **Voya AI Co-Pilot Rate Limit Notice** ⚠️
+🚀 **Voya AI Co-Pilot Update** 🚀
 
-${err.message || 'I encountered an exception querying the OpenAI service.'}
-**System has successfully fallen back to Voya's High-Fidelity Local Travel Simulator!**
+We are currently experiencing high request volumes on our primary cloud servers. To ensure you have a seamless experience, **Voya's High-Fidelity Local Travel Simulator** has automatically stepped in to craft your itinerary!
 
 ---
 
@@ -521,10 +519,9 @@ _Would you like me to customize any day, adjust the budget tier, or suggest gour
         console.error('[AI] Gemini fetch failed, generating High-Fidelity Local Simulator response:', err);
         const fallback = generateFallbackReply(userText);
         const reply = `
-⚠️ **Voya AI Co-Pilot Rate Limit Notice (Gemini)** ⚠️
+🚀 **Voya AI Co-Pilot Update** 🚀
 
-${err.message || 'I encountered an error querying the Gemini service.'}
-**System has successfully fallen back to Voya's High-Fidelity Local Travel Simulator!**
+We are currently experiencing high request volumes on our primary cloud servers. To ensure you have a seamless experience, **Voya's High-Fidelity Local Travel Simulator** has automatically stepped in to craft your itinerary!
 
 ---
 
