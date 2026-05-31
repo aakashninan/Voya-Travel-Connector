@@ -345,16 +345,71 @@ const Landing = () => {
 
     .voya-feat-card {
       background: #FFFFFF;
-      padding: 44px 36px 40px 36px;
-      border-radius: 24px !important;
+      border-radius: 28px !important;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 12px 36px rgba(44, 37, 32, 0.05);
-      border: 1px solid rgba(44, 37, 32, 0.04);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 16px 40px rgba(44, 37, 32, 0.04);
+      border: 1px solid rgba(44, 37, 32, 0.05);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       flex-direction: column;
+      padding: 0;
     }
+
+    .voya-feat-visual {
+      height: 170px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .feat-1 .voya-feat-visual { background: linear-gradient(135deg, rgba(200, 70, 10, 0.04), rgba(200, 70, 10, 0.08)); }
+    .feat-2 .voya-feat-visual { background: linear-gradient(135deg, rgba(107, 124, 58, 0.04), rgba(107, 124, 58, 0.08)); }
+    .feat-3 .voya-feat-visual { background: linear-gradient(135deg, rgba(212, 168, 67, 0.04), rgba(212, 168, 67, 0.08)); }
+
+    .voya-feat-svg-wrap {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .voya-feat-svg-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .voya-feat-card:hover .voya-feat-svg-wrap {
+      transform: scale(1.15) translateY(-6px);
+    }
+
+    .voya-feat-card-content {
+      padding: 28px 28px 32px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      flex-grow: 1;
+    }
+
+    .voya-feat-pill {
+      align-self: flex-start;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .feat-1 .voya-feat-pill { background: rgba(200, 70, 10, 0.08); color: var(--terracotta); }
+    .feat-2 .voya-feat-pill { background: rgba(107, 124, 58, 0.08); color: #6B7C3A; }
+    .feat-3 .voya-feat-pill { background: rgba(212, 168, 67, 0.08); color: var(--gold); }
 
     .voya-feat-card::before {
       content: '';
@@ -362,6 +417,7 @@ const Landing = () => {
       top: 0; left: 0; right: 0;
       height: 5px;
       transition: height 0.25s ease;
+      z-index: 10;
     }
     
     .voya-feat-card.feat-1::before { background: var(--terracotta); }
@@ -370,49 +426,29 @@ const Landing = () => {
 
     .voya-feat-card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 24px 48px rgba(44, 37, 32, 0.1);
-      border-color: rgba(200, 70, 10, 0.15);
+      box-shadow: 0 24px 48px rgba(44, 37, 32, 0.08);
+      border-color: rgba(200, 70, 10, 0.12);
     }
     
     .voya-feat-card:hover::before {
-      height: 8px;
-    }
-
-    .voya-feat-icon-wrap {
-      width: 60px; height: 60px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 28px;
-      transition: transform 0.3s ease;
-      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2);
-    }
-
-    .voya-icon-coral { background: rgba(200,70,10,0.08); color: var(--terracotta); border: 1px solid rgba(200,70,10,0.12); }
-    .voya-icon-sage  { background: rgba(107,124,58,0.08); color: #6B7C3A; border: 1px solid rgba(107,124,58,0.12); }
-    .voya-icon-gold  { background: rgba(212,168,67,0.08); color: var(--gold); border: 1px solid rgba(212,168,67,0.12); }
-
-    .voya-feat-card:hover .voya-feat-icon-wrap {
-      transform: scale(1.08) rotate(2deg);
+      height: 7px;
     }
 
     .voya-feat-number {
       position: absolute;
-      top: 28px; right: 32px;
+      bottom: 24px; right: 28px;
       font-family: 'Playfair Display', serif;
-      font-size: 3.6rem;
+      font-size: 3.4rem;
       font-weight: 900;
-      color: rgba(44, 37, 32, 0.05);
+      color: rgba(44, 37, 32, 0.04);
       line-height: 1;
       pointer-events: none;
-      transition: color 0.3s ease, transform 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .voya-feat-card:hover .voya-feat-number {
-      color: rgba(44, 37, 32, 0.08);
-      transform: translateY(-2px);
+      color: rgba(44, 37, 32, 0.07);
+      transform: scale(1.05);
     }
 
     .voya-feat-title {
@@ -420,14 +456,14 @@ const Landing = () => {
       font-size: 1.45rem;
       font-weight: 800;
       color: var(--ink);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.35;
     }
 
     .voya-feat-desc {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: rgba(44, 37, 32, 0.65);
-      line-height: 1.7;
+      line-height: 1.65;
       font-weight: 400;
     }
 
@@ -1012,43 +1048,80 @@ const Landing = () => {
       {/* ── FEATURES ── */}
       <div className="voya-features">
         <div className="voya-section-kicker">THE VOYA ETHOS</div>
-        <div className="voya-section-title">Wanderlust is better when shared.</div>
+        <div className="voya-section-title">Adventure hits different when shared.</div>
 
         <div className="voya-features-grid">
           {/* Card 1 */}
           <div className="voya-feat-card feat-1">
-            <div className="voya-feat-number">01</div>
-            <div className="voya-feat-icon-wrap voya-icon-coral">
-              <i className="fa-solid fa-microphone-lines" />
+            <div className="voya-feat-visual">
+              <div className="voya-feat-svg-wrap">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="35" y="15" width="30" height="60" rx="6" fill="#FFFFFF" stroke="#C8460A" strokeWidth="2.5"/>
+                  <line x1="45" y1="20" x2="55" y2="20" stroke="#C8460A" strokeWidth="2" strokeLinecap="round"/>
+                  <path d="M50 35 C47 30, 42 32, 42 37 C42 43, 50 49, 50 49 C50 49, 58 43, 58 37 C58 32, 53 30, 50 35 Z" fill="#C8460A"/>
+                  <path d="M22 45 A 25 25 0 0 1 22 35" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.3"/>
+                  <path d="M15 52 A 35 35 0 0 1 15 28" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.15"/>
+                  <path d="M78 45 A 25 25 0 0 0 78 35" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.3"/>
+                  <path d="M85 52 A 35 35 0 0 0 85 28" stroke="#C8460A" strokeWidth="2" strokeLinecap="round" opacity="0.15"/>
+                  <circle cx="50" cy="62" r="3" fill="#C8460A" opacity="0.8"/>
+                </svg>
+              </div>
             </div>
-            <div className="voya-feat-title">Wanderlust Synchronized</div>
-            <p className="voya-feat-desc">
-              Because climbing Kilimanjaro is epic, but having someone to laugh with when you both realize you packed the wrong socks is priceless. We match your travel frequency, your budget bandwidth, and your hunger for the unknown.
-            </p>
+            <div className="voya-feat-card-content">
+              <div className="voya-feat-pill">01 / NO AWKWARD TOURS</div>
+              <div className="voya-feat-title">Vibe Checks &gt; Strangers</div>
+              <p className="voya-feat-desc">
+                Ditch the rigid travel packages and silent bus groups. We sync your actual energy, your budget bandwidth, and your weirdest travel bucket lists to pair you with fellow wanderers who match your pace.
+              </p>
+              <div className="voya-feat-number">01</div>
+            </div>
           </div>
 
           {/* Card 2 */}
           <div className="voya-feat-card feat-2">
-            <div className="voya-feat-number">02</div>
-            <div className="voya-feat-icon-wrap voya-icon-sage">
-              <i className="fa-solid fa-sliders" />
+            <div className="voya-feat-visual">
+              <div className="voya-feat-svg-wrap">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="20" y="20" width="34" height="42" rx="3" fill="#FFFFFF" stroke="#6B7C3A" strokeWidth="2" transform="rotate(-10 37 41)"/>
+                  <rect x="24" y="24" width="26" height="26" fill="#F4EAE1" transform="rotate(-10 37 41)"/>
+                  <circle cx="34" cy="34" r="5" fill="#D4A843"/>
+                  <rect x="42" y="38" width="42" height="30" rx="4" fill="#FFFFFF" stroke="#6B7C3A" strokeWidth="2.5"/>
+                  <circle cx="63" cy="53" r="9" fill="#F4EAE1" stroke="#6B7C3A" strokeWidth="2.5"/>
+                  <circle cx="63" cy="53" r="4" fill="#6B7C3A"/>
+                  <rect x="48" y="44" width="8" height="6" rx="1" fill="#D4A843"/>
+                </svg>
+              </div>
             </div>
-            <div className="voya-feat-title">Vibe Over Vanity</div>
-            <p className="voya-feat-desc">
-              Forget highly-curated influencer snapshots. We're about raw, voice-guided travel chemistry. Listen to real voice memos, read genuine travel prompts, and co-design pathways before you ever book a flight.
-            </p>
+            <div className="voya-feat-card-content">
+              <div className="voya-feat-pill">02 / RAW AUTHENTICITY</div>
+              <div className="voya-feat-title">Vibe First, Grid Second</div>
+              <p className="voya-feat-desc">
+                No highly-staged influencer grids or fake aesthetics. Connect with real travelers through raw voice prompts, authentic travel confessions, and co-design pathways before you ever book a flight.
+              </p>
+              <div className="voya-feat-number">02</div>
+            </div>
           </div>
 
           {/* Card 3 */}
           <div className="voya-feat-card feat-3">
-            <div className="voya-feat-number">03</div>
-            <div className="voya-feat-icon-wrap voya-icon-gold">
-              <i className="fa-solid fa-users-rectangle" />
+            <div className="voya-feat-visual">
+              <div className="voya-feat-svg-wrap">
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M50 20 C62 20 72 25 72 37 C72 54 50 72 50 72 C50 72 28 54 28 37 C28 25 38 20 50 20 Z" fill="#FFFFFF" stroke="#D4A843" strokeWidth="2.5"/>
+                  <path d="M42 46 L48 52 L58 40" stroke="#D4A843" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15 70 Q 30 85 48 80 Q 75 72 70 45" stroke="#D4A843" strokeWidth="2" strokeDasharray="3 3" strokeLinecap="round"/>
+                  <path d="M66 40 L76 43 L71 49 Z" fill="#D4A843"/>
+                </svg>
+              </div>
             </div>
-            <div className="voya-feat-title">Trust is Our Compass</div>
-            <p className="voya-feat-desc">
-              No creeps, no catfish—just genuine co-travelers who actually match. With secure double-opt-in group planning and verified identity checkpoints, you're co-creating journeys with travel buddies who've earned their spot in your boarding queue.
-            </p>
+            <div className="voya-feat-card-content">
+              <div className="voya-feat-pill">03 / ZERO CHAOS</div>
+              <div className="voya-feat-title">Crew Up, Safely</div>
+              <p className="voya-feat-desc">
+                No flaky dropouts, no sketchy meetups, and definitely no itinerary stress. Build your secure crew with verified profiles and double-opt-in invites—meaning your next epic expedition is 100% vibe-vetted and safe.
+              </p>
+              <div className="voya-feat-number">03</div>
+            </div>
           </div>
         </div>
       </div>
