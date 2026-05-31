@@ -15,11 +15,11 @@ const Landing = () => {
 
     .voya-landing {
       font-family: 'DM Sans', sans-serif;
-      --sand: #FAF5EF; /* Exquisite warm cream */
+      --sand: #FBEFE3;
       --clay: #A83805;
       --terracotta: #C8460A;
       --ink: #2C2520;
-      --mist: #F3E9DD; /* Soft natural cream */
+      --mist: #F4EAE1;
       --sage: #C8460A;
       --dusk: #40352E;
       --gold: #D4A843;
